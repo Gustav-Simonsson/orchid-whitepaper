@@ -1,0 +1,22 @@
+digraph G {
+	rankdir=LR;
+	1 -> 2 [arrowhead=none]
+	1 -> 3 [arrowhead=none]
+	1 -> 4 [arrowhead=none]
+	1 -> 5 [arrowhead=none]
+	6 -> 1 [arrowhead=none]
+	6 -> 2 [arrowhead=none]
+	6 -> 3 [arrowhead=none]
+	6 -> 5 [arrowhead=none]
+	2 -> 3 [arrowhead=none]
+	2 -> 5 [arrowhead=none]
+	3 -> 4 [arrowhead=none]
+	7 -> 6 [arrowhead=none]
+	7 -> 1 [arrowhead=none]
+	7 -> 3 [arrowhead=none]
+	7 -> 8 [arrowhead=none]
+	8 -> 6 [arrowhead=none]
+	8 -> 1 [arrowhead=none]
+	8 -> 3 [arrowhead=none]
+	5 -> 4 [arrowhead=none]
+}
