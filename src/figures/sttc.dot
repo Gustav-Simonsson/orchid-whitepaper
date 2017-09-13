@@ -1,8 +1,8 @@
 digraph G {
-				Customer [shape=circle, height=1.6];
-				"Relay 1" [shape=triangle, height=2];
-				"Relay 2" [shape=triangle, height=2];
-				Proxy [shape=square, height=2];
+				Customer [shape=circle, height=1.4];
+				"Relay 1" [shape=parallelogram, height=1.4];
+				"Relay 2" [shape=parallelogram, height=1.4];
+				Proxy [shape=square, height=1.4];
 
 				rankdir=LR;
 
