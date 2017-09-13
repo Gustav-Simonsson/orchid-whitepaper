@@ -10,19 +10,24 @@
 \setlength{\columnsep}{1cm}
 \usepackage[english]{babel}
 \usepackage{csquotes}
+\usepackage{mfirstuc}
 \usepackage[
 backend=biber,
 style=numeric,
 sorting=ynt
 ]{biblatex}
 
+\newcommand{\mesh}{Agora}
+\newcommand{\Mesh}{\mesh}
+
 \addbibresource{meshbib.bib}
 
 \usepackage{titlesec}
 \titlelabel{\thetitle.\quad}
 
-\title{Gradient: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
-\author{{David L. Salamon with Brian J. Fox, Jay Freeman, Gustav Simonsson, Stephen F. Bell and Dr. Steven Waterhouse, Ph.D.}}
+\title{Agora: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
+\author{{David L. Salamon with} \\ {Brian J. Fox, Jay Freeman, Gustav Simonsson,} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
+
 \date{September 19, 2017}
 
 \raggedbottom
@@ -37,17 +42,15 @@ sorting=ynt
   Original contributions include an Etheruum-based implementation of stochastic micropayments suited for the sale of bandwidth, a Kademlia-inspired connection scheme for deterministic routing and auditing of seller behavior in a fully distributed bandwidth market, and preliminary application of payment mechanisms to hinder Sybil, Eclipse, DoS, and Inference Attacks.
 \end{abstract}
 
-
 \tableofcontents
 \newpage
-
 
 \section{High-Level Overview}
 \label{sec:overview}
 
 \subsection{System Goals}
 
-The Gradient Network was designed with two goals in mind:
+The \mesh{} Network was designed with two goals in mind:
 
 \begin{enumerate}
     \item To codify the right to unrestricted, private internet access on a networking level.
@@ -60,7 +63,7 @@ These are ambitious goals, and are not realized by the system described in this 
 
 This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses lessons which can be learned from the previous deployment of similar systems (Section \ref{sec:existing-approaches}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
 
-Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:building-blocks}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Gradient network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
+Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:building-blocks}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Agora network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
 
 We close out with a discussion of what an attackers experience of the system might be (Section \ref{sec:attack-stories}), both as a means of discussing the security of the system when viewed as a whole, and as a thought experiments for those wishing to assist us in improving system security. Next we discuss non-security features we hope to add in future releases (Section \ref{sec:future}). Readers interested in assisting with the project are encouraged to read these sections carefully.
 
@@ -69,10 +72,10 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Terms}
 
 \begin{itemize}
-    \item Node. A computer running a program which implements the Gradient Protocol.
+    \item Node. A computer running a program which implements the \mesh{} Protocol.
     \item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
     \item User. The owner of a node.
-    \item Agora. A collection of nodes interacting through the Gradient Distributed Marketplace Protocol.
+    \item Agora. A collection of nodes interacting through the \Mesh{} Distributed Marketplace Protocol.
     \item \emph{The} Agora. The Agora in possesion of the most global computational power.
     \item Econ. A node who is a member of an Agora's collection.
     \item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
@@ -89,7 +92,7 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Core Security Assumptions}
 \label{core-security}
 
-The security of the Gradient system as a whole ultimately rests on basic assumptions about the world. In the event that either assumption is ever falsified, the system will not function as intended.
+The security of the \Mesh{} system as a whole ultimately rests on basic assumptions about the world. In the event that either assumption is ever falsified, the system will not function as intended.
 
 \begin{enumerate}
     \item No single Attacker will control the majority of global computation power.
@@ -104,7 +107,7 @@ Readers who are familiar with other distributed market based networks will recog
 
 Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. As our attack model includes oppressive governments, this can not be counted on. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a "hostile takeover" much more difficult. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
 
-Proof-of-space is another interesting approach. Users in proof-of-space systems demonstrate their "realness" by saving data to their disk, and periodically required to answer queries about this data to demonstrate continued possession. The issue with its application to Gradient are two-fold: (1) the proof of work variant we use can be thought of as "proof of key" -- ie it verifies that a given key is in possession of computational power. It is not obvious how to apply proof-of-space to this use case, and (2) most home users do not have plentiful disk space, while most data centers do. This means that by selecting proof-of-space, we would be ensuring that datacenter based nodes would be over-represented, due to decreased Econ hosting by home users.
+Proof-of-space is another interesting approach. Users in proof-of-space systems demonstrate their "realness" by saving data to their disk, and periodically required to answer queries about this data to demonstrate continued possession. The issue with its application to \Mesh{} are two-fold: (1) the proof of work variant we use can be thought of as "proof of key" -- ie it verifies that a given key is in possession of computational power. It is not obvious how to apply proof-of-space to this use case, and (2) most home users do not have plentiful disk space, while most data centers do. This means that by selecting proof-of-space, we would be ensuring that datacenter based nodes would be over-represented, due to decreased Econ hosting by home users.
 
 Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Econs), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of econs for this attack to cease being devastating, we are not using proof-of-idle for this release.
 
@@ -132,21 +135,21 @@ Once relay and proxy bandwidth has been purchased, the customer configures them 
 
 \subsubsection{Web Browsing}
 
-The majority of initial usage of the Gradient Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (perhaps because they are run by the same user), no single node knows the Customer's IP Address and the server they communicated with.
+The majority of initial usage of the \Mesh{} Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (perhaps because they are run by the same user), no single node knows the Customer's IP Address and the server they communicated with.
 
 \subsection{User Stories}
 
 \subsubsection{Bandwidth Miners}
 
-Users with excess computational power and bandwidth may choose to support the Gradient project, as well as earn money, by running an econ on their computer. To do so, they install and run the Gradient software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into a medallion. Econs are compensated for their lost computation by bandwidth customers.
+Users with excess computational power and bandwidth may choose to support the \Mesh{} project, as well as earn money, by running an econ on their computer. To do so, they install and run the \Mesh{} software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into a medallion. Econs are compensated for their lost computation by bandwidth customers.
 
 \subsubsection{Resisting Oppressive Governments}
 
-Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the Gradient software, provide an initial payment to their Gradient wallet, and browse the web as normal. Unlike similar services[Section \ref{sec:existing-approaches}], the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity[Section \ref{sec:agora}].
+Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the \Mesh{} software, provide an initial payment to their \Mesh{} wallet, and browse the web as normal. Unlike similar services[Section \ref{sec:existing-approaches}], the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity[Section \ref{sec:agora}].
 
 \subsubsection{Resisting Oppressive Web Applications}
 
-Users who have subscribed to oppressive web applications (sites who change the services offered to their subscribers based on geographic location), can use the system to appear to be browsing from the country of their choice. Unlike similar services[Section \ref{sec:existing-approaches}], traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the Gradient Network, i.e. making the real-time playback of high resolution video viable.
+Users who have subscribed to oppressive web applications (sites who change the services offered to their subscribers based on geographic location), can use the system to appear to be browsing from the country of their choice. Unlike similar services[Section \ref{sec:existing-approaches}], traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the \Mesh{} Network, i.e. making the real-time playback of high resolution video viable.
 
 \section{Attacks}
 \label{sec:attacks}
@@ -161,16 +164,16 @@ Note that token rewards are very interesting, since we could set aside a fixed a
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the Gradient Protocol must defend against are those which reveal information about its users. Because Gradient is implemented as an overlay on the existing internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by Gradient’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
+The largest class of attacks against which the \Mesh{} Protocol must defend against are those which reveal information about its users. Because \Mesh{} is implemented as an overlay on the existing internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Mesh{}’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
 \begin{itemize}
     \item Real-World Identity Information. A user’s given name, SSN, address, etc.
     \item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
-    \item *IP Information. The IP address from which a user is accessing the Gradient Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+    \item *IP Information. The IP address from which a user is accessing the \Mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
     \item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item *Gradient Network Information. The keys associated with a node’s cur- rent business on the Gradient network (*public or private).
+    \item *\Mesh{} Network Information. The keys associated with a node’s cur- rent business on the \Mesh{} network (*public or private).
 \end{itemize}
 
 Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
@@ -180,29 +183,29 @@ Types of Behavioral information which are assumed to be of interest to an attack
     \item *Relay Identification. The attacker learns the IP address of a relay.
     \item *Proxy Identification. The attacker learns the IP address of a proxy.
     \item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
-    \item *Website Access. The attacker learns that an outbound connection was made from the Gradient network to a specific website.
-    \item *Webserver Access. The attacker learns that an outbound connection was made from the Gradient network to a specific webserver (which may host multiple websites).
-    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a Gradient user.
+    \item *Website Access. The attacker learns that an outbound connection was made from the \Mesh{} network to a specific website.
+    \item *Webserver Access. The attacker learns that an outbound connection was made from the \Mesh{} network to a specific webserver (which may host multiple websites).
+    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \Mesh{} user.
     \item *Purchase Linking. The attacker learns that two transactions share a common payer.
     \item *Purchase Quantity. The attacker learns the amount of bandwidth sent over a Manifold.
     \item *Purchase Timing. The attacker learns the temporal spacing of bandwidth over a Manifold.
 \end{itemize}
 
-Although all of the above behavioral information is shared with other nodes on the Gradient Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
+Although all of the above behavioral information is shared with other nodes on the \Mesh{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
 
 \subsection{QoS Attacks}
 \label{qos}
 
-Some adversaries may be satisfied simply slowing down the system performance of Gradient network users generally, thereby potentially deminishing usage.
+Some adversaries may be satisfied simply slowing down the system performance of \Mesh{} network users generally, thereby potentially deminishing usage.
 
 \subsection{Economic Attacks}
 \label{econ-attacks}
 
-Unlike similar systems, Gradient must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
+Unlike similar systems, \Mesh{} must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
 
 \begin{enumerate}
     \item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
-    \item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the Gradient Network with purchases, thereby taking them offline.
+    \item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \Mesh{} Network with purchases, thereby taking them offline.
 \end{enumerate}
 
 \subsection{Man-in-the-Middle Attacks}
@@ -249,7 +252,7 @@ Attacks centered around taking a specific resource offline are termed Denial of 
 
 \subsection{Hacking}
 
-Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iterative, allowing an attacker to eventually backtrace a connection. Such attacks are out of scope for the Gradient system, but do have important security implications. If the Gradient Network's security achieves its goals, this will be the main attack against the system.
+Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iterative, allowing an attacker to eventually backtrace a connection. Such attacks are out of scope for the \Mesh{} system, but do have important security implications. If the \Mesh{} Network's security achieves its goals, this will be the main attack against the system.
 
 \section{Existing Approaches}
 \label{sec:existing-approaches}
@@ -258,7 +261,7 @@ Particularly motivated attackers might directly compromise nodes on the network,
 
 One approach to anonymous internet access is to ignore connection level security concerns and perform the actions of interest from a suitably anonymous location. Examples of this include the digital equivalent of so-called “dead drops” – for example users might edit the Wikipedia entry for African Elephants with information on a specific group. This approach works, but requires a significant amount of coordination to accomplish. One might be tempted to ask: what system might be used to perform that coordination?
 
-For this reason we will avoid analyzing such systems in this paper. However, any users of Gradient with serious security needs – especially those users who suspect they are already under active surveillance – are encouraged to carefully select which network will carry their traffic. Traffic shaping, etc can only take you so far.
+For this reason we will avoid analyzing such systems in this paper. However, any users of \Mesh{} with serious security needs – especially those users who suspect they are already under active surveillance – are encouraged to carefully select which network will carry their traffic. Traffic shaping, etc can only take you so far.
 
 \subsection{Virtual Private Networking (VPN) Services}
 
@@ -282,10 +285,10 @@ I2P is billed as a “next generation” onion router.
 
 These are cool!
 
-\section{Gradient’s Building Blocks}
+\section{\Mesh{}’s Building Blocks}
 \label{sec:building-blocks}
 
-Gradient’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the properties specifically used in Gradient Network, we briefly summarize them here.
+\Mesh{}’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the properties specifically used in \Mesh{} Network, we briefly summarize them here.
 
 \subsection{WebRTC}
 
@@ -314,7 +317,7 @@ Medallions form the bridge between our core security assumptions and the network
 \section{Tickets}
 \label{sec:tickets}
 
-Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the Gradient Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
+Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \Mesh{} Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
 
 \subsection{How Much Will A Packet Cost?}
 
@@ -322,7 +325,7 @@ For the purposes of this discussion, let us assume that a packet is 1e3 bytes in
 
 \subsection{Ethereum Transaction Costs}
 
-Because the Gradient System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
+Because the \Mesh{} System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
 
 \subsection{Building Micropayments from Macropayments}
 
@@ -330,7 +333,7 @@ With transaction costs now discussed, and looming large, let us now look at what
 
 One potentially interesting approach, which was employed in MojoNation[], is to have a "balance of trade" between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to simply disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
-To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the Gradient Network.
+To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Mesh{} Network.
 
 \subsection{Implementation Constraints}
 
@@ -361,7 +364,7 @@ Ticket production:
 
 To prevent double-spending two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to overspend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate" of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to Gradient. They were first explored in [], with an extremely detailed and helpful expansion described in[]. As described in [], they can also be extended to support anonymous payments, which is a feature we are excited to implement in future versions.
+Lottery ticket type payments are not novel to \Mesh{}. They were first explored in [], with an extremely detailed and helpful expansion described in[]. As described in [], they can also be extended to support anonymous payments, which is a feature we are excited to implement in future versions.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
@@ -398,7 +401,7 @@ Note that communication in this system is defined only in a single direction. Bi
 
 \subsubsection{Informational Attacks}
 
-Due to the inherent structure of IP-based networking, and the Gradient protocol, relay nodes gain access to the following information:
+Due to the inherent structure of IP-based networking, and the \Mesh{} protocol, relay nodes gain access to the following information:
 
 \begin{itemize}
     \item The IP Addresses of both up and down. This is required knowledge to perform the IP communication.
@@ -533,7 +536,7 @@ One might be inclined to believe that density estimation is enough, however a cl
 
 To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse.
 
-To recap: if density estimation is chosen as the metric, the attacker will cherry pick dense nodes. If traversal distance is chosen, the attacker will create poorly connected Agoras. The solution here is to observe that poorly wired up Agoras will perform \emph{worse} on the density metric. The attacker can't have it both ways. Therefore the solution used in the Gradient System is pick a random address, traverse to it saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
+To recap: if density estimation is chosen as the metric, the attacker will cherry pick dense nodes. If traversal distance is chosen, the attacker will create poorly connected Agoras. The solution here is to observe that poorly wired up Agoras will perform \emph{worse} on the density metric. The attacker can't have it both ways. Therefore the solution used in the \Mesh{} System is pick a random address, traverse to it saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
 
 \subsection{Whitelists and Capability Lists}
 
@@ -588,7 +591,7 @@ Imagine that a user wishes to browse Wikipedia while inside a country
   \caption{}
 \end{figure}
 
-Rendezvous Nodes are relay nodes who connect two Gradient users.
+Rendezvous Nodes are relay nodes who connect two \Mesh{} users.
 
 [references]
 
