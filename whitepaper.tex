@@ -27,29 +27,26 @@ sorting=ynt
 
 \raggedbottom
 
-
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-    As methods for discovering private user information from browsing data have improved, interest in anonymization methods has increased. Unfortunately, existing anonymity systems such as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays paying them.
+  As methods for discovering private user information from browsing data have improved, interest in anonymization methods has increased. Unfortunately, existing anonymity systems such as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays paying them.
 
-    Original contributions include an Etheruum-based implementation of stochastic micropayments suited for the sale of bandwidth, a Kademlia-inspired connection scheme for deterministic routing and auditing of seller behavior in a fully distributed bandwidth market, and preliminary application of payment mechanisms to hinder Sybil, Eclipse, DoS, and Inference Attacks.
-    
-    
+  Original contributions include an Etheruum-based implementation of stochastic micropayments suited for the sale of bandwidth, a Kademlia-inspired connection scheme for deterministic routing and auditing of seller behavior in a fully distributed bandwidth market, and preliminary application of payment mechanisms to hinder Sybil, Eclipse, DoS, and Inference Attacks.
 \end{abstract}
+
 
 \tableofcontents
 \newpage
-
-
 
 
 \section{High-Level Overview}
 \subsection{System Goals}
 
 The Gradient Network was designed with two goals in mind:
+
 \begin{enumerate}
     \item To codify the right to unrestricted, private internet access on a networking level.
     \item To build a system suited for daily use. To say that a freedom is not a part of daily life is to say that the freedom is dying.
@@ -120,7 +117,6 @@ Proof-of-idle rests on the additional assumption that periodic, synchronized pro
 \end{figure}
 
 The Agora’s purpose is to serve as a market place for the buyers and sellers of anonymous bandwidth. Although it is tempting to believe such a market should take the form of a classic order book (a list of currently unfilled bids and asks at different prices), a very important property of bandwidth to be used for anonymity purposes is that purchase decisions are made in a way that places severe limits on what influence can be exerted by an attacker. For this reason, rather than provide an order book, the Agora provides a way to traverse the space of currently valid medallions. Once a location in medallion-space has been selected, a miniature pseudo-auction is held. For example, if the econ at position 2 in the figure wished to buy bandwidth, it would select the median of 1’s, 3’s, 5’s and 6’s price, rounded down. For users not seeking anonymity, the lowest price may be selected instead.
-
 
 \subsubsection{Manifolds}
 
@@ -377,8 +373,6 @@ Though it is not used in the system, it is interesting to note that a similar so
   \caption{}
 \end{figure}
 
-
-
 \subsection{Relay Nodes}
 
 Relay nodes implement a relatively simple behavior pattern:
@@ -531,7 +525,7 @@ One might be inclined to believe that density estimation is enough, however a cl
 
 To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse.
 
-To recap: if density estimation is chosen as the metric, the attacker will cherry pick dense nodes. If traversal distance is chosen, the attacker will create poorly connected Agoras. The solution here is to observe that poorly wired up Agoras will perform \emph{worse} on the density metric. The attacker can't have it both ways. Therefore the solution used in the Gradient System is pick a random address, traverse to it nothing the routing tables, and then perform a density estimate using the routing table from all but the first two hops.
+To recap: if density estimation is chosen as the metric, the attacker will cherry pick dense nodes. If traversal distance is chosen, the attacker will create poorly connected Agoras. The solution here is to observe that poorly wired up Agoras will perform \emph{worse} on the density metric. The attacker can't have it both ways. Therefore the solution used in the Gradient System is pick a random address, traverse to it saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
 
 \subsection{Whitelists and Capability Lists}
 
@@ -558,7 +552,7 @@ Imagine that a user wishes to browse Wikipedia while inside a country
 \subsection{“Great Firewalls”}
 
 \begin{enumerate}
-    \item Bootstrapping scheme (tues or wednesday) [ref bonet] 
+    \item Bootstrapping scheme (tues or wednesday) [ref bonet]
     \item WebRTC protocol-level hiding
     \item Traffic injection techniques [ref bonet]
     \item Cycle amazon IPs / ban all of amazon
