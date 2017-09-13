@@ -10,3 +10,4 @@ tramp
 *.bcf
 *.log
 *.toc
+*.run.xml
