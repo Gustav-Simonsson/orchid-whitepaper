@@ -6,3 +6,7 @@
 auto-save-list
 tramp
 .\#*
+*.aux
+*.bcf
+*.log
+*.toc
