@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage[]{algorithm2e}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \graphicspath{ {images/} }
@@ -12,22 +13,20 @@
 \usepackage{csquotes}
 \usepackage{mfirstuc}
 \usepackage[
-backend=biber,
-style=numeric,
-sorting=ynt
+  backend=biber,
+  style=authoryear-icomp,
+  url=true
 ]{biblatex}
+\addbibresource{whitepaper.bib}
 
 \newcommand{\mesh}{Pexia}
 \newcommand{\Pexia}{\mesh}
 
-\addbibresource{meshbib.bib}
-
 \usepackage{titlesec}
 \titlelabel{\thetitle.\quad}
 
-\title{Agora: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
+\title{\mesh{}: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
 \author{{David L. Salamon with} \\ {Brian J. Fox, Jay Freeman, Gustav Simonsson,} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
-
 \date{September 19, 2017}
 
 \raggedbottom
@@ -102,14 +101,6 @@ The security of the \Mesh{} system as a whole ultimately rests on basic assumpti
 Without these assumptions (or a similar ones for a different resource), it would be impossible for a fully anonymous and distributed system to function. No distributed quorum could be trusted, because the majority of users might vote in such a way as to facilitate attacks. Users would be left relying on web-of-trust approaches, which are by their very nature non-anonymous.
 
 We use assumptions 1 and 2, combined with a method for rapidly demonstrating significant computational work has been done to construct the basis for trust on our system: medallions. Production of a medallion ties ownership of computation to a public key. They are presented as needed to prove that a given node is “real.”
-
-Readers who are familiar with other distributed market based networks will recognize these assumptions as forming the basis for proof-of-work systems (bitcoin, etc), and may be inclined to ask: why not use proof-of-stake, proof-of-idle, or other less energetically wasteful methods for proving “realness”?
-
-Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. As our attack model includes oppressive governments, this can not be counted on. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a "hostile takeover" much more difficult. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
-
-Proof-of-space is another interesting approach. Users in proof-of-space systems demonstrate their "realness" by saving data to their disk, and periodically required to answer queries about this data to demonstrate continued possession. The issue with its application to \Mesh{} are two-fold: (1) the proof of work variant we use can be thought of as "proof of key" -- ie it verifies that a given key is in possession of computational power. It is not obvious how to apply proof-of-space to this use case, and (2) most home users do not have plentiful disk space, while most data centers do. This means that by selecting proof-of-space, we would be ensuring that datacenter based nodes would be over-represented, due to decreased Econ hosting by home users.
-
-Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Econs), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of econs for this attack to cease being devastating, we are not using proof-of-idle for this release.
 
 \subsection{High-Level System Overview}
 
@@ -196,7 +187,7 @@ Although all of the above behavioral information is shared with other nodes on t
 \subsection{QoS Attacks}
 \label{qos}
 
-Some adversaries may be satisfied simply slowing down the system performance of \Mesh{} network users generally, thereby potentially deminishing usage.
+Some adversaries may be satisfied simply slowing down the system performance of \Mesh{} network users generally, thereby potentially diminishing usage.
 
 \subsection{Economic Attacks}
 \label{econ-attacks}
@@ -219,7 +210,7 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 
 \begin{itemize}
     \item Submitting multiple reviews to Yelp, Amazon, etc.
-    \item Achieving faster downloads on BitTorrent by pretending to be multiple leachers[?].
+    \item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\cite{freeridingBittorrent}].
 \end{itemize}
 
 \subsection{Eclipse Attacks}
@@ -227,8 +218,8 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 In an Eclipse Attack the Attackers goal is to hide part of a P2P network from itself. The methods employed are generally the network equivalent of privilege escalation attacks: gain control of network positions which have more control of the network, then use that control to acquire more control.
 
 \begin{itemize}
-    \item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[?].
-    \item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[?].
+    \item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\cite{bitcoinEclipse}].
+    \item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\cite{bittorrentSybilAttacks}].
 \end{itemize}
 
 \subsection{Inference Attacks}
@@ -236,9 +227,9 @@ In an Eclipse Attack the Attackers goal is to hide part of a P2P network from it
 Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
 
 \begin{itemize}
-    \item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[?].
-    \item Deanonymizing Tor traffic from global traffic logs[?].
-    \item Learning the private key of an OpenSSL server through timing analysis[?].
+    \item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
+    \item Deanonymizing Tor traffic from global traffic logs[\cite{mixTrafficAnalysis}].
+    \item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
 \end{itemize}
 
 \subsection{Denial of Service Attacks}
@@ -246,8 +237,8 @@ Deanonymization which stems from a statistical modeling of system behavior are t
 Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. Because system behavior during “unexpected” circumstances is often poorly specified and tested, perhaps surprisingly, DoS attacks are quite useful for deanonymizing nodes in P2P networks. Notable examples:
 
 \begin{itemize}
-    \item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[?].
-    \item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[?].
+    \item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\cite{DOSvsSec}].
+    \item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\cite{I2P-vigna}].
 \end{itemize}
 
 \subsection{Hacking}
@@ -265,15 +256,13 @@ For this reason we will avoid analyzing such systems in this paper. However, any
 
 \subsection{Virtual Private Networking (VPN) Services}
 
-VPNs create encrypted connections between an end user and the VPN server. If you are worried about SSL Stripping[1], or are wanting to hide the country of origin for your web requests, this can be an effective method. Unfortunately, VPN services are a very poor approach for those users seeking anonymity – the VPN provider has complete payment information for the subscriber in question. If you expect that an adversary might be capable of wiretaping a VPN, or otherwise force VPN cooperation, VPN providers are therefore a poor choice.
+VPNs create encrypted connections between an end user and the VPN server.
+
+Unfortunately, VPN services are a very poor approach for those users seeking anonymity – the VPN provider has complete payment information for the subscriber in question. If you expect that an adversary might be capable of wiretaping a VPN, or otherwise force VPN cooperation, VPN providers are therefore a poor choice.
 
 \subsection{Tor}
 
-Tor is a free software project famous for introducing the idea of Onion Routing. Onion Routing is a scheme wherein messages from A are passed to B, messages from B are passed to C, messages from C are passed to D, and so on. To prevent eavesdropping encryption is used as follows:
-$$M_d = encrypt(M_{plain}, K_d)$$
-$$M_c = encrypt(M_d, K_c)$$
-$$M_b = encrypt(M_c, K_b)$$
-Where Mx is the message passed to peer X, and Ky is peer y’s public key.
+Tor is a free software project famous for introducing the idea of Onion Routing.
 
 \subsection{Tor with Incentives}
 
@@ -307,12 +296,35 @@ NACL is a cryptography library release by DJB. It’s good!
 
 \subsection{Ethereum}
 
-Ethereum is a blockchain based cryptocurrency. Unlike previous efforts (Bitcoin, etc), Ethereum has smart contracts. Also we use the current Ethereum Block as a clock all over the place.
+Ethereum is a blockchain based cryptocurrency. Unlike previous efforts (Bitcoin, etc), Ethereum has smart contracts. Ethereum Block as a clock all over the place.
 
 \section{Medallions}
 \label{medallions}
 
 Medallions form the bridge between our core security assumptions and the network as a whole. To produce a medallion, a peer takes a public key $K$, and the previous Ethereum block hash $E$, then performs a large number of computations to locate a salt $S$ such that $H(K, E, S) \geq N$, where $N$ is some difficulty scaling factor. When a new Ethereum block is added to the chain, a new $S$ must be calculated to keep the Medallion current.
+
+\begin{algorithm}[H]
+  \KwData{A public key K}
+  \KwData{The most recent Ethereum block hash E}
+  \KwData{Difficulty scaling factor N}
+  \KwResult{A Medallion $M$}
+  let $M$ = rand()\;
+  \While{H(M, E, K) $<$ N}{
+    $M$ = rand()\;
+  }
+  \caption{Creation of Medallions}
+\end{algorithm}
+
+\subsection{Proof selection}
+
+Readers who are familiar with other distributed market based networks will recognize these assumptions as forming the basis for proof-of-work systems (bitcoin, etc), and may be inclined to ask: why not use proof-of-stake, proof-of-idle, or other less energetically wasteful methods for proving “realness”?
+
+Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. As our attack model includes oppressive governments, this can not be counted on. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a ``hostile takeover'' much more difficult. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
+
+[TODO: proof-of-space. It looks like we could do this if we'd prefer that.]
+
+Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Econs), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of econs for this attack to cease being devastating, we are not using proof-of-idle for this release.
+
 
 \section{Tickets}
 \label{sec:tickets}
@@ -331,7 +343,7 @@ Because the \Mesh{} System uses Ethereum as its payment processor, we might also
 
 With transaction costs now discussed, and looming large, let us now look at what methods exist for controlling them.
 
-One potentially interesting approach, which was employed in MojoNation[], is to have a "balance of trade" between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to simply disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
+One potentially interesting approach, which was employed in MojoNation[\cite{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to simply disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
 To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Mesh{} Network.
 
@@ -345,7 +357,7 @@ Now that we have located a suitable abstraction for our payments, the question b
     \item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
 \end{itemize}
 
-Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can send 1e6 packets per second when connected to high speed Internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely "the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect mid-sale". As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
+Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can send 1e6 packets per second when connected to high speed Internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect mid-sale''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
 
 [Better version solicited]. We now describe a design which meets the remaining two requirements. Setup phase:
 
@@ -362,18 +374,33 @@ Ticket production:
     \item To redeem winners, Bob sends $(N, t, s)$ to the Ethereum smart contract managing Alice's lottery tickets along with a payment address.
 \end{enumerate}
 
-To prevent double-spending two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to overspend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate" of Alice's smart contract balance.
+To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to \Mesh{}. They were first explored in [], with an extremely detailed and helpful expansion described in[]. As described in [], they can also be extended to support anonymous payments, which is a feature we are excited to implement in future versions.
+Lottery ticket type payments are not novel to \Mesh{}. They were first explored in ref. \cite{txnbets}, with an extremely detailed and helpful expansion described in ref. \cite{DAM}, including an exploration of anonymous tickets.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
 
-As mentioned above, the realities of symmetric encryption performance prevent us from from sending payment with every packet, and so we need a good understanding of the risks inherent in employing a "balance of trade" approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
+As mentioned above, the realities of symmetric encryption performance prevent us from sending payment with every packet, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
 
-Naively, no. If Alice pre-pays then Bob has no incentive to deliver work, if Bob pre-works then Alice has no incentive to deliver payment. However, in the event that some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$) exists, a delightful property emerges, namely: paying the setup cost becomes economically irrational unless the total amount of work Alice desired Bob to perform is $\geq xy$. As we will see in our discussion of the Agora [Section \ref{sec:agora}], such a setup cost does exist suited to support trade imbalances on the order of 1e3 packets.
+If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq y$ or (2) the total amount of work that Bob can perform is $\leq x$. As we will see in our discussion of the Agora [Section \ref{sec:agora}], setup costs exist on the \Mesh{} Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers uniquely know how much work they will require, the \Mesh{} Network has customers pre-pay.
 
-Though it is not used in the system, it is interesting to note that a similar solution exists in situations where there are no setup costs. Alice and Bob simply manufacture a setup cost by burning money.
+\subsection{Variance Management}
+
+One of the drawbacks of stochastic payments is that some users will
+get unlucky. Customers using \Mesh{} as a VPN alternative may be
+pleasantly surprised if their bill is randomly cheaper than expected,
+but a random overrun may cause them to stop using the network.
+
+The probability a mine will be exhausted after some time is:
+$\binom{n}{k-1} p^{k} (1-p)^{n-k}$, where $n$ is the number of tickets
+issued, k is the number of tickets required to exhaust the source, and
+p are the odds given to Econs. If users initially deposits \$20, and a
+\$2 face value is commonly used to mitigate transaction costs, this
+means that $k$ is fixed at 10.
+
+
+
 
 \section{Bandwidth Mining}
 \label{sec:mining}
@@ -485,7 +512,7 @@ The medallion requirement is ensured two ways: (1) if a non-medallion bearing no
   \caption{A fully-connected Kademlian graph on a 4-bit address space}
 \end{figure}
 
-The foundation of efficient queries on the Agora is a method of connecting Econs into a distributed graph. For our connection algorithm, a variation on Kademlia's[] approach was chosen both because of its impressive $O(log_2(n))$ look-up performance, but also for the natural eclipse resistance that can come from its use of randomized connections.
+The foundation of efficient queries on the Agora is a method of connecting Econs into a distributed graph. For our connection algorithm, a variation on Kademlia's[\cite{kademlia}] approach was chosen both because of its impressive $O(log_2(n))$ look-up performance, but also for the natural eclipse resistance that can come from its use of randomized connections.
 
 In the approach we call Kademlian routing, each node generates a random address, $A$, and then forms connections to the nodes with addresses closest to $xor(A, 1)$, $xor(A, 2)$, $xor(A, 4)$ ... $xor(A, 2^{256})$. The number of WebRTC connections a peer must maintain is therefore $\leq$ 256.
 
@@ -523,14 +550,14 @@ Long lived Kademlian networks suffer from Eclipse attacks. In these attacks, an 
 
 \subsection{Identifying \emph{the} Agora}
 
-The above discussion discussion of security is ultimately meaningless if there is no way to locate "the right Agora" on a fresh machine. Any distribution method which exists for \emph{Entry Econs} will be subject to such attacks. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions [TODO: cross-ref].
+The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} will be subject to such attacks. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions [TODO: cross-ref].
 
 \begin{itemize}
     \item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
     \item Traversal Distance. The Agora provides address look ups in $O(log_2(N))$ hops. We can use this in reverse to estimate network density.
 \end{itemize}
 
-One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size (say $s$\% the size of the real Agora), will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the entry econs from the "real Agora" will have a density which is a random sample from the network. To model the effectiveness of this attack, observe that distance from a point can be modeled as a Poisson process with $\lambda = \frac{C}{C+M}$.
+One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size (say $s$\% the size of the real Agora), will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the entry econs from the ``real Agora'' will have a density which is a random sample from the network. To model the effectiveness of this attack, observe that distance from a point can be modeled as a Poisson process with $\lambda = \frac{C}{C+M}$.
 
 [Pausing this section for return with a fresher brain. We can just simulate the answer. Goal is to ask, given the above possion, what the expected luckiest outcome is relative to s\%]
 
@@ -540,7 +567,7 @@ To recap: if density estimation is chosen as the metric, the attacker will cherr
 
 \subsection{Whitelists and Capability Lists}
 
-Some users wishing to offer Proxy services may not be comfortable offering "open access". For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the Internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy.
+Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy.
 
 \section{Attack Analysis and Attacker User Stories}
 \label{sec:attack-stories}
@@ -593,6 +620,7 @@ Imagine that a user wishes to browse Wikipedia while inside a country
 
 Rendezvous Nodes are relay nodes who connect two \Mesh{} users.
 
-[references]
+\nocite{*}
+\printbibliography
 
 \end{document}

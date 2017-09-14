@@ -14,3 +14,4 @@ pdflatex ${document}
 pdflatex ${document}
 rm -f *.aux  *.blg  *.dvi  *.log *.lot *.lof *.toc *.gz *.bbl
 # evince ${document}.pdf
+# open ${document}.pdf
