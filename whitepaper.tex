@@ -292,7 +292,7 @@ These are cool!
 
 \subsection{WebRTC}
 
-WebRTC \cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, using STUN, ICE, TURN, RTP-over-TCP and support for proxies. By using it as the basis for our networking protocol, we both get a world-class implementation of these technologies, and (to a lesser extent) are able to better mask our user's traffic as that of a web application.
+WebRTC \cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, we both get a world-class implementation of these technologies, and (to a lesser extent) are able to better mask our user's traffic as that of a web application.
 
 \subsection{NACL}
 
@@ -300,7 +300,7 @@ NaCL \cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focuse
 
 \subsection{Ethereum}
 
-Ethereum \cite{29} is a decentralized blockchain platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts are specifically useful for \mesh{}. Use of smart contracts has allowed us to, with relative ease, create our own cryptocurrency, and build \empth{Tickets} for micropayments.
+Ethereum \cite{29} is a decentralized blockchain platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \mesh{}, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
 
 \section{Medallions}
 \label{medallions}
