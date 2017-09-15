@@ -19,8 +19,8 @@
 ]{biblatex}
 \addbibresource{whitepaper.bib}
 
-\newcommand{\mesh}{Agora}
-\newcommand{\Mesh}{\mesh}
+\newcommand{\mesh}{Pexia}
+\newcommand{\Pexia}{\mesh}
 
 \usepackage{titlesec}
 \titlelabel{\thetitle.\quad}
@@ -52,7 +52,7 @@
 The \mesh{} Network was designed with two goals in mind:
 
 \begin{enumerate}
-    \item To codify the right to unrestricted, private internet access on a networking level.
+    \item To codify the right to unrestricted, unsurveilled Internet access on a networking level.
     \item To build a system suited for daily use. To say that a freedom is not a part of daily life is to say that the freedom is dying.
 \end{enumerate}
 
@@ -60,9 +60,9 @@ These are ambitious goals, and are not realized by the system described in this 
 
 \subsection{Document Structure}
 
-This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses lessons which can be learned from the previous deployment of similar systems (Section \ref{sec:existing-approaches}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
+This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses the lessons that can be learned from the previous deployment of similar systems (Section \ref{sec:existing-approaches}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
 
-Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:building-blocks}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Agora network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
+Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:building-blocks}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously Internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Agora network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
 
 We close out with a discussion of what an attackers experience of the system might be (Section \ref{sec:attack-stories}), both as a means of discussing the security of the system when viewed as a whole, and as a thought experiments for those wishing to assist us in improving system security. Next we discuss non-security features we hope to add in future releases (Section \ref{sec:future}). Readers interested in assisting with the project are encouraged to read these sections carefully.
 
@@ -155,7 +155,7 @@ Note that token rewards are very interesting, since we could set aside a fixed a
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the \Mesh{} Protocol must defend against are those which reveal information about its users. Because \Mesh{} is implemented as an overlay on the existing internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Mesh{}’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
+The largest class of attacks against which the \Mesh{} Protocol must defend against are those which reveal information about its users. Because \Mesh{} is implemented as an overlay on the existing Internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Mesh{}’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
@@ -250,7 +250,7 @@ Particularly motivated attackers might directly compromise nodes on the network,
 
 \subsection{Unprotected Internet Access}
 
-One approach to anonymous internet access is to ignore connection level security concerns and perform the actions of interest from a suitably anonymous location. Examples of this include the digital equivalent of so-called “dead drops” – for example users might edit the Wikipedia entry for African Elephants with information on a specific group. This approach works, but requires a significant amount of coordination to accomplish. One might be tempted to ask: what system might be used to perform that coordination?
+One approach to anonymous Internet access is to ignore connection level security concerns and perform the actions of interest from a suitably anonymous location. Examples of this include the digital equivalent of so-called “dead drops” – for example users might edit the Wikipedia entry for African Elephants with information on a specific group. This approach works, but requires a significant amount of coordination to accomplish. One might be tempted to ask: what system might be used to perform that coordination?
 
 For this reason we will avoid analyzing such systems in this paper. However, any users of \Mesh{} with serious security needs – especially those users who suspect they are already under active surveillance – are encouraged to carefully select which network will carry their traffic. Traffic shaping, etc can only take you so far.
 
@@ -357,7 +357,7 @@ Now that we have located a suitable abstraction for our payments, the question b
     \item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
 \end{itemize}
 
-Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can send 1e6 packets per second when connected to high speed internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect mid-sale''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
+Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can send 1e6 packets per second when connected to high speed Internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect mid-sale''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
 
 [Better version solicited]. We now describe a design which meets the remaining two requirements. Setup phase:
 
@@ -445,7 +445,7 @@ Because relay nodes implement such a simple function, they are relatively dispos
 
 \subsection{Proxies}
 
-Proxies are relay nodes who are willing to proxy requests to the open internet. For this, they may at their option charge an increased fee.
+Proxies are relay nodes who are willing to proxy requests to the open Internet. For this, they may at their option charge an increased fee.
 
 \subsection{SSL and TLS Vulnerabilities}
 
