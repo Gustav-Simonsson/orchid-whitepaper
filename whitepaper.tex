@@ -498,6 +498,10 @@ Typical usage of the Agora for bandwidth purchase is as follows:
 
 The total number of packet sends required to implement the above algorithm is $O(log_2(N)^2)$ where N is the network size.
 
+\subsection{Proxy Whitelists}
+
+Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy, and specify their whitelists in their responses to \emph{Get Offers}.
+
 \subsection{Medallion Requirements}
 
 The foundation of security on the Agora relies upon requiring that every econ who participates in it holds a current medallion. To ensure that presence on the network will be proportional to computational power, if a single node is more than twice as powerful as our minimum requirements, that node may run more than one econ on the network.
@@ -550,24 +554,14 @@ Long lived Kademlian networks suffer from Eclipse attacks. In these attacks, an 
 
 \subsection{Identifying \emph{the} Agora}
 
-The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} will be subject to such attacks. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions [TODO: cross-ref].
+The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} will be subject to such attacks. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions (Section \ref{core-security}).
 
 \begin{itemize}
     \item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
     \item Traversal Distance. The Agora provides address look ups in $O(log_2(N))$ hops. We can use this in reverse to estimate network density.
 \end{itemize}
 
-One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size (say $s$\% the size of the real Agora), will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the entry econs from the ``real Agora'' will have a density which is a random sample from the network. To model the effectiveness of this attack, observe that distance from a point can be modeled as a Poisson process with $\lambda = \frac{C}{C+M}$.
-
-[Pausing this section for return with a fresher brain. We can just simulate the answer. Goal is to ask, given the above possion, what the expected luckiest outcome is relative to s\%]
-
-To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse.
-
-To recap: if density estimation is chosen as the metric, the attacker will cherry pick dense nodes. If traversal distance is chosen, the attacker will create poorly connected Agoras. The solution here is to observe that poorly wired up Agoras will perform \emph{worse} on the density metric. The attacker can't have it both ways. Therefore the solution used in the \Mesh{} System is pick a random address, traverse to it saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
-
-\subsection{Whitelists and Capability Lists}
-
-Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy.
+One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \Mesh{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
 
 \section{Attack Analysis and Attacker User Stories}
 \label{sec:attack-stories}
@@ -576,7 +570,11 @@ Some users wishing to offer Proxy services may not be comfortable offering ``ope
 
 \subsection{Restrictive Internet Providers}
 
+Imagine we would like to run an Internet Service Provider.
+
 \subsection{Oppressive Governments}
+
+\subsubsection{}
 
 \subsection{Oppressive Companies}
 
