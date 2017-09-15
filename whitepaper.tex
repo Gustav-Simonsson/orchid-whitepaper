@@ -473,7 +473,7 @@ Definition of attacks:
 
 \subsubsection{Zero Relays, Zero Proxies: Direct Connection}
 
-Although the \Pexia{} system is not used when a Customer connects directly to a website, we feel it is important to review what informational risk are present in this setup.
+Although the \Mesh{} system is not used when a Customer connects directly to a website, we feel it is important to review what informational risk are present in this setup.
 
 \begin{center}
 \begin{tabular}{l | l | l | l | l | l}
@@ -749,11 +749,11 @@ One might be inclined to believe that density estimation is enough, however a cl
 
 \subsection{Oppressive Web Applications}
 
-Attacker Goals: Identify all \Pexia{} Proxy IP addresses.
+Attacker Goals: Identify all \Mesh{} Proxy IP addresses.
 
 \subsection{Oppressive Corporate Networks}
 
-Attacker Goals: Prevent usage of the \Pexia{} network.
+Attacker Goals: Prevent usage of the \Mesh{} network.
 
 Resources: The attacker controls the network, and so can engage in traffic shaping and connection dropping.
 
@@ -765,7 +765,7 @@ Resources: An attacker has view of some amount of passive network surveillance, 
 
 \subsection{Great Firewalls}
 
-Attacker Goals: Prevent usage of the \Pexia{} network.
+Attacker Goals: Prevent usage of the \Mesh{} network.
 
 Resources: The attacker controls the network, has passive surveillance of it, and is able to add nodes up to $s\%$ of the network size.
 
@@ -781,12 +781,12 @@ Resources: On the order of ten thousand dollars of networking and computation ab
 \section{Future Work}
 \label{sec:future}
 
-The items in this section fall into two categories: nice-to-haves, and features we are internally conflicted about releasing to the public. We believe this is conflictedness is universal -- although almost everyone has favorite examples of power being used for oppression, there are also countless examples of power being used for good. Protocols like \Pexia{} have no judgement of their own, and so cannot tell if they are routing traffic for a freedom fighter or a terrorist, villain or hero.
+The items in this section fall into two categories: nice-to-haves, and features we are internally conflicted about releasing to the public. We believe this is conflictedness is universal -- although almost everyone has favorite examples of power being used for oppression, there are also countless examples of power being used for good. Protocols like \Mesh{} have no judgement of their own, and so cannot tell if they are routing traffic for a freedom fighter or a terrorist, villain or hero.
 
 \subsection{Content Storage}
 \label{subsec:ccn}
 
-The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, \Pexia{} may be as good as possible. However, if we
+The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, \Mesh{} may be as good as possible. However, if we
 
 \subsection{Saturated Links}
 \label{subsec:saturated-links}
@@ -796,7 +796,7 @@ TODO: this would have to be the standard global protocol to work. Idea is have e
 \subsection{Protecting Content Hosts}
 \label{subsec:protocol-extentions}
 
-Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Pexia{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
+Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Mesh{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
 
 \begin{figure}[htbp]
   \centering
