@@ -41,8 +41,11 @@
   Original contributions include an Etheruum-based implementation of stochastic micropayments suited for the sale of bandwidth, a Kademlia-inspired connection scheme for deterministic routing and auditing of seller behavior in a fully distributed bandwidth market, and preliminary application of payment mechanisms to hinder Sybil, Eclipse, DoS, and Inference Attacks.
 \end{abstract}
 
+
+\newpage
 \tableofcontents
 \newpage
+
 
 \section{High-Level Overview}
 \label{sec:overview}
@@ -60,13 +63,17 @@ These are ambitious goals, and are not realized by the system described in this 
 
 \subsection{Document Structure}
 
-This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses the lessons that can be learned from the previous deployment of similar systems (Section \ref{sec:existing-approaches}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
+This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses the lessons that can be learned from the previous deployment of similar systems (Section \ref{sec:prior-work}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
 
-Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:building-blocks}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously Internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Agora network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
+Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:external-libraries}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:tickets}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymously Internet connection (Section 8). This is to say these sections provide a “nuts and bolts” view of the Agora network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
 
 We close out with a discussion of what an attackers experience of the system might be (Section \ref{sec:attack-stories}), both as a means of discussing the security of the system when viewed as a whole, and as a thought experiments for those wishing to assist us in improving system security. Next we discuss non-security features we hope to add in future releases (Section \ref{sec:future}). Readers interested in assisting with the project are encouraged to read these sections carefully.
 
 Because the system is to be fully decentralized, fully autonomous, and fully anonymous, much of this design document is centered on attacks. Although attack analysis is important, and will take up much of our time, it is ultimately no more than a necessary conceit to the context in which the market is to operate; please do not let thoughts of security distract you unduly from an understanding the system itself. We look forward to conversing about the system with experts in economics, autonomous markets, network engineers, applications programmers, and anyone with interest in these ideas.
+
+\subsection{Acknowledgements}
+
+Professor Vigna, Professor Boneh. Add people!
 
 \subsection{Terms}
 
@@ -74,7 +81,7 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
     \item Node. A computer running a program which implements the \mesh{} Protocol.
     \item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
     \item User. The owner of a node.
-    \item Agora. A collection of nodes interacting through the \Mesh{} Distributed Marketplace Protocol.
+    \item Agora. A collection of nodes interacting through the \mesh{} Distributed Marketplace Protocol.
     \item \emph{The} Agora. The Agora in possesion of the most global computational power.
     \item Econ. A node who is a member of an Agora's collection.
     \item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
@@ -91,7 +98,7 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Core Security Assumptions}
 \label{core-security}
 
-The security of the \Mesh{} system as a whole ultimately rests on basic assumptions about the world. In the event that either assumption is ever falsified, the system will not function as intended.
+The security of the \mesh{} system as a whole ultimately rests on basic assumptions about the world. In the event that either assumption is ever falsified, the system will not function as intended.
 
 \begin{enumerate}
     \item No single Attacker will control the majority of global computation power.
@@ -126,21 +133,22 @@ Once relay and proxy bandwidth has been purchased, the customer configures them 
 
 \subsubsection{Web Browsing}
 
-The majority of initial usage of the \Mesh{} Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (perhaps because they are run by the same user), no single node knows the Customer's IP Address and the server they communicated with.
+The majority of initial usage of the \mesh{} Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (perhaps because they are run by the same user), no single node knows the Customer's IP Address and the server they communicated with.
 
 \subsection{User Stories}
 
 \subsubsection{Bandwidth Miners}
 
-Users with excess computational power and bandwidth may choose to support the \Mesh{} project, as well as earn money, by running an econ on their computer. To do so, they install and run the \Mesh{} software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into a medallion. Econs are compensated for their lost computation by bandwidth customers.
+Users with excess computational power and bandwidth may choose to support the \mesh{} project, as well as earn money, by running an econ on their computer. To do so, they install and run the \mesh{} software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into a medallion. Econs are compensated for their lost computation by bandwidth customers.
 
 \subsubsection{Resisting Oppressive Governments}
 
-Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the \Mesh{} software, provide an initial payment to their \Mesh{} wallet, and browse the web as normal. Unlike similar services[Section \ref{sec:existing-approaches}], the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity[Section \ref{sec:agora}].
+Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the \mesh{} software, provide an initial payment to their \mesh{} wallet, and browse the web as normal. Unlike similar services (Section \ref{sec:prior-work}), the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity (Section \ref{sec:agora}).
 
 \subsubsection{Resisting Oppressive Web Applications}
 
-Users who have subscribed to oppressive web applications (sites who change the services offered to their subscribers based on geographic location), can use the system to appear to be browsing from the country of their choice. Unlike similar services[Section \ref{sec:existing-approaches}], traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the \Mesh{} Network, i.e. making the real-time playback of high resolution video viable.
+Users who have subscribed to oppressive web applications (sites who change the services offered to their subscribers based on geographic location), can use the system to appear to be browsing from the country of their choice. Unlike similar services (Section \ref{sec:prior-work}), traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the \mesh{} Network, i.e. making the real-time playback of high resolution video viable.
+
 
 \section{Attacks}
 \label{sec:attacks}
@@ -155,16 +163,16 @@ Note that token rewards are very interesting, since we could set aside a fixed a
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the \Mesh{} Protocol must defend against are those which reveal information about its users. Because \Mesh{} is implemented as an overlay on the existing Internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Mesh{}’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
+The largest class of attacks against which the \mesh{} Protocol must defend against are those which reveal information about its users. Because \mesh{} is implemented as an overlay on the existing Internet, some information will be unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \mesh{}’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in sections ? and ? and our reference implementation of the network.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
 \begin{itemize}
     \item Real-World Identity Information. A user’s given name, SSN, address, etc.
     \item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
-    \item *IP Information. The IP address from which a user is accessing the \Mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+    \item *IP Information. The IP address from which a user is accessing the \mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
     \item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item *\Mesh{} Network Information. The keys associated with a node’s cur- rent business on the \Mesh{} network (*public or private).
+    \item *\mesh{} Network Information. The keys associated with a node’s cur- rent business on the \mesh{} network (*public or private).
 \end{itemize}
 
 Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
@@ -174,35 +182,35 @@ Types of Behavioral information which are assumed to be of interest to an attack
     \item *Relay Identification. The attacker learns the IP address of a relay.
     \item *Proxy Identification. The attacker learns the IP address of a proxy.
     \item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
-    \item *Website Access. The attacker learns that an outbound connection was made from the \Mesh{} network to a specific website.
-    \item *Webserver Access. The attacker learns that an outbound connection was made from the \Mesh{} network to a specific webserver (which may host multiple websites).
-    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \Mesh{} user.
+    \item *Website Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific website.
+    \item *Webserver Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific webserver (which may host multiple websites).
+    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \mesh{} user.
     \item *Purchase Linking. The attacker learns that two transactions share a common payer.
     \item *Purchase Quantity. The attacker learns the amount of bandwidth sent over a Manifold.
     \item *Purchase Timing. The attacker learns the temporal spacing of bandwidth over a Manifold.
 \end{itemize}
 
-Although all of the above behavioral information is shared with other nodes on the \Mesh{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
+Although all of the above behavioral information is shared with other nodes on the \mesh{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
 
 \subsection{QoS Attacks}
 \label{qos}
 
-Some adversaries may be satisfied simply slowing down the system performance of \Mesh{} network users generally, thereby potentially diminishing usage.
+Some adversaries may be satisfied simply slowing down the system performance of \mesh{} network users generally, thereby potentially diminishing usage.
 
 \subsection{Economic Attacks}
 \label{econ-attacks}
 
-Unlike similar systems, \Mesh{} must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
+Unlike similar systems, \mesh{} must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
 
 \begin{enumerate}
     \item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
-    \item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \Mesh{} Network with purchases, thereby taking them offline.
+    \item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \mesh{} Network with purchases, thereby taking them offline.
 \end{enumerate}
 
 \subsection{Man-in-the-Middle Attacks}
 \label{mitm}
 
-Actions that can be performed only after inserting oneself between two interacting parties are collectively referred to as man-in-the-middle attacks. Encrypted information may be logged for analysis of metadata [Section ?], non-encrypted data may additionally be changed to control behavior.
+Actions that can be performed only after inserting oneself between two interacting parties are collectively referred to as man-in-the-middle attacks. Encrypted information may be logged for analysis of metadata (Section \ref{inference-attacks}), non-encrypted data may additionally be changed to control behavior.
 
 \subsection{Sybil Attacks}
 
@@ -223,6 +231,7 @@ In an Eclipse Attack the Attackers goal is to hide part of a P2P network from it
 \end{itemize}
 
 \subsection{Inference Attacks}
+\label{inference-attacks}
 
 Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
 
@@ -243,16 +252,17 @@ Attacks centered around taking a specific resource offline are termed Denial of 
 
 \subsection{Hacking}
 
-Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iterative, allowing an attacker to eventually backtrace a connection. Such attacks are out of scope for the \Mesh{} system, but do have important security implications. If the \Mesh{} Network's security achieves its goals, this will be the main attack against the system.
+Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iterative, allowing an attacker to eventually backtrace a connection. Such attacks are out of scope for the \mesh{} system, but do have important security implications. If the \mesh{} Network's security achieves its goals, this will be the main attack against the system.
 
-\section{Existing Approaches}
-\label{sec:existing-approaches}
+
+\section{Prior Work}
+\label{sec:prior-work}
 
 \subsection{Unprotected Internet Access}
 
 One approach to anonymous Internet access is to ignore connection level security concerns and perform the actions of interest from a suitably anonymous location. Examples of this include the digital equivalent of so-called “dead drops” – for example users might edit the Wikipedia entry for African Elephants with information on a specific group. This approach works, but requires a significant amount of coordination to accomplish. One might be tempted to ask: what system might be used to perform that coordination?
 
-For this reason we will avoid analyzing such systems in this paper. However, any users of \Mesh{} with serious security needs – especially those users who suspect they are already under active surveillance – are encouraged to carefully select which network will carry their traffic. Traffic shaping, etc can only take you so far.
+For this reason we will avoid analyzing such systems in this paper. However, any users of \mesh{} with serious security needs – especially those users who suspect they are already under active surveillance – are encouraged to carefully select which network will carry their traffic. Traffic shaping, etc can only take you so far.
 
 \subsection{Virtual Private Networking (VPN) Services}
 
@@ -274,29 +284,23 @@ I2P is billed as a “next generation” onion router.
 
 These are cool!
 
-\section{\Mesh{}’s Building Blocks}
-\label{sec:building-blocks}
 
-\Mesh{}’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the properties specifically used in \Mesh{} Network, we briefly summarize them here.
+\section{External Libraries}
+\label{sec:external-libraries}
+
+\mesh{}’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the properties specifically used in \mesh{} Network, we briefly summarize them here.
 
 \subsection{WebRTC}
 
-For connections between nodes on the system, WebRTC was selected.
-
-\begin{itemize}
-    \item Can’t make a direct connection, requires 3rd party signaling.
-    \item NAT traversal.
-    \item full node-to-node encryption.
-    \item Can be MitM attacked, which we prevent elsewhere.
-\end{itemize}
+WebRTC \cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, using STUN, ICE, TURN, RTP-over-TCP and support for proxies. By using it as the basis for our networking protocol, we both get a world-class implementation of these technologies, and (to a lesser extent) are able to better mask our user's traffic as that of a web application.
 
 \subsection{NACL}
 
-NACL is a cryptography library release by DJB. It’s good!
+NaCL \cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL.
 
 \subsection{Ethereum}
 
-Ethereum is a blockchain based cryptocurrency. Unlike previous efforts (Bitcoin, etc), Ethereum has smart contracts. Ethereum Block as a clock all over the place.
+Ethereum \cite{29} is a decentralized blockchain platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts are specifically useful for \mesh{}. Use of smart contracts has allowed us to, with relative ease, create our own cryptocurrency, and build \empth{Tickets} for micropayments.
 
 \section{Medallions}
 \label{medallions}
@@ -329,7 +333,7 @@ Proof-of-idle rests on the additional assumption that periodic, synchronized pro
 \section{Tickets}
 \label{sec:tickets}
 
-Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \Mesh{} Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
+Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \mesh{} Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
 
 \subsection{How Much Will A Packet Cost?}
 
@@ -337,7 +341,7 @@ For the purposes of this discussion, let us assume that a packet is 1e3 bytes in
 
 \subsection{Ethereum Transaction Costs}
 
-Because the \Mesh{} System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
+Because the \mesh{} System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
 
 \subsection{Building Micropayments from Macropayments}
 
@@ -345,7 +349,7 @@ With transaction costs now discussed, and looming large, let us now look at what
 
 One potentially interesting approach, which was employed in MojoNation[\cite{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to simply disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
-To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Mesh{} Network.
+To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \mesh{} Network.
 
 \subsection{Implementation Constraints}
 
@@ -376,19 +380,19 @@ Ticket production:
 
 To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to \Mesh{}. They were first explored in ref. \cite{txnbets}, with an extremely detailed and helpful expansion described in ref. \cite{DAM}, including an exploration of anonymous tickets.
+Lottery ticket type payments are not novel to \mesh{}. They were first explored in ref. \cite{txnbets}, with an extremely detailed and helpful expansion described in ref. \cite{DAM}, including an exploration of anonymous tickets.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
 
 As mentioned above, the realities of symmetric encryption performance prevent us from sending payment with every packet, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
 
-If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq y$ or (2) the total amount of work that Bob can perform is $\leq x$. As we will see in our discussion of the Agora [Section \ref{sec:agora}], setup costs exist on the \Mesh{} Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers uniquely know how much work they will require, the \Mesh{} Network has customers pre-pay.
+If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq y$ or (2) the total amount of work that Bob can perform is $\leq x$. As we will see in our discussion of the Agora (Section \ref{sec:agora}), setup costs exist on the \mesh{} Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers uniquely know how much work they will require, the \mesh{} Network has customers pre-pay.
 
 \subsection{Variance Management}
 
 One of the drawbacks of stochastic payments is that some users will
-get unlucky. Customers using \Mesh{} as a VPN alternative may be
+get unlucky. Customers using \mesh{} as a VPN alternative may be
 pleasantly surprised if their bill is randomly cheaper than expected,
 but a random overrun may cause them to stop using the network.
 
@@ -398,8 +402,6 @@ issued, k is the number of tickets required to exhaust the source, and
 p are the odds given to Econs. If users initially deposits \$20, and a
 \$2 face value is commonly used to mitigate transaction costs, this
 means that $k$ is fixed at 10.
-
-
 
 
 \section{Bandwidth Mining}
@@ -424,18 +426,7 @@ Relay nodes implement a relatively simple behavior pattern:
     \item Monitor the balance of trade, and check/cash-in any winning lottery tickets.
 \end{enumerate}
 
-Note that communication in this system is defined only in a single direction. Bi-directional bandwidth is implemented as two Relay Nodes hosted on a single machine which happen to share WebRTC connections. Extensions to this protocol (Section \ref{subsec:protocol-extentions}) are implemented between phases two and three as non-forwarded packets with special instructions. For example, one extension might be “send a packet of all zeros every 3 seconds”. Users interested in relays which support specific extensions can include that as a requirement when querying the Agora. Although our initial release will not support user-provided extensions, we hope to do so in the future.
-
-\subsubsection{Informational Attacks}
-
-Due to the inherent structure of IP-based networking, and the \Mesh{} protocol, relay nodes gain access to the following information:
-
-\begin{itemize}
-    \item The IP Addresses of both up and down. This is required knowledge to perform the IP communication.
-    \item The timing and number of any packets they forward.
-    \item The size of packets they are forwarding, both before and after decryption.
-    \item A public Ethereum key owned by the user who is paying them.
-\end{itemize}
+Note that communication in this system is defined only in a single direction. Bi-directional bandwidth is implemented as two Relay Nodes hosted on a single machine which happen to share WebRTC connections. Extensions to this protocol (Section \ref{sec:future}) are implemented between phases two and three as non-forwarded packets with special instructions. For example, one extension might be “send a packet of all zeros every 3 seconds”. Users interested in relays which support specific extensions can include that as a requirement when querying the Agora. Although our initial release will not support user-provided extensions, we hope to do so in the future.
 
 \subsection{Guard Nodes}
 
@@ -446,6 +437,170 @@ Because relay nodes implement such a simple function, they are relatively dispos
 \subsection{Proxies}
 
 Proxies are relay nodes who are willing to proxy requests to the open Internet. For this, they may at their option charge an increased fee.
+
+\subsection{Informational Attacks}
+
+In this section we explore what kinds of information are available to different nodes for different manifold structures. Perhaps more importantly, we look at how different types of collusion change a user's privacy, and what odds that collusion has a function of $G$, the percentage of global computation controlled by an attacker.
+
+\subsubsection{Information Available to a Relay or Proxy}
+
+Due to the inherent structure of IP-based networking, and the \mesh{} protocol, relay nodes gain access to the following information:
+
+\begin{itemize}
+    \item The IP Addresses of both up and down. This is required to perform the IP communication.
+    \item The size, timing, and number of packets they forward. This is required if they are to forward packets.
+    \item A public Ethereum key owned by the user who is paying them. This is required for the selling of bandwidth.
+\end{itemize}
+
+\subsubsection{Collusion}
+
+Definition of Attacker roles:
+
+\begin{itemize}
+\item Global Adversary. An attacker with a global view of the network. Occurs with probability 1 in all cases.
+\item ISP. The user's Internet service provider. Occurs with probability $s$.
+\item Web. The webserver the proxy is connected to. Occurs with probability $w$.
+\item Relay$_n$. The nth relay in the chain. Occurs with probability $\frac{a}{n}$.
+\item Proxy. The relay proxying bandwidth for the user. Occurs with probability $\frac{a}{n}$.
+\end{itemize}
+
+Definition of attacks:
+
+\begin{itemize}
+\item Traffic relation.
+\item Timing attack. By controlling the timing of packets a link can be unmasked.
+\end{itemize}
+
+\subsubsection{Zero Relays, Zero Proxies: Direct Connection}
+
+Although the \Pexia{} system is not used when a Customer connects directly to a website, we feel it is important to review what informational risk are present in this setup.
+
+\begin{center}
+\begin{tabular}{l | l | l | l | l | l}
+  ISP & Website & Relate             & Timing \\
+  \hline
+  x   &         & $s$                & \\
+  \hline
+      & x       & $w$                & \\
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item ISP can directly relate Customer traffic. $p = s$
+\item Website alone can directly relate Website traffic. $p = w$
+\end{itemize}
+
+\subsubsection{Zero Relays, One Proxy}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width = 200pt]{sc}
+  \caption{}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l | l | l | l | l | l}
+  ISP & Proxy & Website & Relate             & Timing \\
+  \hline
+      & x     &         & $\frac{a}{n}$      & \\
+  \hline
+  x   &       & x       &                    & $sw$ \\
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item Proxy can relate Website traffic. $p = \frac{a}{n}$.
+\item ISP + Website can relate Website traffic. $p = sw$.
+\end{itemize}
+
+\subsubsection{One Relay, One Proxy}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width = 200pt]{stc}
+  \caption{}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l | l | l | l | l | l}
+  ISP & Relay$_1$ & Proxy & Website & Relate             & Timing \\
+  \hline
+      & x         & x     &         & $(\frac{a}{n})^2$  & \\
+  \hline
+      & x         &       & x       & $w(\frac{a}{n})$   & \\
+  \hline
+  x   &           & x     &         & $s(\frac{a}{n})$   & \\
+  \hline
+  x   &           &       & x       &                    & $sw$ \\
+\end{tabular}
+\end{center}
+
+In the one Relay one Proxy case.
+
+
+\begin{itemize}
+\item Relay$_1$ + Proxy can relate customer traffic. $p = (\frac{a}{n})^2$
+\item Relay$_1$ + Website can relate Website traffic. $p = w\frac{a}{n}$
+\item ISP + Proxy can relate all Website traffic. $p = s\frac{a}{n}$
+\item ISP + Website can timing attack Website traffic. $p = sw$
+\end{itemize}
+
+\subsubsection{Two Relays, One Proxy}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width = 200pt]{sttc}
+  \caption{}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{l | l | l | l | l | l | l}
+%\begin{tabular}{l*{7}{c}r}
+  ISP & Relay$_1$ & Relay$_2$ & Proxy & Website & Relate             & Timing \\
+  \hline
+      & x         &           & x     &         & $(\frac{a}{n})^2$  & \\
+  \hline
+  x   &           & x         & x     &         & $s(\frac{a}{n})^2$ & \\
+  \hline
+      & x         & x         &       & x       & $w(\frac{a}{n})^2$ & \\
+  \hline
+  x   &           & x         &       & x       & $sw(\frac{a}{n})$  & \\
+  \hline
+      & x         &           &       & x       &                    & $s(\frac{a}{n})$ \\
+  \hline
+  x   &           &           &       & x       &                    & $sw$ \\
+\end{tabular}
+\end{center}
+
+In the more familiar two Relays one Proxy case, we can see now.
+
+\begin{itemize}
+\item Proxy + Relay$_1$ can relate customer traffic. $p = (\frac{a}{n})^2$
+\item Proxy + Relay$_2$ + ISP can relate customer traffic. $p = s(\frac{a}{n})^2$
+\item Website + Relay$_1$ + Relay$_2$ can relate Website traffic. $p = w(\frac{a}{n})^2$
+\item Website + Relay$_2$ + ISP can relate Website traffic. $p = sw\frac{a}{n}$
+\item Website + Relay$_1$ can timing attack Website traffic. $p = w\frac{a}{n}$ [can be prevented with bandwidth burning]
+\item Website + ISP can timing attack Website traffic. $p = sw$ [can be prevented with bandwidth burning]
+\end{itemize}
+
+\subsubsection{Three Relays, One Proxy}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width = 200pt]{stttc}
+  \caption{}
+\end{figure}
+
+\begin{itemize}
+\item Proxy + Relay$_1$ + Relay$_2$ can relate customer traffic. $p = (\frac{a}{n})^3$
+\item Proxy + Relay$_1$ + Relay$_3$ can relate customer traffic. $p = (\frac{a}{n})^3$
+\item Proxy + Relay$_2$ + ISP can relate customer traffic. $p = s(\frac{a}{n})^2$
+\item Website + Relay$_1$ + Relay$_3$ can relate Website traffic. $p = w(\frac{a}{n})^2$
+\item Website + Relay$_2$ + Relay$_3$ + ISP can relate Website traffic. $p = sw(\frac{a}{n})^2$
+\item Website + Relay$_1$ can timing attack Website traffic. $p = w\frac{a}{n}$ [can be prevented with bandwidth burning]
+\item Website + ISP can timing attack Website traffic. $p = sw$ [can be prevented with bandwidth burning]
+\end{itemize}
+
 
 \subsection{SSL and TLS Vulnerabilities}
 
@@ -463,6 +618,7 @@ SSL Downgrade
     \item Check Basic Constraints
     \item “Boring SSL”
 \end{enumerate}
+
 
 \section{The Agora}
 \label{sec:agora}
@@ -552,71 +708,102 @@ Long lived Kademlian networks suffer from Eclipse attacks. In these attacks, an 
 
 [Todo: finalize randomization schedule here.]
 
+\subsection{Finding Entry Nodes}
+
+The distribution of Entry Nodes is a difficult topic. If oppressive governments are able to access this list, they will block user's abilities to access the list. We have therefore located essential services that would be internet-breaking if they were blocked, and have devised methods for adding Entry Node information to the data contained in them.
+
 \subsection{Identifying \emph{the} Agora}
 
-The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} will be subject to such attacks. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions (Section \ref{core-security}).
+The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} can not be presumed immune from infiltration by fake Entry Nodes. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions (Section \ref{core-security}).
 
 \begin{itemize}
     \item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
     \item Traversal Distance. The Agora provides address look ups in $O(log_2(N))$ hops. We can use this in reverse to estimate network density.
 \end{itemize}
 
-One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \Mesh{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
+One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \mesh{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
 
-\section{Attack Analysis and Attacker User Stories}
-\label{sec:attack-stories}
-
-\subsection{Economic Attacks / Unjust Enrichment}
-
-\subsection{Restrictive Internet Providers}
-
-Imagine we would like to run an Internet Service Provider.
-
-\subsection{Oppressive Governments}
-
-\subsubsection{}
-
-\subsection{Oppressive Companies}
-
-\subsection{Exploitative End Users (Vigna)}
-
-\subsection{Bad Actors / Anarchists / Small Time Crooks / Petty Hackers}
-
-\subsection{Scale of attack / resources used. (Global, Boundary, Node)}
-
-Imagine that a user wishes to browse Wikipedia while inside a country
-
-\subsection{“Great Firewalls”}
-
-\begin{enumerate}
-    \item Bootstrapping scheme (tues or wednesday) [ref bonet]
-    \item WebRTC protocol-level hiding
-    \item Traffic injection techniques [ref bonet]
-    \item Cycle amazon IPs / ban all of amazon
-    \item IPs not listed, requires lots of PoW / money to locate / identities cycle.
-\end{enumerate}
-
-\section{Performance Scaling}
-\label{sec:performance}
 
 \section{Current State of the Software}
 \label{sec:current}
 
+
+\section{Golden Shield Related Features}
+\label{sec:evasion}
+
+\subsection{WebRTC shaping}
+
+\subsection{IP Cycling on AWS}
+
+
+\section{Performance Scaling}
+\label{sec:performance}
+
+
+\section{Economic Soundness}
+\label{sec:economic-soundness}
+
+
+\section{Attack Analysis and Attacker User Stories}
+\label{sec:attack-stories}
+
+\subsection{Oppressive Web Applications}
+
+Attacker Goals: Identify all \Pexia{} Proxy IP addresses.
+
+\subsection{Oppressive Corporate Networks}
+
+Attacker Goals: Prevent usage of the \Pexia{} network.
+
+Resources: The attacker controls the network, and so can engage in traffic shaping and connection dropping.
+
+\subsection{Passive Monitoring and Inference, perhaps with Sybil Attacks}
+
+Attacker Goals: Learn Customer IP Identification, and Website Identification.
+
+Resources: An attacker has view of some amount of passive network surveillance, and is able to add nodes to the network up to $s\%$ as a source of additional data.
+
+\subsection{Great Firewalls}
+
+Attacker Goals: Prevent usage of the \Pexia{} network.
+
+Resources: The attacker controls the network, has passive surveillance of it, and is able to add nodes up to $s\%$ of the network size.
+
+\subsection{Small-Time Mayhem and QoS}
+
+Synopsis: An attacker would like to cause mayhem on as much of the network as possible.
+
+Resources: On the order of ten thousand dollars of networking and computation ability.
+
+% \subsection{Exploitative End Users (Vigna)} -- I think they might have the same ``goals'' as all other attackers, or else it's not really security research.
+
+
 \section{Future Work}
 \label{sec:future}
 
-\subsection{Protocol Extentions}
+The items in this section fall into two categories: nice-to-haves, and features we are internally conflicted about releasing to the public. We believe this is conflictedness is universal -- although almost everyone has favorite examples of power being used for oppression, there are also countless examples of power being used for good. Protocols like \Pexia{} have no judgement of their own, and so cannot tell if they are routing traffic for a freedom fighter or a terrorist, villain or hero.
+
+\subsection{Content Storage}
+\label{subsec:ccn}
+
+The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, \Pexia{} may be as good as possible. However, if we
+
+\subsection{Saturated Links}
+\label{subsec:saturated-links}
+
+TODO: this would have to be the standard global protocol to work. Idea is have every ``guard node'' send at 1MB/sec or so... Customers then pay for that bandwidth, rather than minimum amount of bandwidth needed (the regular case).
+
+\subsection{Protecting Content Hosts}
 \label{subsec:protocol-extentions}
 
-\subsubsection{Rendezvous Nodes}
+Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Pexia{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width = 300pt]{sttRttc}
-  \caption{}
+  \caption{A rendezvous node acting as a relay between a Service and a Customer}
 \end{figure}
 
-Rendezvous Nodes are relay nodes who connect two \Mesh{} users.
 
 \nocite{*}
 \printbibliography

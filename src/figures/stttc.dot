@@ -1,0 +1,14 @@
+digraph G {
+				Customer [shape=circle, height=1.4];
+				"Relay 1" [shape=parallelogram, height=1.4];
+				"Relay 2" [shape=parallelogram, height=1.4];
+				"Relay 3" [shape=parallelogram, height=1.4];
+				Proxy [shape=square, height=1.4];
+
+				rankdir=LR;
+
+				Customer -> "Relay 1";
+				"Relay 1" -> "Relay 2";
+				"Relay 2" -> "Relay 3";
+				"Relay 3" -> Proxy;
+}
