@@ -36,7 +36,7 @@
 \maketitle
 
 \begin{abstract}
-  As methods for discovering private user information from browsing data have improved, interest in anonymization methods has increased. Unfortunately, existing anonymity systems such as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays paying them.
+  As methods for discovering private user information from browsing data have improved, interest in anonymization methods has increased. Unfortunately, existing approaches to unrestricted, unsurveilled Internet access such as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays by paying them.
 
   Original contributions include an Etheruum-based implementation of stochastic micropayments suited for the sale of bandwidth, a Kademlia-inspired connection scheme for deterministic routing and auditing of seller behavior in a fully distributed bandwidth market, and preliminary application of payment mechanisms to hinder Sybil, Eclipse, DoS, and Inference Attacks.
 \end{abstract}
@@ -61,6 +61,10 @@ The \mesh{} Network was designed with two goals in mind:
 
 These are ambitious goals, and are not realized by the system described in this document. This document does, however, contain an imperfect first attempt – an invitation to join us in design, construction, and use of what we believe is the future of networking.
 
+\subsection{Acknowledgements}
+
+Justin Sheek, Professor Vigna, Professor Boneh. Add people!
+
 \subsection{Document Structure}
 
 This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses the lessons that can be learned from the previous deployment of similar systems (Section \ref{sec:prior-work}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and help the reader build intuition for the context in which the system will be deployed. These sections are to help you get up to speed.
@@ -70,10 +74,6 @@ Once the stage has been set, we will move on to a detailed discussion of the sys
 We close out with a discussion of what an attackers experience of the system might be (Section \ref{sec:attack-stories}), both as a means of discussing the security of the system when viewed as a whole, and as a thought experiments for those wishing to assist us in improving system security. Next we discuss non-security features we hope to add in future releases (Section \ref{sec:future}). Readers interested in assisting with the project are encouraged to read these sections carefully.
 
 Because the system is to be fully decentralized, fully autonomous, and fully anonymous, much of this design document is centered on attacks. Although attack analysis is important, and will take up much of our time, it is ultimately no more than a necessary conceit to the context in which the market is to operate; please do not let thoughts of security distract you unduly from an understanding the system itself. We look forward to conversing about the system with experts in economics, autonomous markets, network engineers, applications programmers, and anyone with interest in these ideas.
-
-\subsection{Acknowledgements}
-
-Professor Vigna, Professor Boneh. Add people!
 
 \subsection{Terms}
 
@@ -583,6 +583,8 @@ In the more familiar two Relays one Proxy case, we can see now.
 \item Website + ISP can timing attack Website traffic. $p = sw$ [can be prevented with bandwidth burning]
 \end{itemize}
 
+Total risk without bandwidth burning is therefore: $$(1+w+s)(\frac{a}{n})^2 + (sw+w)\frac{a}{n}$$ and $$(1 + w + s) (\frac{a}{n})^2$$ with bandwidth burning.
+
 \subsubsection{Three Relays, One Proxy}
 
 \begin{figure}[htbp]
@@ -664,6 +666,10 @@ The foundation of security on the Agora relies upon requiring that every econ wh
 
 The medallion requirement is ensured two ways: (1) if a non-medallion bearing node attempts to connect to an Econ, that Econ terminates the connection at the earliest possible point, and (2) if a member of the Agora fails to provide a new Medallion after an Ethereum block update, all cons connected to that Node disconnect from it.
 
+\subsection{Addresses}
+
+The address of an Econ is defined to be $H(initial Medallion)$.
+
 \subsection{Kademlian Routing}
 
 \begin{figure}[htbp]
@@ -722,6 +728,30 @@ The above discussion discussion of security is ultimately meaningless if there i
 \end{itemize}
 
 One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(N))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \mesh{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
+
+\subsection{Economics}
+
+\subsubsection{Price Discovery}
+
+Uers may set their own price for bandwidth, but this is hardly satisfying. Some users may price themselves out of the market, and other users may charge too little. We therefore provide the following algoritm for users who wish to maximize their profit as bandwidth sellers:
+
+\begin{algorithm}[H]
+  \KwData{Quantity of bandwidth the user wishes to sell, $Q$}
+  \KwData{Amount of data sold in the last 10 minutes, $S_t$}
+  \KwData{Price of the previous data sold, $P_t$}
+  \KwResult{A New Price $P_{t+1}$}
+  \While{$S_t > Q$}{
+    return $S_t$ * 1.1;
+  }
+  return $(S_t - Q) * 0.01 * P_t$ ;
+  \caption{Automatic Price Scaling}
+\end{algorithm}
+
+\subsection{Informational Attacks}
+
+\subsubsection{Grabbing all user's IP addresses}
+
+The number of forced connections grows at roughly $log_4(N)$ where N is the network size. If an attacker holds $m\%$ of global computation, they will be able to create $c = 10mlog_4(N)$ connections ip addresses per key rotation. The expected number of IP addresses seen by the attacker is then, $seen_t = (1-\frac{seen_t}{N})c$
 
 
 \section{Current State of the Software}
