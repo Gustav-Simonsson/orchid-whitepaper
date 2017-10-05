@@ -694,7 +694,7 @@ between peers at addresses $a, b \in [0, 2^{256}-1]$ is defined to be
 $n$ s.t. $0 \leq n < 2^{256}$ and $a + n \equiv b \pmod{2^{256}}$
 
 For a collection of Econs in an Agora, $A$, the forced connections for
-a given Econ $e$ are defined to be $\min_{f \in A} dist(t, f)$, for
+a given Econ $e$ are defined to be $\min_{f \in A} dist(e+t, f)$, for
 each of the 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
 
 We chose to use this routing structure because of its maturity,
