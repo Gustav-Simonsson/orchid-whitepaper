@@ -745,10 +745,24 @@ disconnected from the network.
 
 %% Once the proof has been sent
 
-When a node would like to establish a forced connection, that node
-must first prove to each node on its forced connections list that each
-other node on that list is a member of the same Agora. To do this, we
-show them a chain of routing tables that connects them.
+
+
+
+%% When a node would like to establish a forced connection, that node
+%% must first prove to each node on its forced connections list that each
+%% other node on that list is a member of the same Agora. To do this, we
+%% show them a chain of routing tables that connects them.
+
+
+One of the issues that arises in distributed networks is that no one (except, perhaps, an attacker) has a global view of the network. For example, imagine if in the above routing scheme an attacker chose to lie about what connections it has – if the buyer has no way of detecting this, they might be led off to a fake Agora in which all “participants” were owned by the attacker. To put a stop to this situation, Agora's routing tables are verified non-malicious by the peers contained on them.
+
+When a node would like to establish a forced connection, that node must prove to each node on its forced connections list that each other node on that list is a member of the same Agora. To do this, we first select a random econ $G$ by finding the Econ with an address closest to the hash of all the connections in the routing table $H(C_i)$. Then we supply:
+
+\begin{enumerate}
+    \item Proof that all the Econs on the list can all route to $G$.
+    \item Proof that $G$ can route to each Econ
+    \item Proof that each Econ on the list is indeed a forced connection.
+\end{enumerate}
 
 These proofs all take the form of signed routing table chains which lead from $C_i$ to $G$, or in the case of (3) the chain of signed routing tables which led from the Entry Econ to each $C_i$. Once such proof has been provided, all of the peers on the new routing table sign the table, and the connecting Econ signs theirs. For those elements of $C_i$ for whom the new Econ is a forced connection, the same proof is sent to each of their connections for signature.
 
