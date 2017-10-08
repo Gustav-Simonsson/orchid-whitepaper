@@ -130,21 +130,21 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Terms}
 
 \begin{itemize}
-    \item Node. A computer running a program which implements the \mesh{} Protocol.
-    \item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
-    \item User. The owner of a node.
-    \item Agora. A collection of nodes interacting through the \mesh{} Distributed Marketplace Protocol.
-    \item \emph{The} Agora. The Agora in possesion of the most global computational power.
-    \item Econ. A node who is a member of an Agora's collection.
-    \item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
-    \item Address. The location in Medallion-space inhabited by an Econ.
-    \item Customer. A buyer on the Agora.
-    \item Relay. A node willing to sell bandwidth to customers.
-    \item Proxy. A relay which is additionally willing to interact with web servers on behalf of customers.
-    \item Manifold. A chain of relays used for anonymous communication.
-    \item Ticket. A stochastic micropayment.
-    \item Attack. A method for causing the non-consensual transfer of money or information.
-    \item Attacker. A person or group of people interested in performing attacks.
+\item Node. A computer running a program which implements the \mesh{} Protocol.
+\item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
+\item User. The owner of a node.
+\item Agora. A collection of nodes interacting through the \mesh{} Distributed Marketplace Protocol.
+\item \emph{The} Agora. The Agora in possesion of the most global computational power.
+\item Econ. A node who is a member of an Agora's collection.
+\item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
+\item Address. The location in Medallion-space inhabited by an Econ.
+\item Customer. A buyer on the Agora.
+\item Relay. A node willing to sell bandwidth to customers.
+\item Proxy. A relay which is additionally willing to interact with web servers on behalf of customers.
+\item Manifold. A chain of relays used for anonymous communication.
+\item Ticket. A stochastic micropayment.
+\item Attack. A method for causing the non-consensual transfer of money or information.
+\item Attacker. A person or group of people interested in performing attacks.
 \end{itemize}
 
 \subsection{Core Security Assumptions}
@@ -219,25 +219,25 @@ The largest class of attacks against which the \mesh{} Protocol must defend agai
 Types of data which are assumed to be of interest to an attacker (timeless):
 
 \begin{itemize}
-    \item Real-World Identity Information. A user’s given name, SSN, address, etc.
-    \item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
-    \item *IP Information. The IP address from which a user is accessing the \mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item *\mesh{} Network Information. The keys associated with a node’s current business on the \mesh{} network (*public or private).
+\item Real-World Identity Information. A user’s given name, SSN, address, etc.
+\item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
+\item *IP Information. The IP address from which a user is accessing the \mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+\item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+\item *\mesh{} Network Information. The keys associated with a node’s current business on the \mesh{} network (*public or private).
 \end{itemize}
 
 Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
 
 \begin{itemize}
-    \item *Customer Identification. The attacker learns the IP address of a customer.
-    \item *Relay Identification. The attacker learns the IP address of a relay.
-    \item *Proxy Identification. The attacker learns the IP address of a proxy.
-    \item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
-    \item *Website Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific website.
-    \item *Webserver Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific webserver (which may host multiple websites).
-    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \mesh{} user.
-    \item *Purchase Linking. The attacker learns that two transactions share a common payer.
-    \item *Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
+\item *Customer Identification. The attacker learns the IP address of a customer.
+\item *Relay Identification. The attacker learns the IP address of a relay.
+\item *Proxy Identification. The attacker learns the IP address of a proxy.
+\item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
+\item *Website Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific website.
+\item *Webserver Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific webserver (which may host multiple websites).
+\item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \mesh{} user.
+\item *Purchase Linking. The attacker learns that two transactions share a common payer.
+\item *Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
 \end{itemize}
 
 Although all of the above behavioral information is shared with other nodes on the \mesh{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
@@ -248,8 +248,8 @@ Although all of the above behavioral information is shared with other nodes on t
 Unlike similar systems, \mesh{} must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
 
 \begin{enumerate}
-    \item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
-    \item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \mesh{} Network with purchases, thereby taking them offline.
+\item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
+\item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \mesh{} Network with purchases, thereby taking them offline.
 \end{enumerate}
 
 \subsection{QoS Attacks}
@@ -267,8 +267,8 @@ Actions that can be performed only after inserting oneself between two interacti
 Malicious actions, performed by pretending to be multiple users, are termed Sybil attacks, after a patient suffering from multiple personality disorder. Applications of this type of attack include:
 
 \begin{itemize}
-    \item Submitting multiple reviews to Yelp, Amazon, etc.
-    \item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\cite{freeridingBittorrent}].
+\item Submitting multiple reviews to Yelp, Amazon, etc.
+\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\cite{freeridingBittorrent}].
 \end{itemize}
 
 \subsection{Eclipse Attacks}
@@ -276,8 +276,8 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 In an Eclipse Attack, the Attacker's goal is to hide part of a system from itself. The methods employed are generally the network equivalent of privilege escalation attacks: gain control of network positions which have more control of the network, then use that control to acquire more control.
 
 \begin{itemize}
-    \item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\cite{bitcoinEclipse}].
-    \item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\cite{bittorrentSybilAttacks}].
+\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\cite{bitcoinEclipse}].
+\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\cite{bittorrentSybilAttacks}].
 \end{itemize}
 
 \subsection{Inference Attacks}
@@ -286,9 +286,9 @@ In an Eclipse Attack, the Attacker's goal is to hide part of a system from itsel
 Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
 
 \begin{itemize}
-    \item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
-    \item Deanonymizing Tor, I2P and \mesh{} traffic from global traffic logs[\cite{mixTrafficAnalysis}].
-    \item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
+\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
+\item Deanonymizing Tor, I2P and \mesh{} traffic from global traffic logs[\cite{mixTrafficAnalysis}].
+\item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
 \end{itemize}
 
 \subsection{Denial of Service Attacks}
@@ -296,8 +296,8 @@ Deanonymization which stems from a statistical modeling of system behavior are t
 Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. Because system behavior during “unexpected” circumstances is often poorly specified and tested, perhaps surprisingly, DoS attacks are quite useful for deanonymizing nodes in P2P networks. Notable examples:
 
 \begin{itemize}
-    \item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\cite{DOSvsSec}].
-    \item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\cite{I2P-vigna}].
+\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\cite{DOSvsSec}].
+\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\cite{I2P-vigna}].
 \end{itemize}
 
 \subsection{Hacking}
@@ -419,9 +419,9 @@ To explore stochastic payments, let us consider a lottery ticket (hereafter simp
 Now that we have located a suitable abstraction for our payments, the question becomes: how should they be implemented? The main requirements are:
 
 \begin{itemize}
-    \item The method for constructing new tickets must be reusable, as otherwise transaction fees will once again be an issue.
-    \item Double spending must be prevented, or failing that not profitable.
-    \item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
+\item The method for constructing new tickets must be reusable, as otherwise transaction fees will once again be an issue.
+\item Double spending must be prevented, or failing that not profitable.
+\item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
 \end{itemize}
 
 Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can easily send 1e6 packets per second when connected to high speed Internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect during trade''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
@@ -429,16 +429,16 @@ Of those requirements, the last element is perhaps the most troublesome. To the 
 [Better version solicited]. We now describe a design which meets the remaining two requirements. Setup phase:
 
 \begin{enumerate}
-    \item Alice deposits money into an Ethereum smart contract which will control outbound payments until some time in the future ($\geq$ 1 minute from now).
-    \item Bob generates a random number $N$, and sends the hash $h=H(N)$ to Alice.
+\item Alice deposits money into an Ethereum smart contract which will control outbound payments until some time in the future ($\geq$ 1 minute from now).
+\item Bob generates a random number $N$, and sends the hash $h=H(N)$ to Alice.
 \end{enumerate}
 
 Ticket production:
 
 \begin{enumerate}
-    \item Alice creates the tuple $t = (timestamp, face value, odds, nonce, h)$, signs it $s = SIG(t)$, and sends the pair $(t, s)$ to Bob.
-    \item Bob then computes XOR($N$, $s$), and if the result is $\geq odds$, wins.
-    \item To redeem winners, Bob sends $(N, t, s)$ to the Ethereum smart contract managing Alice's lottery tickets along with a payment address.
+\item Alice creates the tuple $t = (timestamp, face value, odds, nonce, h)$, signs it $s = SIG(t)$, and sends the pair $(t, s)$ to Bob.
+\item Bob then computes XOR($N$, $s$), and if the result is $\geq odds$, wins.
+\item To redeem winners, Bob sends $(N, t, s)$ to the Ethereum smart contract managing Alice's lottery tickets along with a payment address.
 \end{enumerate}
 
 To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
@@ -551,9 +551,9 @@ In this section we explore what kinds of information are available to different 
 Due to the inherent structure of IP-based networking, and the \mesh{} protocol, relay nodes gain access to the following information:
 
 \begin{itemize}
-    \item The IP Addresses of both up and down. This is required to perform the IP communication.
-    \item The size, timing, and number of packets they forward. This is required if they are to forward packets.
-    \item A public Ethereum key owned by the user who is paying them. This is required for the selling of bandwidth.
+\item The IP Addresses of both up and down. This is required to perform the IP communication.
+\item The size, timing, and number of packets they forward. This is required if they are to forward packets.
+\item A public Ethereum key owned by the user who is paying them. This is required for the selling of bandwidth.
 \end{itemize}
 
 \subsection{Collusion}
@@ -720,10 +720,10 @@ SSL Downgrade
 \subsection{Mitigation of 8.1.1 and 8.1.2}
 
 \begin{enumerate}
-    \item Check SSL Certificates
-    \item Check SSL Versions, Cipher Suites
-    \item Check Basic Constraints
-    \item “Boring SSL”
+\item Check SSL Certificates
+\item Check SSL Versions, Cipher Suites
+\item Check Basic Constraints
+\item “Boring SSL”
 \end{enumerate}
 
 
@@ -853,9 +853,9 @@ One of the issues that arises in distributed networks is that no one (except, pe
 When a node would like to establish a forced connection, that node must prove to each node on its forced connections list that each other node on that list is a member of the same Agora. To do this, we first select a random econ $G$ by finding the Econ with an address closest to the hash of all the connections in the routing table $H(C_i)$. Then we supply:
 
 \begin{enumerate}
-    \item Proof that all the Econs on the list can all route to $G$.
-    \item Proof that $G$ can route to each Econ
-    \item Proof that each Econ on the list is indeed a forced connection.
+\item Proof that all the Econs on the list can all route to $G$.
+\item Proof that $G$ can route to each Econ
+\item Proof that each Econ on the list is indeed a forced connection.
 \end{enumerate}
 
 These proofs all take the form of signed routing table chains which lead from $C_i$ to $G$, or in the case of (3) the chain of signed routing tables which led from the Entry Econ to each $C_i$. Once such proof has been provided, all of the peers on the new routing table sign the table, and the connecting Econ signs theirs. For those elements of $C_i$ for whom the new Econ is a forced connection, the same proof is sent to each of their connections for signature.
@@ -865,8 +865,8 @@ Because this is the only method for adding Econs to the Agora, these requirement
 From these properties, we can see that the avenues left for an attacker are:
 
 \begin{itemize}
-    \item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a 1e-8\% chance of such a collision happening, and if it does occur around 1e3\% of all system queries will be impacted. At 100 million nodes the chance drops to 1e-12\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Agora Regeneration \ref{agora-regen}.
-    \item If an attacker has now joined the network, but was forced to use a valid routing table, the only attacks it can perform are related to selling services, not routing traffic on the Agora. As this is the situation expected in the rest of our attack models (that an attacker will control a number of econs proportional to the computational resources), we do not consider this an attack.
+\item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a 1e-8\% chance of such a collision happening, and if it does occur around 1e3\% of all system queries will be impacted. At 100 million nodes the chance drops to 1e-12\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Agora Regeneration \ref{agora-regen}.
+\item If an attacker has now joined the network, but was forced to use a valid routing table, the only attacks it can perform are related to selling services, not routing traffic on the Agora. As this is the situation expected in the rest of our attack models (that an attacker will control a number of econs proportional to the computational resources), we do not consider this an attack.
 \end{itemize}
 
 \subsection{Eclipse Attacks and Regeneration}
@@ -892,8 +892,8 @@ The distribution of Entry Nodes is a difficult topic. If oppressive governments 
 The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} can not be presumed immune from infiltration by fake Entry Nodes. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions (Section \ref{core-security}).
 
 \begin{itemize}
-    \item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
-    \item Traversal Distance. The Agora provides address look ups in $O(log_2(n))$ hops. We can use this in reverse to estimate network density.
+\item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
+\item Traversal Distance. The Agora provides address look ups in $O(log_2(n))$ hops. We can use this in reverse to estimate network density.
 \end{itemize}
 
 One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(n))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \mesh{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
