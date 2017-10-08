@@ -1,13 +1,19 @@
-# Our Whitepaper
+# Orchid Whitepaper
 
-This is the whitepaper describing the Agora secure network protocol.
+This is the whitepaper describing the Orchid secure network protocol.
 
 ## Prerequisites for Mac
+```bash
+brew case install mactex
+```
 
-   brew case install mactex
-   
-## To Build
+## Prerequisites for Linux
 
-   ./build.sh
+```bash
+apt-get install texlive-science texlive-latex-extra
+```
 
-
+## Build
+```bash
+./build.sh
+```
