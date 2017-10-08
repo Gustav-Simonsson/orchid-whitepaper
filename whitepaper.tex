@@ -19,6 +19,8 @@
 ]{biblatex}
 \addbibresource{whitepaper.bib}
 
+%% \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+
 \newcommand{\mesh}{Orchid}
 \newcommand{\Mesh}{\mesh}
 
@@ -26,6 +28,7 @@
 \titlelabel{\thetitle.\quad}
 
 \title{\mesh{}: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
+%%\title{\mesh{}: Micropayment Networking}
 \author{{David L. Salamon with} \\ {Brian J. Fox, Jay Freeman, Gustav Simonsson,} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
 \date{September 19, 2017}
 
@@ -36,19 +39,54 @@
 \maketitle
 
 \begin{abstract}
-  As methods for censoring browsing and discovering private browsing information have improved, interest in anonymization methods has increased. Unfortunately, existing approaches to unrestricted, unsurveilled Internet access such as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays by paying them.
 
-  Original contributions include:
+  As methods for censoring browsing and discovering private browsing information have improved, interest in anonymization methods has increased. Unfortunately, existing approaches to unrestricted, unsurveilled Internet access such
+as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpaid volunteers host proxies and exit nodes, allowing sophisticated attackers a tractable number of nodes to monitor or otherwise compromise. We present a market based, fully decentralized, anonymous peer-to-peer system based on “bandwidth mining” which we hope will address this lack of relays by paying them.
+
+  %% The Internet's current structure is the product of two forces: (1)
+  %% what is easy to implement for a small to medium sized company, and
+  %% (2) the desires of mankind.
+
+  %% Unfortunately, not all desires of mankind have proved agreeable. For
+  %% example, as methods for censoring browsing and discovering private
+  %% browsing information have improved, consumers have found themselves
+  %% in the unenviable position of needing to decide between their
+  %% privacy and usable Internet access. Even for those willing to suffer
+  %% the usability hit, current methods to achieve unrestricted,
+  %% unsurveilled Internet access such as I2P and Tor suffer from a
+  %% tragedy of the commons – only a few thousand unpaid volunteers host
+  %% proxies and exit nodes, allowing sophisticated attackers a tractable
+  %% number of nodes to monitor or otherwise compromise.
+
+  %% Similarly, not all desirable services have proved easy to
+  %% implement. Perverse economic incentives stemming from widely
+  %% available free content have resulted in a news media bereft of
+  %% subscribers, slowly descending into a minute-to-minute battle for
+  %% clicks. The high cost of distributing video has resulted in
+  %% centralization, platforms, and burdens on content creators. The
+  %% difficulty of maintaining and securing a sever have resulted in less
+  %% diversity than one might have hoped for.
+
+  %% To address these issues, we present a high performance approach to
+  %% networking built on a foundation of micropayments, and as an initial
+  %% application of the technology, build an uncensorable, anonymous
+  %% mechanism for accessing the global Internet. It is our hope that as
+  %% the tokens gain in acceptance, many millions of websites will
+  %% incorporate the payment models described here, and consumers will
+  %% receive a monthly budget of tokens from their ISP.
+
+  Contributions include:
 
   \begin{itemize}
+  \item A payment mechanism suitable for transactions as inexpensive
+    as a ten-thousandth of a penny, up to arbitrarily high
+    denominations.
+  \item A commodity specification for the sale of bandwidth.
   \item A method for distributed inductive proofs in peer-to-peer
     systems which make Eclipse attacks arbitrarily difficult.
   \item An efficient security-hardened auction mechanism suited for
     the sale of bandwidth in circumstances where an attacker may alter
-    bids as part of an attack.
-  \item An implementation of stochastic micropayments on the Ethereum
-    platform.
-  \item A commodity specification for the sale of P2P bandwidth.
+    their bid as part of an attack.
   \item A fully distributed anonymous bandwidth market.
   \end{itemize}
 
@@ -68,9 +106,9 @@
 The \mesh{} Network was designed with three goals:
 
 \begin{enumerate}
-    \item To codify the right to unrestricted, unsurveilled Internet access on a networking level.
-    \item To build a system suited for daily use. To say that a freedom is not a part of daily life is to say that the freedom is dying.
-    \item To make such a system worthy of trust, by developing it in the open and releasing the source code for full public audit.
+\item To codify the right to unrestricted, unsurveilled Internet access on a networking level.
+\item To build a system suited for daily use. To say that a freedom is not a part of daily life is to say that the freedom is dying.
+\item To make such a system worthy of trust, by developing it in the open and releasing the source code for full public audit.
 \end{enumerate}
 
 These are ambitious goals, and are not realized by the system described in this document. This document does, however, contain an imperfect first attempt – an invitation to join us in design, construction, and use of what we believe is the future of networking.
@@ -115,7 +153,7 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 The security of the \mesh{} system as a whole ultimately rests on basic assumptions about the world. In the event this assumption is ever falsified, the system will not function as intended.
 
 \begin{itemize}
-    \item The majority of global computation power will not cooperate on an attack.
+\item The majority of global computation power will not cooperate on an attack.
 \end{itemize}
 
 Without this assumption (or a similar for a different resource), it would be impossible for a fully anonymous and distributed system to function. No distributed quorum could be trusted, because the majority of users might vote in such a way as to facilitate attacks. Users would be left relying on web-of-trust approaches, which by their nature are non-anonymous.
@@ -132,7 +170,7 @@ We use this assumption, combined with a method for rapidly demonstrating signifi
   \caption{An Agora with eight Econs}
 \end{figure}
 
-The Agora’s purpose is to serve as a market place for the buyers and sellers of anonymous bandwidth. Although it is tempting to believe such a market should take the form of a classic order book (a list of currently unfilled bids and asks at different prices), a very important property of bandwidth to be used for anonymity purposes is that purchase decisions are made in a way that places severe limits on what influence can be exerted by an attacker. For this reason, rather than provide an order book, the Agora provides a way to traverse the space of currently valid medallions. Once a location in medallion-space has been selected, a miniature pseudo-auction is held. For example, if the econ at position 2 in the figure wished to buy bandwidth, it would select the median of 1’s, 3’s, 5’s and 6’s price, rounded down. For users not seeking anonymity, the lowest price may be selected instead.
+The Agora is a globally distributed P2P market place for bandwidth. Although it is tempting to believe such a market should take the form of a classic order book (a list of currently unfilled bids and asks at different prices), a very important property of bandwidth to be used for anonymity purposes is that purchase decisions are made in a way that places severe limits on what influence can be exerted by an attacker. For this reason, rather than provide an order book, the Agora provides a way to traverse the space of currently valid medallions. Once a location in medallion-space has been selected, a miniature pseudo-auction is held. For example, if the econ at position 2 in the figure wished to buy bandwidth, it would select the median of 1’s, 3’s, 5’s and 6’s price, rounded down. For users not seeking anonymity, the lowest price may be selected instead.
 
 \subsubsection{Manifolds}
 
@@ -341,9 +379,19 @@ Proof-of-idle rests on the additional assumption that periodic, synchronized pro
 
 \subsection{Hash function selection}
 
-TODO: Professor Boneh should be consulted before this is finalized. I
-vote for Equihash, as it appears hardest to ASIC.
+[TODO: Professor Boneh should be consulted before this is finalized.]
 
+One of the concerns when selecting a hash function for proof-of-work
+systems is that an attacker may construct custom hardware specifically
+for performing the computation. To minimize the possible impact of
+this, the Orchid Network uses the Equihash hash function
+(\ref{Equihash}).
+
+Equihash is a memory-asymmetric (proofs require large amounts of RAM,
+verification does not), optimization/amortization-free (it is based on
+a very well studied NP-complete problem), limited parallelism
+proof-of-work scheme. We are not aware of a proof-of-work scheme more
+suited to minimizing the influence of custom hardware.
 
 \section{Tickets}
 \label{sec:tickets}
@@ -412,7 +460,6 @@ The probability a mine will be exhausted after $k$ uses is: $\binom{m}{k-1} p^{k
 
 [need more on this]
 
-
 \section{Bandwidth Mining}
 \label{sec:mining}
 
@@ -422,32 +469,79 @@ The probability a mine will be exhausted after $k$ uses is: $\binom{m}{k-1} p^{k
   \caption{A three-Econ Manifold routing traffic for a Customer}
 \end{figure}
 
-\subsection{Relay Nodes}
+In this section we will describe the specification for Relay and Proxy
+behavior, and discuss the ``chaining together'' of these nodes to
+support uncensorable, anonymous web browsing.
+
+\subsection{Specification for the Sale of Bandwidth}
 
 Relay nodes implement a relatively simple behavior pattern:
 
-\begin{enumerate}
-    \item Maintain two connections: up, down.
-    \item Maintain a keys for symmetric encryption.
-    \item Messages coming from up are decrypted and passed to down.
-    \item If the contents of an decrypted message contains tokens for up, send them to up. [maybe make this more clear?]
-    \item Messages coming from down are encrypted and passed to up.
-    \item Monitor the balance of trade, and check/cash-in any winning lottery tickets.
-\end{enumerate}
+\begin{itemize}
+\item Maintain one or more connections, each with their own encryption key.
+\item Check any tickets received, and cash-in winners.
+\item Monitor the balance of trade, and disconnect if it exceeds a
+  predeclared amount.
+\item Receive data from any open connection, and perform decryption at
+  message boundaries.
+\item Process decrypted messages as follows:
+  \begin{itemize}
+  \item Forward any non-control segments to the connection(s)
+    specified in the message.
+  \item Process any control segments:
+    \begin{itemize}
+    \item \emph{Dummy Data.} Instructs the Relay to discard this segment.
+    \item \emph{Burn at Rate.} Instructs the Relay to send data over a
+      connection at a fixed rate, queueing packets and generating data
+      as necessary to maintain the rate.
+    \item \emph{Ratchet Ticket.} Instructs the Relay to pass a Ticket to
+      the peer it received this packet from.
+    \item \emph{Initiate Connection.} Instructs the Relay to establish a
+      new connection. Used during setup and to handle disconnection.
+    \item \emph{Initial Web Connection.} (Proxies Only.) Instructs the
+      proxy to open an SSL connection to the specified host. To
+      support whitelists, this cannot be a raw IP address.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
 
-Note that communication in this system is defined only in a single direction. Bi-directional bandwidth is implemented as two Relay Nodes hosted on a single machine which happen to share WebRTC connections. Extensions to this protocol (Section \ref{sec:future}) are implemented between phases two and three as non-forwarded packets with special instructions. For example, one extension might be “send a packet of all zeros every 3 seconds”. Users interested in relays which support specific extensions can include that as a requirement when querying the Agora. Although our initial release will not support user-provided extensions, we hope to do so in the future.
+%% [saurik: should we flesh out the above with packet specifics? I feel
+%%   like *this* part of the document can/should be more specific than
+%%   the rest, as we'd like transient nodes to be written more rapidly
+%%   than full clients? Just a guess. - dls]
 
-\subsection{Guard Nodes}
+An important consideration in the above behavior is that no
+proof-of-work is required of Relays on an ongoing basis. When combined
+with all our connections being WebRTC connections, this leaves the
+door open for websites potentially monetizing their visitors by
+running pure javascript relay code.
 
-Because relay nodes implement such a simple function, they are relatively disposable. However, the relay that a customer is connected to has a very important piece of information: the customer’s IP address. For this reason, users are assumed to assign a preference to long-lived peers as their first node on the system.
+For discussion of possible extensions via application specific control
+segments, see Section \ref{sec:future}.
 
-(TODO this desire to have long lived peers may itself cause anonymity issues – attackers who are specifically interested in end user IP addresses may disproportionately provide long lived relays.)
+\subsection{Guard Nodes and ``Bandwidth Burning''}
 
-\subsection{Proxies}
+The relay that a customer is connected to has a very important piece
+of information: the customer’s IP address. We assume customers will
+want to keep this as private as possible, and so the default client
+expresses a preference for long-lived peers as the first
+hop.
 
-Proxies are relay nodes who are willing to proxy requests to the open Internet. For this, they may at their option charge an increased fee.
+Another concern for nodes at the first hop, which is discussed in
+depth in our discussion of informational attacks stemming from
+collusion (Section \ref{sec:collusion}), is they sit in an ideal
+position to perform timing attacks. To prevent these attacks, we
+recommend that privacy-conscious users employ a method called
+\emph{Bandwidth Burning} -- paying the second hop to send a fixed
+amount of bandwidth to the customer. As this approach results in
+data-usage which is completely uncorrelated to network usage, this
+approach prevents timing attacks performed by adversaries which cannot
+see the inbound traffic of relay three.
 
-\section{Informational Attacks on Manifolds}
+\section{Chaining and Informational Attacks on Manifolds}
+
+The primary initial application of the above specification is the
+creation of chains.
 
 In this section we explore what kinds of information are available to different nodes for different manifold structures. Perhaps more importantly, we look at how different types of collusion change a user's privacy, and what the chance of such collusion are given $a$, the percentage of a network controlled by a given attacker, and $n$, the total size of the network.
 
@@ -691,11 +785,11 @@ in the Chord DHT.
 
 Addresses are viewed as a ring of size $2^{256}$, and the distance
 between peers at addresses $a, b \in [0, 2^{256}-1]$ is defined to be
-$n$ s.t. $0 \leq n < 2^{256}$ and $a + n \equiv b \pmod{2^{256}}$
+$n$ s.t. $0 \leq n < 2^{256}$ and $a + n \equiv b \pmod{2^{256}}$.
 
 For a collection of Econs in an Agora, $A$, the forced connections for
 a given Econ $e$ are defined to be $\min_{f \in A} dist(e+t, f)$, for
-each of the 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
+each of 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
 
 We chose to use this routing structure because of its maturity,
 successful track record in deployed systems, and correctness
@@ -782,7 +876,9 @@ Long lived P2P networks suffer from Eclipse attacks. Although the
 above signed routing scheme can make these arbitrarily difficult by
 involving ever increasing number of peers for verification, another
 approach is simply to limit the lifespan of peers. For this reason,
-Econs on the Agora must change keys every 10 Ethereum blocks.
+Econs on the Agora must change keys every 100 Ethereum blocks.
+
+This is ensured by $XOR(address, Eth)$
 
 [Todo: finalize randomization schedule here.]
 
@@ -922,6 +1018,22 @@ Many prior approaches (Section \ref{sec:prior-approaches}) discovered that conte
   \caption{A rendezvous node acting as a relay between a Service and a Customer}
 \end{figure}
 
+\subsection{Orchid as a Platform}
+
+Although we anticipate that design of the core system will take up
+much of our time for the immediate future, we are very interested in
+the possibility that adding features to support the following use
+cases may drastically increase the amount of bandwidth routed through
+the Orchid Network.
+
+\begin{enumerate}
+\item APIs for websites to directly interface to the network, and
+  incorporate tokens into their service.
+\item Static Website Hosting and File Storage.
+\item File Sharing.
+\item (Okay, these require more build up I think:) an email/messaging
+  service, arbitration services.
+\end{enumerate}
 
 \nocite{*}
 \printbibliography
