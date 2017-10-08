@@ -221,23 +221,23 @@ Types of data which are assumed to be of interest to an attacker (timeless):
 \begin{itemize}
     \item Real-World Identity Information. A user’s given name, SSN, address, etc.
     \item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
-    \item IP Information. The IP address from which a user is accessing the \mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-    \item \mesh{} Network Information. The keys associated with a node’s current business on the \mesh{} network (*public or private).
+    \item *IP Information. The IP address from which a user is accessing the \mesh{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+    \item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+    \item *\mesh{} Network Information. The keys associated with a node’s current business on the \mesh{} network (*public or private).
 \end{itemize}
 
 Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
 
 \begin{itemize}
-    \item Customer Identification. The attacker learns the IP address of a customer.
-    \item Relay Identification. The attacker learns the IP address of a relay.
-    \item Proxy Identification. The attacker learns the IP address of a proxy.
-    \item Link Identification. The attacker learns that two IP addresses where employed in a manifold.
-    \item Website Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific website.
-    \item Webserver Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific webserver (which may host multiple websites).
-    \item Ethereum Linking. The attacker learns that an Ethereum public key is held by a \mesh{} user.
-    \item Purchase Linking. The attacker learns that two transactions share a common payer.
-    \item Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
+    \item *Customer Identification. The attacker learns the IP address of a customer.
+    \item *Relay Identification. The attacker learns the IP address of a relay.
+    \item *Proxy Identification. The attacker learns the IP address of a proxy.
+    \item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
+    \item *Website Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific website.
+    \item *Webserver Access. The attacker learns that an outbound connection was made from the \mesh{} network to a specific webserver (which may host multiple websites).
+    \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \mesh{} user.
+    \item *Purchase Linking. The attacker learns that two transactions share a common payer.
+    \item *Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
 \end{itemize}
 
 Although all of the above behavioral information is shared with other nodes on the \mesh{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
