@@ -1092,7 +1092,8 @@ Ethereum \emph{and} consuming large amounts of WebRTC traffic?''
 
 To maintain project focus, hardening of Ethereum and/or serving
 Ethereum traffic over the Orchid Network is not a feature of our
-initial release. We plan on addressing this in future versions.
+initial release. We plan on addressing this in future versions, see
+Section \ref{securing-eth}.
 
 \section{Current State of the Software}
 \label{sec:current}
@@ -1137,15 +1138,42 @@ Networking software.
 \section{Performance Scaling}
 \label{sec:performance}
 
+In this section we will examine how the system will function as the
+number of users grows.
+
 \subsection{Algorithmic Performance}
+
+There are broadly three parts to the Orchid Protocol: Ethereum-based
+payments, manifolds, and the Agora.
+
+Ethereum-based payments scale with Ethereum as normal transactions.
+Having reviewed the Ethereum system design, we are confident that even
+if the Orchid Network is extremely successful, and becomes a
+significant percentage of the Ethereum's total transaction volume,
+this component will continue functioning as designed.
+
+Manifolds are simply chains of bandwidth sellers which all have
+performance independent of the total number of Orchid Network
+participants.
+
+The Agora is built on a foundation of the well-studied Chord DHT. The
+number of connections that Econs must maintain grows at a rate of
+O(log n), to a maximum of 256 connections. Queries on the network
+require O(log n) hops. Although these operations do become slower as
+the network increases in size, we do not believe any significant
+impact on end user perceived performance will result.
 
 \subsection{Pricing-Mediated Participation}
 
 The Orchid Protocol is built around tokens. These tokens will allow,
-through the pricing mechanism, will allow for graceful handling of a
-change in balance between buyers and sellers.
+through price discovery, for graceful handling of a change in balance
+between buyers and sellers.
 
-For example, if Relays are in short supply, rather than
+For example, if Relays are in short supply, rather than providing all
+customers with a slow experience, customers will engage in a bidding
+war to determine who can use the system until the shortage is
+corrected. Conversely, if Relays are in abundant supply, some Relays
+may leave the system until such time as prices rise.
 
 \subsection{Real-World Performance}
 
@@ -1217,6 +1245,7 @@ Many prior approaches (Section \ref{sec:prior-approaches}) discovered that conte
 \end{figure}
 
 \subsection{Securing Ethereum Traffic}
+\label{securing-eth}
 
 As discussed in our section on firewall avoidance (\ref{sec:evasion}),
 the Ethereum network traffic of clients is likely to be the weak
