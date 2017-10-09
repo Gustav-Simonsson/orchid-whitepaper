@@ -666,7 +666,7 @@ lines with extraneous ``X''s.
 
 Note that although it may appear this configuration can support
 ``bandwidth burning'' on the path running between the Customer and the
-Proxy, because the Proxy still controls the timing of packets no
+Proxy, because the Proxy still controls the timing of, packets no
 timing attack is prevented.
 
 %% \begin{itemize}
@@ -764,20 +764,46 @@ $\frac{a}{n}$.
 
 \section{SSL and TLS Vulnerabilities}
 
-SSL Downgrade
+SSL and TLS are complicated protocols, receiving a constant stream of
+security updates as implementation flaws are discovered.
+Unfortunately, users sometimes delay upgrading their software, use
+untrustworthy or poorly written software, and misconfigure their
+software. To protect users as possible, the Orchid Protocol provides
+``sanity check'' features.
 
-\subsection{The old browser problem}
+\subsection{SSL Downgrade Attacks}
 
-\subsection{The old phone app problem}
+In so-called \emph{SSL Downgrade Attacks}, the attacker causes a
+secure connection to use poor quality encryption
+(\cite{ssl-downgrade}). To perform this attack, the attacker simply
+removes mention of more secure encryption methods supported by the
+client from the initial key negotiation packets. To prevent this
+attack, the Orchid Client automatically does the inverse where
+possible -- it removes mention of insecure options from the key
+negotiation packet (an ``SSL upgrade'' attack.)
 
-\subsection{Mitigation of 8.1.1 and 8.1.2}
+\subsection{Old Browsers and Phone Apps}
 
-\begin{enumerate}
-\item Check SSL Certificates
-\item Check SSL Versions, Cipher Suites
-\item Check Basic Constraints
-\item “Boring SSL”
-\end{enumerate}
+SSL and TLS security vulnerabilities are periodically found and
+patched in web browsers. However, not all users can be assumed to use
+up-to-date browsers. A similar situation occurs with mobile phone
+apps, where developers sometimes omit things like SSL certificate
+validation.
+
+To address these issues, the Orchid Client automatically verifies
+certificate chains using an up-to-date copy of ``Boring SSL'' -- the
+open source SSL library used in Google Chrome.
+
+%% TODO: we need to flesh this out once we have an SSL expert on hand.
+
+%% \subsection{Mitigation of 8.1.1 and 8.1.2}
+
+%% \begin{enumerate}
+%% \item Check SSL Certificates
+%% \item Check SSL Versions, Cipher Suites
+%% \item Check Basic Constraints
+%% \item “Boring SSL”
+%% \end{enumerate}
 
 
 \section{The Agora}
