@@ -8,8 +8,7 @@ export PATH=$PATH:/Library/TeX/texbin
 document=whitepaper
 rm ${document}.pdf
 pdflatex ${document}
-bibtex ${document}
-pdflatex ${document}
+biber ${document}
 pdflatex ${document}
 pdflatex ${document}
 rm -f *.aux  *.blg  *.dvi  *.log *.lot *.lof *.toc *.gz *.bbl

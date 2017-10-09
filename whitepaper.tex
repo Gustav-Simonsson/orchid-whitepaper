@@ -12,12 +12,11 @@
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{mfirstuc}
-\usepackage[
-  backend=biber,
-  style=authoryear-icomp,
-  url=true
-]{biblatex}
-\addbibresource{whitepaper.bib}
+
+\usepackage[backend=biber,style=authoryear-icomp,url=true]{biblatex}
+%% \usepackage[backend=bibtex]{biblatex}
+\bibliography{whitepaper} 
+
 
 %% \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 \newcommand{\orchid}{Orchid}
@@ -1328,7 +1327,7 @@ the \Orchid{} Network.
 
 %% The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, Orchid may be as good as possible. However, if we
 
-\nocite{*}
+%% \nocite{*}
 \printbibliography
 
 \end{document}
