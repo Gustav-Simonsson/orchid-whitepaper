@@ -209,7 +209,7 @@ TODO: we should offer a “hall of fame”, a cash/token reward, and maybe a t-s
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the \Orchid{} Protocol must defend against are those which reveal information about its users. Because \Orchid{} is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network \cite{oursoftware}.
+The largest class of attacks against which the \Orchid{} Protocol must defend against are those which reveal information about its users. Because \Orchid{} is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network\cite{oursoftware}.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
@@ -263,7 +263,7 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 
 \begin{itemize}
 \item Submitting multiple reviews to Yelp, Amazon, etc.
-\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers \cite{freeridingBittorrent}.
+\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers\cite{freeridingBittorrent}.
 \end{itemize}
 
 \subsection{Eclipse Attacks}
@@ -321,7 +321,7 @@ information.
 
 \subsection{Tor}
 
-Tor \cite{TOR} is a free software project famous for introducing the
+Tor\cite{TOR} is a free software project famous for introducing the
 idea of Onion Routing to a wider audience. In the system, users
 download a global list of relays and exit nodes, select from that list
 randomly, and form ``onion routes'' from their selection. Onion routes
@@ -353,15 +353,15 @@ a packet and where it went.
 
 \subsection{WebRTC}
 
-WebRTC \cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, rather than custom coded TCP and UDP networking code, we both get a world-class implementation of these technologies, and (to an extent) mask our user's traffic as general web traffic.
+WebRTC\cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, rather than custom coded TCP and UDP networking code, we both get a world-class implementation of these technologies, and (to an extent) mask our user's traffic as general web traffic.
 
 \subsection{NACL}
 
-NaCL \cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL, aside from Ethereum smart contract cryptographic code.
+NaCL\cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL, aside from Ethereum smart contract cryptographic code.
 
 \subsection{Ethereum}
 
-Ethereum \cite{29} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
+Ethereum\cite{ethereum} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
 
 \section{Medallions}
 \label{medallions}
@@ -397,8 +397,7 @@ Proof-of-idle rests on the additional assumption that periodic, synchronized pro
 One of the concerns when selecting a hash function for proof-of-work
 systems is that an attacker may construct custom hardware specifically
 for performing the computation. To minimize the possible impact of
-this, the \Orchid{} Network uses the Equihash hash function
-(\cite{Equihash}).
+this, the \Orchid{} Network uses the Equihash hash function\cite{Equihash}.
 
 Equihash is a memory-asymmetric (proofs require large amounts of RAM,
 verification does not), optimization / amortization-free (it is based on
@@ -456,7 +455,7 @@ Ticket production:
 
 To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful \cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
+Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful\cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
@@ -894,9 +893,9 @@ each of 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
 
 We chose to use this routing structure because of its maturity,
 successful track record in deployed systems, and correctness
-proofs. Readers interested in learning more are encouraged to read
-\cite{CHORD}. For our purposes, it is enough to note that the following
-two properties are provided by this routing scheme:
+proofs. Readers interested in learning more are encouraged to
+read\cite{CHORD}. For our purposes, it is enough to note that the
+following two properties are provided by this routing scheme:
 
 \begin{enumerate}
 \item \emph{Finite, Deterministic Connections}. Every Econ has a
@@ -1122,7 +1121,7 @@ We have a ERC20 compliant token, a smart-contract implementing
 stochastic micropayments as described in Section \ref{sec:tickets},
 including javascript helper functions for the creation, validation,
 and claiming of ticket winnings. Readers interested in viewing or
-auditing the code are invited to visit [TODO: github link.]
+auditing the code are invited to visit [TODO: public github link.]
 
 [Initial implementation here is complete. We are beginning the
   security audits of this, and polishing while we wait.]
@@ -1132,7 +1131,7 @@ auditing the code are invited to visit [TODO: github link.]
 We have completed an initial implementation of the proceeding protocol
 in Microsoft's TypeScript (a statically typed variant of the
 javascript language which compiles to javascript.) Readers interested
-in auditing the code are invited to view it at [TODO: github link.]
+in auditing the code are invited to view it at [TODO: public github link.]
 
 [Initial implementation is ongoing, and may lead to minor changes to
   this document. After the software is complete, the security audit
@@ -1314,7 +1313,7 @@ Many prior approaches (Section \ref{sec:prior-work}) discovered that content hos
 \subsection{Securing Ethereum Traffic}
 \label{securing-eth}
 
-As discussed in our section on firewall avoidance (\ref{sec:evasion}),
+As discussed in our section on firewall avoidance (Section \ref{sec:evasion}),
 the Ethereum network traffic of clients is likely to be the weak
 link. Because all nodes must maintain this information, use of the
 \Orchid{} protocol to distribute Ethereum information seems like a
