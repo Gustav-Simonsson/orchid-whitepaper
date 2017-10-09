@@ -15,6 +15,7 @@
 \usepackage[
   backend=biber,
   style=authoryear-icomp,
+  sorting=ynt,
   url=true
 ]{biblatex}
 \addbibresource{whitepaper.bib}
@@ -212,7 +213,7 @@ TODO: we should offer a “hall of fame”, a cash/token reward, and maybe a t-s
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the \Orchid Protocol must defend against are those which reveal information about its users. Because \Orchid is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network \cite{oursoftware}.
+The largest class of attacks against which the \Orchid Protocol must defend against are those which reveal information about its users. Because \Orchid is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network \citation{oursoftware}.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
@@ -266,7 +267,7 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 
 \begin{itemize}
 \item Submitting multiple reviews to Yelp, Amazon, etc.
-\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\cite{freeridingBittorrent}].
+\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\citation{freeridingBittorrent}].
 \end{itemize}
 
 \subsection{Eclipse Attacks}
@@ -274,8 +275,8 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 In an Eclipse Attack, the Attacker's goal is to hide part of a system from itself. The methods employed are generally the network equivalent of privilege escalation attacks: gain control of network positions which have more control of the network, then use that control to acquire more control.
 
 \begin{itemize}
-\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\cite{bitcoinEclipse}].
-\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\cite{bittorrentSybilAttacks}].
+\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\citation{bitcoinEclipse}].
+\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\citation{bittorrentSybilAttacks}].
 \end{itemize}
 
 \subsection{Inference Attacks}
@@ -284,9 +285,9 @@ In an Eclipse Attack, the Attacker's goal is to hide part of a system from itsel
 Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
 
 \begin{itemize}
-\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
-\item Deanonymizing Tor, I2P and \Orchid traffic from global traffic logs[\cite{mixTrafficAnalysis}].
-\item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
+\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\citation{broadInferenceAttacks}].
+\item Deanonymizing Tor, I2P and \Orchid traffic from global traffic logs[\citation{mixTrafficAnalysis}].
+\item Learning the private key of an OpenSSL server through timing analysis[\citation{opensslTimingAttack}].
 \end{itemize}
 
 \subsection{Denial of Service Attacks}
@@ -294,8 +295,8 @@ Deanonymization which stems from a statistical modeling of system behavior are t
 Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. Because system behavior during “unexpected” circumstances is often poorly specified and tested, perhaps surprisingly, DoS attacks are quite useful for deanonymizing nodes in P2P networks. Notable examples:
 
 \begin{itemize}
-\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\cite{DOSvsSec}].
-\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\cite{I2P-vigna}].
+\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\citation{DOSvsSec}].
+\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\citation{I2P-vigna}].
 \end{itemize}
 
 \subsection{Hacking}
@@ -324,7 +325,7 @@ information.
 
 \subsection{Tor}
 
-Tor \cite{TOR} is a free software project famous for introducing the
+Tor \citation{TOR} is a free software project famous for introducing the
 idea of Onion Routing to a wider audience. In the system, users
 download a global list of relays and exit nodes, select from that list
 randomly, and form ``onion routes'' from their selection. Onion routes
@@ -356,15 +357,15 @@ a packet and where it went.
 
 \subsection{WebRTC}
 
-WebRTC \cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, rather than custom coded TCP and UDP networking code, we both get a world-class implementation of these technologies, and (to an extent) mask our user's traffic as general web traffic.
+WebRTC \citation{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, rather than custom coded TCP and UDP networking code, we both get a world-class implementation of these technologies, and (to an extent) mask our user's traffic as general web traffic.
 
 \subsection{NACL}
 
-NaCL \cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL, aside from Ethereum smart contract cryptographic code.
+NaCL \citation{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL, aside from Ethereum smart contract cryptographic code.
 
 \subsection{Ethereum}
 
-Ethereum \cite{29} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
+Ethereum \citation{29} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
 
 \section{Medallions}
 \label{medallions}
@@ -401,7 +402,7 @@ One of the concerns when selecting a hash function for proof-of-work
 systems is that an attacker may construct custom hardware specifically
 for performing the computation. To minimize the possible impact of
 this, the \Orchid Network uses the Equihash hash function
-(\cite{Equihash}).
+(\citation{Equihash}).
 
 Equihash is a memory-asymmetric (proofs require large amounts of RAM,
 verification does not), optimization / amortization-free (it is based on
@@ -426,7 +427,7 @@ Because the \Orchid System uses Ethereum as its payment processor, we might also
 
 With transaction costs now discussed, and looming large, let us now look at what methods exist for controlling them.
 
-One potentially interesting approach, which was employed in MojoNation[\cite{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
+One potentially interesting approach, which was employed in MojoNation[\citation{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
 To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Orchid Network.
 
@@ -459,7 +460,7 @@ Ticket production:
 
 To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful \cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
+Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful \citation{DAM}, which includes discussion of extending tickets to support anonymous payments.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
@@ -800,7 +801,7 @@ software. To protect users as possible, the \Orchid Protocol provides
 
 In so-called \emph{SSL Downgrade Attacks}, the attacker causes a
 secure connection to use poor quality encryption
-(\cite{ssl-downgrade}). To perform this attack, the attacker simply
+(\citation{ssl-downgrade}). To perform this attack, the attacker simply
 removes mention of more secure encryption methods supported by the
 client from the initial key negotiation packets. To prevent this
 attack, the \Orchid Client automatically does the inverse where
@@ -898,7 +899,7 @@ each of 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
 We chose to use this routing structure because of its maturity,
 successful track record in deployed systems, and correctness
 proofs. Readers interested in learning more are encouraged to read
-\cite{CHORD}. For our purposes, it is enough to note that the following
+\citation{CHORD}. For our purposes, it is enough to note that the following
 two properties are provided by this routing scheme:
 
 \begin{enumerate}
@@ -1094,7 +1095,7 @@ users.
 Timing inference is potentially an effective method for detecting
 \Orchid{} users, as the timing and size of web requests over an encrypted
 stream are unlikely to look like other kinds of WebRTC traffic
-(\cite{peekaboo}). To address this, users accessing the \Orchid{} Network
+(\citation{peekaboo}). To address this, users accessing the \Orchid{} Network
 in situations where inference attacks are likely are encouraged to use
 ``bandwidth burning'' (Section \ref{bandwidth-burning}).
 
