@@ -156,7 +156,7 @@ The security of the \Orchid system as a whole ultimately rests on basic assumpti
 
 Without this assumption (or a similar for a different resource), it would be impossible for a fully anonymous and distributed system to function. No distributed quorum could be trusted, because the majority of users might vote in such a way as to facilitate attacks. Users would be left relying on web-of-trust approaches, which by their nature are non-anonymous.
 
-We use this assumption, combined with a method for rapidly demonstrating significant computational work has been done, to construct the basis for trust on our system: medallions. Production of a medallion ties ownership of computation to a public key. They are presented as needed to prove that a given node is “real.” For a more detailed discussion see Section \ref{medallion}.
+We use this assumption, combined with a method for rapidly demonstrating significant computational work has been done, to construct the basis for trust on our system: medallions. Production of a medallion ties ownership of computation to a public key. They are presented as needed to prove that a given node is “real.” For a more detailed discussion see Section \ref{medallions}.
 
 \subsection{High-Level System Overview}
 
@@ -303,28 +303,46 @@ Attacks centered around taking a specific resource offline are termed Denial of 
 Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iteratively, allowing an attacker to eventually ``backtrace'' a connection. Such attacks are out of scope for the \Orchid system, but do have important security implications. If the \Orchid Network's design achieves its goals, this will be the main attack against users of the system.
 
 
-%% \section{Prior Work}
-%% \label{sec:prior-work}
+\section{Alternative Approaches}
+\label{sec:prior-work}
 
-%% \subsection{Unprotected Internet Access}
+\subsection{Unprotected Internet Access}
 
-%% Users simply browsing the internet without protection are simply handing over their data to their ISP, the websites they use, and anyone either of those companies wishes to share it with.
+Users simply browsing the internet without protection are simply
+handing over their data to their ISP, the websites they use, and
+anyone either of those companies wishes to share it with.
 
-%% \subsection{Virtual Private Networking (VPN) Services}
+\subsection{Virtual Private Networking (VPN) Services}
 
-%% VPNs create encrypted connections between an end user and the VPN server.
+VPNs create encrypted connections between an end user and the VPN
+server, which can be effective for circumventing
+censorship. Unfortunately, VPN services are a very poor approach for
+those users seeking anonymity – the VPN provider has complete payment
+information for the subscriber in question, and may be hacked,
+wiretapped, or otherwise compelled to report your browsing
+information.
 
-%% Unfortunately, VPN services are a very poor approach for those users seeking anonymity – the VPN provider has complete payment information for the subscriber in question. If you expect that an adversary might be capable of wiretaping a VPN, or otherwise force VPN cooperation, VPN providers are therefore a poor choice.
+\subsection{Tor}
 
-%% \subsection{Tor}
+Tor \cite{TOR} is a free software project famous for introducing the
+idea of Onion Routing to a wider audience. In the system, users
+download a global list of relays and exit nodes, select from that list
+randomly, and form ``onion routes'' from their selection. Onion routes
+are an ordered list of relays; packets sent along an onion route are
+encrypted for each peer in turn, ensuring that each node must have
+received a packet enroute to the exit node for the exit to understand
+it. A side effect of this forwarding is that, unless several nodes are
+compromised or run by the same user, no two relays know both who sent
+a packet and where it went.
 
-%% Tor is a free software project famous for introducing the idea of Onion Routing.
+%% TODO: section on Dingledine knowing ~75% of relay operators personally.
 
 %% \subsection{Tor with Incentives}
 
 %% \subsection{I2P}
 
-%% I2P is billed as a “next generation” onion router.
+%% I2P is billed as a “next generation” onion router. It is primarily
+%% focused on communication internal
 
 %% \subsection{Mixmaster, Mixminion, and other Chaumian relay schemes}
 
@@ -1221,7 +1239,7 @@ can be relied on to ``out'' them.
 Attacker Goals: Learn Customer IP Identification, and Website Identification.
 
 Analysis related to this class of attack are discussed in more detail
-in Section \ref{sec:collision}. The outlook for this attacker is
+in Section \ref{sec:collusion}. The outlook for this attacker is
 bleak: the difficulty of positioning yourself in several positions of
 a manifold requires possessing (and dedicating to this attack) a large
 percentage of global computation power.
@@ -1288,7 +1306,7 @@ network.
 \subsection{Protecting Content Hosts}
 \label{subsec:protocol-extentions}
 
-Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Orchid{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
+Many prior approaches (Section \ref{sec:prior-work}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Orchid{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
 
 \begin{figure}[htbp]
   \centering
