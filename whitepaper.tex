@@ -263,7 +263,7 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 
 \begin{itemize}
 \item Submitting multiple reviews to Yelp, Amazon, etc.
-\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers [\cite{freeridingBittorrent}].
+\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers \cite{freeridingBittorrent}.
 \end{itemize}
 
 \subsection{Eclipse Attacks}
@@ -271,8 +271,8 @@ Malicious actions, performed by pretending to be multiple users, are termed Sybi
 In an Eclipse Attack, the Attacker's goal is to hide part of a system from itself. The methods employed are generally the network equivalent of privilege escalation attacks: gain control of network positions which have more control of the network, then use that control to acquire more control.
 
 \begin{itemize}
-\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power[\cite{bitcoinEclipse}].
-\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link[\cite{bittorrentSybilAttacks}].
+\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power\cite{bitcoinEclipse}.
+\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link\cite{bittorrentSybilAttacks}.
 \end{itemize}
 
 \subsection{Inference Attacks}
@@ -281,9 +281,9 @@ In an Eclipse Attack, the Attacker's goal is to hide part of a system from itsel
 Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
 
 \begin{itemize}
-\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
-\item Deanonymizing Tor, I2P and \Orchid{} traffic from global traffic logs[\cite{mixTrafficAnalysis}].
-\item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
+\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic\cite{broadInferenceAttacks}.
+\item Deanonymizing Tor, I2P and \Orchid{} traffic from global traffic logs\cite{mixTrafficAnalysis}.
+\item Learning the private key of an OpenSSL server through timing analysis\cite{opensslTimingAttack}.
 \end{itemize}
 
 \subsection{Denial of Service Attacks}
@@ -291,8 +291,8 @@ Deanonymization which stems from a statistical modeling of system behavior are t
 Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. Because system behavior during “unexpected” circumstances is often poorly specified and tested, perhaps surprisingly, DoS attacks are quite useful for deanonymizing nodes in P2P networks. Notable examples:
 
 \begin{itemize}
-\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic[\cite{DOSvsSec}].
-\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network[\cite{I2P-vigna}].
+\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic\cite{DOSvsSec}.
+\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network\cite{I2P-vigna}.
 \end{itemize}
 
 \subsection{Hacking}
@@ -423,7 +423,7 @@ Because the \Orchid{} System uses Ethereum as its payment processor, we might al
 
 With transaction costs now discussed, and looming large, let us now look at what methods exist for controlling them.
 
-One potentially interesting approach, which was employed in MojoNation[\cite{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
+One potentially interesting approach, which was employed in MojoNation\cite{mojonation}, is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
 To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Orchid{} Network.
 
