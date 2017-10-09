@@ -20,14 +20,16 @@
 \addbibresource{whitepaper.bib}
 
 %% \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\newcommand{\orchid}{Orchid}
+\newcommand{\Orchid}{\orchid}
 
 \usepackage{titlesec}
 \titlelabel{\thetitle.\quad}
 
-\title{Orchid: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
-%% \include{draft}
+\title{\Orchid: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
+\include{draft}
 \author{{David L. Salamon with} \\ {Jay Freeman, Gustav Simonsson, Brian J. Fox} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
-\date{October 15, 2017}
+\date{\today{}}
 
 \raggedbottom
 
@@ -99,7 +101,7 @@ as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpa
 
 \subsection{System Goals}
 
-The Orchid Network was designed with three goals:
+The \Orchid Network was designed with three goals:
 
 \begin{enumerate}
 \item To codify the right to unrestricted, unsurveilled Internet access on a network level.
@@ -126,10 +128,10 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Terms}
 
 \begin{itemize}
-\item Node. A computer running a program which implements the Orchid Protocol.
+\item Node. A computer running a program which implements the \Orchid Protocol.
 \item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
 \item User. The owner of a node.
-\item Agora. A collection of nodes interacting through the Orchid Distributed Marketplace Protocol.
+\item Agora. A collection of nodes interacting through the \Orchid Distributed Marketplace Protocol.
 \item \emph{The} Agora. The Agora in possesion of the most global computational power.
 \item Econ. A node who is a member of an Agora's collection.
 \item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
@@ -146,7 +148,7 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 \subsection{Core Security Assumptions}
 \label{core-security}
 
-The security of the Orchid system as a whole ultimately rests on basic assumptions about the world. In the event this assumption is ever falsified, the system will not function as intended.
+The security of the \Orchid system as a whole ultimately rests on basic assumptions about the world. In the event this assumption is ever falsified, the system will not function as intended.
 
 \begin{itemize}
 \item The majority of global computation power will not cooperate on an attack.
@@ -180,21 +182,21 @@ Once relay and proxy bandwidth has been purchased, the customer configures them 
 
 \subsubsection{Web Browsing}
 
-The majority of initial usage of the Orchid Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (Section \ref{sec:collusion}), perhaps because they are run by the same user, no single node knows the Customer's IP Address and the server they communicated with.
+The majority of initial usage of the \Orchid Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (Section \ref{sec:collusion}), perhaps because they are run by the same user, no single node knows the Customer's IP Address and the server they communicated with.
 
 \subsection{User Stories}
 
 \subsubsection{Bandwidth Miners}
 
-Users with excess computational power and bandwidth may choose to support the Orchid project, as well as earn money, by running an econ on their computer. To do so, they install and run the Orchid software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into Medallions. Econs are compensated for their lost computation by bandwidth customers.
+Users with excess computational power and bandwidth may choose to support the \Orchid project, as well as earn money, by running an econ on their computer. To do so, they install and run the \Orchid software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into Medallions. Econs are compensated for their lost computation by bandwidth customers.
 
 \subsubsection{Resisting Oppressive Governments}
 
-Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the Orchid software, provide an initial payment to their Orchid wallet, and browse the web as normal. Unlike similar services (Section \ref{sec:prior-work}), the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity (Section \ref{sec:agora}).
+Users who live under oppressive regimes (where, for example, it is illegal to access Wikipedia), can use the system to hide information about the websites they are browsing. To do so they install and run the \Orchid software, provide an initial payment to their \Orchid wallet, and browse the web as normal. Unlike similar services (Section \ref{sec:prior-work}), the network pays hosts for their participation. We hope this will lead to greater participation, which in turn will lead to grater anonymity (Section \ref{sec:agora}).
 
 \subsubsection{Resisting Oppressive Web Applications}
 
-Users of oppressive web applications (sites which change services offered based on geographic location), can use the Orchid Network to appear to be browsing from the country of their choice. Unlike similar services (Section \ref{sec:prior-work}), traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the Orchid Network, i.e. making the real-time playback of high resolution video viable.
+Users of oppressive web applications (sites which change services offered based on geographic location), can use the \Orchid Network to appear to be browsing from the country of their choice. Unlike similar services (Section \ref{sec:prior-work}), traffic will not come from IP ranges allocated to server farms, and so will be much harder for oppressive websites to block. Additionally, because bandwidth is incentivized, it will likely prove much more plentiful on the \Orchid Network, i.e. making the real-time playback of high resolution video viable.
 
 
 \section{Attacks}
@@ -210,16 +212,16 @@ TODO: we should offer a “hall of fame”, a cash/token reward, and maybe a t-s
 
 \subsubsection{Information Gathering}
 
-The largest class of attacks against which the Orchid Protocol must defend against are those which reveal information about its users. Because Orchid is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network \cite{oursoftware}.
+The largest class of attacks against which the \Orchid Protocol must defend against are those which reveal information about its users. Because \Orchid is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network \cite{oursoftware}.
 
 Types of data which are assumed to be of interest to an attacker (timeless):
 
 \begin{itemize}
 \item Real-World Identity Information. A user’s given name, SSN, address, etc.
 \item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
-\item *IP Information. The IP address from which a user is accessing the Orchid Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+\item *IP Information. The IP address from which a user is accessing the \Orchid Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
 \item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
-\item *Orchid Network Information. The keys associated with a node’s current business on the Orchid network (*public or private).
+\item *\Orchid Network Information. The keys associated with a node’s current business on the \Orchid network (*public or private).
 \end{itemize}
 
 Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
@@ -229,29 +231,29 @@ Types of Behavioral information which are assumed to be of interest to an attack
 \item *Relay Identification. The attacker learns the IP address of a relay.
 \item *Proxy Identification. The attacker learns the IP address of a proxy.
 \item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
-\item *Website Access. The attacker learns that an outbound connection was made from the Orchid network to a specific website.
-\item *Webserver Access. The attacker learns that an outbound connection was made from the Orchid network to a specific webserver (which may host multiple websites).
-\item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a Orchid user.
+\item *Website Access. The attacker learns that an outbound connection was made from the \Orchid network to a specific website.
+\item *Webserver Access. The attacker learns that an outbound connection was made from the \Orchid network to a specific webserver (which may host multiple websites).
+\item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \Orchid user.
 \item *Purchase Linking. The attacker learns that two transactions share a common payer.
 \item *Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
 \end{itemize}
 
-Although all of the above behavioral information is shared with other nodes on the Orchid Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
+Although all of the above behavioral information is shared with other nodes on the \Orchid Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
 
 \subsection{Economic Attacks}
 \label{econ-attacks}
 
-Unlike similar systems, Orchid must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
+Unlike similar systems, \Orchid must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
 
 \begin{enumerate}
 \item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
-\item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the Orchid Network with purchases, thereby taking them offline.
+\item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \Orchid Network with purchases, thereby taking them offline.
 \end{enumerate}
 
 \subsection{QoS Attacks}
 \label{qos}
 
-Some adversaries may be satisfied simply slowing down the system performance of Orchid network users generally, thereby potentially diminishing usage.
+Some adversaries may be satisfied simply slowing down the system performance of \Orchid network users generally, thereby potentially diminishing usage.
 
 \subsection{Man-in-the-Middle Attacks}
 \label{mitm}
@@ -283,7 +285,7 @@ Deanonymization which stems from a statistical modeling of system behavior are t
 
 \begin{itemize}
 \item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic[\cite{broadInferenceAttacks}].
-\item Deanonymizing Tor, I2P and Orchid traffic from global traffic logs[\cite{mixTrafficAnalysis}].
+\item Deanonymizing Tor, I2P and \Orchid traffic from global traffic logs[\cite{mixTrafficAnalysis}].
 \item Learning the private key of an OpenSSL server through timing analysis[\cite{opensslTimingAttack}].
 \end{itemize}
 
@@ -298,7 +300,7 @@ Attacks centered around taking a specific resource offline are termed Denial of 
 
 \subsection{Hacking}
 
-Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iteratively, allowing an attacker to eventually ``backtrace'' a connection. Such attacks are out of scope for the Orchid system, but do have important security implications. If the Orchid Network's design achieves its goals, this will be the main attack against users of the system.
+Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iteratively, allowing an attacker to eventually ``backtrace'' a connection. Such attacks are out of scope for the \Orchid system, but do have important security implications. If the \Orchid Network's design achieves its goals, this will be the main attack against users of the system.
 
 
 %% \section{Prior Work}
@@ -332,7 +334,7 @@ Particularly motivated attackers might directly compromise nodes on the network,
 \section{External Libraries}
 \label{sec:external-libraries}
 
-Orchid’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the specific properties used in the Orchid Network, we briefly summarize them here.
+\Orchid’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the specific properties used in the \Orchid Network, we briefly summarize them here.
 
 \subsection{WebRTC}
 
@@ -344,7 +346,7 @@ NaCL \cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focuse
 
 \subsection{Ethereum}
 
-Ethereum \cite{29} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
+Ethereum \cite{29} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
 
 \section{Medallions}
 \label{medallions}
@@ -369,7 +371,7 @@ Readers who are familiar with other distributed market based networks will have 
 
 Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. As our attack model includes oppressive governments, this can not be counted on. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a ``hostile takeover'' much more difficult. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
 
-Proof-of-space looks much more interesting. Although we are not sure that a suitable method will be located, we are exploring the possibility of using proof-of-space for an upcoming version of the Orchid Protocol. This would allow old smart phones, for example, to be installed by users in their homes as Relays and Proxies. See Section \ref{future:proof-of-space}.
+Proof-of-space looks much more interesting. Although we are not sure that a suitable method will be located, we are exploring the possibility of using proof-of-space for an upcoming version of the \Orchid Protocol. This would allow old smart phones, for example, to be installed by users in their homes as Relays and Proxies. See Section \ref{future:proof-of-space}.
 
 Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Econs), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of econs for this attack to cease being devastating, we are not using proof-of-idle for this release.
 
@@ -380,7 +382,7 @@ Proof-of-idle rests on the additional assumption that periodic, synchronized pro
 One of the concerns when selecting a hash function for proof-of-work
 systems is that an attacker may construct custom hardware specifically
 for performing the computation. To minimize the possible impact of
-this, the Orchid Network uses the Equihash hash function
+this, the \Orchid Network uses the Equihash hash function
 (\cite{Equihash}).
 
 Equihash is a memory-asymmetric (proofs require large amounts of RAM,
@@ -392,7 +394,7 @@ suited to minimizing the influence of custom hardware.
 \section{Tickets}
 \label{sec:tickets}
 
-Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the Orchid Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
+Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \Orchid Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
 
 \subsection{How Much Will A Packet Cost?}
 
@@ -400,7 +402,7 @@ For the purposes of this discussion, let us assume that a packet is 1e3 bytes in
 
 \subsection{Ethereum Transaction Costs}
 
-Because the Orchid System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
+Because the \Orchid System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
 
 \subsection{Building Micropayments from Macropayments}
 
@@ -408,7 +410,7 @@ With transaction costs now discussed, and looming large, let us now look at what
 
 One potentially interesting approach, which was employed in MojoNation[\cite{mojonation}], is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
 
-To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the Orchid Network.
+To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Orchid Network.
 
 \subsection{Implementation Constraints}
 
@@ -439,19 +441,19 @@ Ticket production:
 
 To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
 
-Lottery ticket type payments are not novel to Orchid. For interested readers, we recommend the extremely detailed and helpful \cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
+Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful \cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
 
 \subsection{Balance of Trade}
 \label{tokens-bot}
 
 As mentioned above, the realities of symmetric encryption performance prevent us from sending payment with every packet, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
 
-If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq xy$ or (2) the total amount of work that Bob can perform is $\leq xy$. As we will see in our discussion of the Agora (Section \ref{sec:agora}), setup costs exist on the Orchid Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers asymmetrically know how much work they will require, the Orchid Network has Customers pre-pay.
+If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq xy$ or (2) the total amount of work that Bob can perform is $\leq xy$. As we will see in our discussion of the Agora (Section \ref{sec:agora}), setup costs exist on the \Orchid Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers asymmetrically know how much work they will require, the \Orchid Network has Customers pre-pay.
 
 \subsection{Risk Management}
 
 One of the drawbacks of stochastic payments is that some users will
-get unlucky. Customers using Orchid as a VPN alternative may be
+get unlucky. Customers using \Orchid as a VPN alternative may be
 pleasantly surprised if their bill is randomly cheaper than expected,
 but a random overrun may cause them to quit the network.
 
@@ -545,7 +547,7 @@ see the inbound traffic of relay three.
 
 To provide assistance to users seeking evasion (Section
 \ref{sec:evasion}), bandwidth burning will also support non-fixed
-rates determined by the statistical properties of popular non-Orchid
+rates determined by the statistical properties of popular non-\Orchid
 WebRTC protocols.
 
 \subsection{Chaining}
@@ -563,7 +565,7 @@ different types of collusion impact a user's privacy.
 \subsection{Information Available to an Individual Relay or Proxy}
 \label{relay-proxy-info-known}
 
-Due to the inherent structure of IP-based networking, and the Orchid protocol, relay nodes gain access to the following information:
+Due to the inherent structure of IP-based networking, and the \Orchid protocol, relay nodes gain access to the following information:
 
 \begin{itemize}
 \item The IP Addresses of all their connections. This is required to perform IP communication.
@@ -577,7 +579,7 @@ Due to the inherent structure of IP-based networking, and the Orchid protocol, r
 The following roles can collude to expose customer information:
 
 \begin{itemize}
-\item Global Adversary. An attacker with a global view of the network. Orchid does not currently protect against this type of attacker. Untrustworthy with probability 1.
+\item Global Adversary. An attacker with a global view of the network. \Orchid does not currently protect against this type of attacker. Untrustworthy with probability 1.
 \item ISP. The user's Internet service provider. Untrustworthy with probability $s$.
 \item Web. The webserver the proxy is connected to. Untrustworthy with probability $w$.
 \item Relay$_n$. The nth relay in the chain. Untrustworthy with probability $\frac{a}{n}$.
@@ -587,7 +589,7 @@ The following roles can collude to expose customer information:
 \subsection{Types of Attack}
 
 The central goal of collusion attacks is the linking of a specific
-Orchid customer with a specific SSL connection. There are two ways
+\Orchid customer with a specific SSL connection. There are two ways
 this can be done:
 
 \begin{itemize}
@@ -600,7 +602,7 @@ this can be done:
 
 \subsection{Zero Relays, Zero Proxies: Direct Connection}
 
-Although the Orchid system is not used when a Customer connects
+Although the \Orchid system is not used when a Customer connects
 directly to a website, we feel it is important to review what
 informational risk are present in this setup.
 
@@ -773,7 +775,7 @@ SSL and TLS are complicated protocols, receiving a constant stream of
 security updates as implementation flaws are discovered.
 Unfortunately, users sometimes delay upgrading their software, use
 untrustworthy or poorly written software, and misconfigure their
-software. To protect users as possible, the Orchid Protocol provides
+software. To protect users as possible, the \Orchid Protocol provides
 ``sanity check'' features.
 
 \subsection{SSL Downgrade Attacks}
@@ -783,7 +785,7 @@ secure connection to use poor quality encryption
 (\cite{ssl-downgrade}). To perform this attack, the attacker simply
 removes mention of more secure encryption methods supported by the
 client from the initial key negotiation packets. To prevent this
-attack, the Orchid Client automatically does the inverse where
+attack, the \Orchid Client automatically does the inverse where
 possible -- it removes mention of insecure options from the key
 negotiation packet (an ``SSL upgrade'' attack.)
 
@@ -795,7 +797,7 @@ up-to-date browsers. A similar situation occurs with mobile phone
 apps, where developers sometimes omit things like SSL certificate
 validation.
 
-To address these issues, the Orchid Client automatically verifies
+To address these issues, the \Orchid Client automatically verifies
 certificate chains using an up-to-date copy of ``Boring SSL'' -- the
 open source SSL library used in Google Chrome.
 
@@ -864,7 +866,7 @@ relatively efficient random access to Econs of $O(log^2 n)$ packets.
 
 [need graphic]
 
-Econs are connected in the Orchid Protocol using the same scheme used
+Econs are connected in the \Orchid Protocol using the same scheme used
 in the Chord DHT.
 
 Addresses are viewed as a ring of size $2^{256}$, and the distance
@@ -980,7 +982,7 @@ The above discussion discussion of security is ultimately meaningless if there i
 \item Traversal Distance. The Agora provides address look ups in $O(log_2(n))$ hops. We can use this in reverse to estimate network density.
 \end{itemize}
 
-One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(n))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the Orchid System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
+One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(n))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \Orchid System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
 
 %% \subsection{Economics}
 
@@ -1031,7 +1033,7 @@ hope that sufficiently costly attacks will not be performed.
 \subsection{Bootstrapping}
 
 One of the first attacks we anticipate firewall providers to attempt
-against the Orchid Network is to create a list of Entry Econs, and to
+against the \Orchid Network is to create a list of Entry Econs, and to
 block all access to them. This is because if customers can not access
 Entry Econs, they could not use the network. Complicating matters, a
 competent attacker must be assumed to have any list of IP addresses
@@ -1068,13 +1070,13 @@ We do not anticipate the use of deep packet inspection or active
 probing to provide significant information. Through our use of WebRTC,
 all communication is encrypted and there are no open ports unless an
 active WebRTC offer has been issued. Since this matches the behavior
-of all other uses of WebRTC, this behavior can not disambiguate Orchid
+of all other uses of WebRTC, this behavior can not disambiguate \Orchid{}
 users.
 
 Timing inference is potentially an effective method for detecting
-Orchid users, as the timing and size of web requests over an encrypted
+\Orchid{} users, as the timing and size of web requests over an encrypted
 stream are unlikely to look like other kinds of WebRTC traffic
-(\cite{peekaboo}). To address this, users accessing the Orchid Network
+(\cite{peekaboo}). To address this, users accessing the \Orchid{} Network
 in situations where inference attacks are likely are encouraged to use
 ``bandwidth burning'' (Section \ref{bandwidth-burning}).
 
@@ -1087,7 +1089,7 @@ link. Firewall operators may simply ask ``is the computer running
 Ethereum \emph{and} consuming large amounts of WebRTC traffic?''
 
 To maintain project focus, hardening of Ethereum and/or serving
-Ethereum traffic over the Orchid Network is not a feature of our
+Ethereum traffic over the \Orchid{} Network is not a feature of our
 initial release. We plan on addressing this in future versions, see
 Section \ref{securing-eth}.
 
@@ -1139,17 +1141,17 @@ number of users grows.
 
 \subsection{Algorithmic Performance}
 
-There are broadly three parts to the Orchid Protocol: Ethereum-based
+There are broadly three parts to the \Orchid{} Protocol: Ethereum-based
 payments, manifolds, and the Agora.
 
 Ethereum-based payments scale with Ethereum as normal transactions.
 Having reviewed the Ethereum system design, we are confident that even
-if the Orchid Network is extremely successful, and becomes a
+if the \Orchid{} Network is extremely successful, and becomes a
 significant percentage of the Ethereum's total transaction volume,
 this component will continue functioning as designed.
 
 Manifolds are simply chains of bandwidth sellers which all have
-performance independent of the total number of Orchid Network
+performance independent of the total number of \Orchid{} Network
 participants.
 
 The Agora is built on a foundation of the well-studied Chord DHT. The
@@ -1161,7 +1163,7 @@ impact on end user perceived performance will result.
 
 \subsection{Pricing-Mediated Participation}
 
-The Orchid Protocol is built around tokens. These tokens will allow,
+The \Orchid{} Protocol is built around tokens. These tokens will allow,
 through price discovery, for graceful handling of a change in balance
 between buyers and sellers.
 
@@ -1181,7 +1183,7 @@ may leave the system until such time as prices rise.
 
 \subsection{Oppressive Web Applications}
 
-Attacker Goals: Identify all Orchid Relay and Proxy IP addresses.
+Attacker Goals: Identify all \Orchid{} Relay and Proxy IP addresses.
 
 Because the Agora contains all Relays and Proxies, this is the inverse
 attack of the one discussed in Section \ref{sec:evasion}.
@@ -1205,11 +1207,11 @@ their own users.
 
 \subsection{Corporate Networks and ``Great'' Firewalls}
 
-Attacker Goals: Prevent usage of the Orchid network by users to whom
+Attacker Goals: Prevent usage of the \Orchid{} network by users to whom
 you provide Internet access.
 
 Features related to this are discussed in more detail in Section
-\ref{sec:evasion}. The outlook for this attacker is bleak: Orchid
+\ref{sec:evasion}. The outlook for this attacker is bleak: \Orchid{}
 network usage presents as WebRTC connections relaying a fixed amount
 of data. There are no open ports to probe, and no IP addresses which
 can be relied on to ``out'' them.
@@ -1267,7 +1269,7 @@ time).
 \section{Future Work}
 \label{sec:future}
 
-The items in this section fall into two categories: nice-to-haves, and features we are internally conflicted about releasing to the public. We believe this is conflictedness is universal -- although almost everyone has favorite examples of power being used for oppression, there are also countless examples of power being used for good. Protocols like Orchid have no judgement of their own, and so cannot tell if they are routing traffic for a freedom fighter or a terrorist, villain or hero.
+The items in this section fall into two categories: nice-to-haves, and features we are internally conflicted about releasing to the public. We believe this is conflictedness is universal -- although almost everyone has favorite examples of power being used for oppression, there are also countless examples of power being used for good. Protocols like \Orchid{} have no judgement of their own, and so cannot tell if they are routing traffic for a freedom fighter or a terrorist, villain or hero.
 
 \subsection{Proof of Space}
 \label{future:proof-of-space}
@@ -1280,13 +1282,13 @@ computers to act as network routers.
 
 We are excited to explore the possibility of using disk space to be
 the scarce resource at the core of our security, which might allow old
-phones or similar hardware to profitably participate in the Orchid
+phones or similar hardware to profitably participate in the \Orchid{}
 network.
 
 \subsection{Protecting Content Hosts}
 \label{subsec:protocol-extentions}
 
-Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, Orchid could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
+Many prior approaches (Section \ref{sec:prior-approaches}) discovered that content hosts sought similar protections as web users. We are internally conflicted on this point, as we do believe there is content which it is in the public interest not to have freely distributed (information related to the manufacture of nuclear weapons for example). However, should unforseen circumstances demand it, \Orchid{} could be extended to support such ``unrestricted, unsurveilled Hosts'' as follows:
 
 \begin{figure}[htbp]
   \centering
@@ -1300,20 +1302,20 @@ Many prior approaches (Section \ref{sec:prior-approaches}) discovered that conte
 As discussed in our section on firewall avoidance (\ref{sec:evasion}),
 the Ethereum network traffic of clients is likely to be the weak
 link. Because all nodes must maintain this information, use of the
-Orchid protocol to distribute Ethereum information seems like a
+\Orchid{} protocol to distribute Ethereum information seems like a
 natural fit.
 
 Unfortunately, relying on those you are paying for information about
 payments leads to tricky issues. We hope to add this in the near
 future, but will not be including it in our initial release.
 
-\subsection{Orchid as a Platform}
+\subsection{\Orchid{} as a Platform}
 
 Although we anticipate that design of the core system will take up
 much of our time for the immediate future, we are very interested in
 the possibility that adding features to support the following use
 cases may drastically increase the amount of bandwidth routed through
-the Orchid Network.
+the \Orchid{} Network.
 
 \begin{enumerate}
 \item APIs for websites to directly interface to the network, and
