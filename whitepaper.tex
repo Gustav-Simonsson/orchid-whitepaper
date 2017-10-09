@@ -304,32 +304,32 @@ Attacks centered around taking a specific resource offline are termed Denial of 
 Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iteratively, allowing an attacker to eventually ``backtrace'' a connection. Such attacks are out of scope for the \mesh{} system, but do have important security implications. If the \mesh{} Network's design achieves its goals, this will be the main attack against users of the system.
 
 
-\section{Prior Work}
-\label{sec:prior-work}
+%% \section{Prior Work}
+%% \label{sec:prior-work}
 
-\subsection{Unprotected Internet Access}
+%% \subsection{Unprotected Internet Access}
 
-Users simply browsing the internet without protection are simply handing over their data to their ISP, the websites they use, and anyone either of those companies wishes to share it with.
+%% Users simply browsing the internet without protection are simply handing over their data to their ISP, the websites they use, and anyone either of those companies wishes to share it with.
 
-\subsection{Virtual Private Networking (VPN) Services}
+%% \subsection{Virtual Private Networking (VPN) Services}
 
-VPNs create encrypted connections between an end user and the VPN server.
+%% VPNs create encrypted connections between an end user and the VPN server.
 
-Unfortunately, VPN services are a very poor approach for those users seeking anonymity – the VPN provider has complete payment information for the subscriber in question. If you expect that an adversary might be capable of wiretaping a VPN, or otherwise force VPN cooperation, VPN providers are therefore a poor choice.
+%% Unfortunately, VPN services are a very poor approach for those users seeking anonymity – the VPN provider has complete payment information for the subscriber in question. If you expect that an adversary might be capable of wiretaping a VPN, or otherwise force VPN cooperation, VPN providers are therefore a poor choice.
 
-\subsection{Tor}
+%% \subsection{Tor}
 
-Tor is a free software project famous for introducing the idea of Onion Routing.
+%% Tor is a free software project famous for introducing the idea of Onion Routing.
 
-\subsection{Tor with Incentives}
+%% \subsection{Tor with Incentives}
 
-\subsection{I2P}
+%% \subsection{I2P}
 
-I2P is billed as a “next generation” onion router.
+%% I2P is billed as a “next generation” onion router.
 
-\subsection{Mixmaster, Mixminion, and other Chaumian relay schemes}
+%% \subsection{Mixmaster, Mixminion, and other Chaumian relay schemes}
 
-These are cool!
+%% These are cool!
 
 
 \section{External Libraries}
@@ -1005,17 +1005,6 @@ One might be inclined to believe that density estimation is enough, however a cl
 
 Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy, and specify their whitelists in their responses to \emph{Get Offers}.
 
-%% \subsection{Informational Attacks}
-
-%% \subsubsection{Learning All Econ IP Addresses}
-
-%% The number of forced connections grows at roughly $log_4(N)$ where N
-%% is the network size. If an attacker holds $m\%$ of global computation,
-%% they will be able to create $c = 10mlog_4(N)$ connections ip addresses
-%% per key rotation. The expected number of IP addresses seen by the
-%% attacker is then, $seen_t = (1-\frac{seen_t}{N})c$
-
-
 %% TODO tonight?
 %% \section{Economic Soundness}
 %% \label{sec:economic-soundness}
@@ -1059,14 +1048,14 @@ challenge from their client's options screen into the most convenient
 communications mechanism, then copy/paste the reply back into the
 client.
 
-\subsection{Deep Packet Inspection, Timing Inference, and Active Probing of Connections}
+\subsection{DPI, Inference, and Active Probing}
 
-More sophisticated firewalls employ methods such as deep packet
-inspection (analysis of the contents of packets rather than just the
-headers), timing inference (the use of aggregate statistical measures
-over packet size, quantity, and timing), as well as active probing
-(attempting connection with the user or the server they are connecting
-to in an attempt to identify the service being provided.)
+More sophisticated firewalls employ methods such as Deep Packet
+Inspection (DPI; analysis of the contents of packets rather than just
+the headers), timing inference (the use of aggregate statistical
+measures over packet size, quantity, and timing), as well as active
+probing (attempting connection with the user or the server they are
+connecting to in an attempt to identify the service being provided.)
 
 We do not anticipate the use of deep packet inspection or active
 probing to provide significant information. Through our use of WebRTC,
@@ -1185,34 +1174,88 @@ may leave the system until such time as prices rise.
 
 \subsection{Oppressive Web Applications}
 
-Attacker Goals: Identify all \Mesh{} Proxy IP addresses.
+Attacker Goals: Identify all \Mesh{} Relay and Proxy IP addresses.
 
-\subsection{Corporate Networks}
+Because the Agora contains all Relays and Proxies, this is the inverse
+attack of the one discussed in Section \ref{sec:evasion}.
 
-Attacker Goals: Prevent usage of the \Mesh{} network.
+The number of forced connections on the Agora grows at O(log n) where
+n is the network size. If an attacker holds $m\%$ of global
+computation, they will learn log(n) ip addresses each time they
+complete a proof-of-work computation. In $c$ epochs they will
+therefore learn $1 - (1 - \frac{log(n)}{n})^c$ percent of the Relay and
+Proxy IP addresses.
 
-Resources: The attacker controls the network, and so can engage in traffic shaping and connection dropping.
+Readers familiar with the how the blocking of Tor traffic panned out
+may worry the above describes a dire issue for the
+system. Fortunately, this is not the case. Tor has around 1,000 exit
+nodes, which allowed for easy filtering. In our case, largely due to
+our support for whitelists, we expect to have hundreds of thousands of
+exit nodes. In addition to this forming a much larger computational
+challenge to unmask using the above method, blocking these IP
+addresses would result in the oppressive Web Application blocking
+their own users.
+
+\subsection{Corporate Networks and ``Great'' Firewalls}
+
+Attacker Goals: Prevent usage of the \Mesh{} network by users to whom
+you provide Internet access.
+
+Features related to this are discussed in more detail in Section
+\ref{sec:evasion}. The outlook for this attacker is bleak: Orchid
+network usage presents as WebRTC connections relaying a fixed amount
+of data. There are no open ports to probe, and no IP addresses which
+can be relied on to ``out'' them.
 
 \subsection{Passive Monitoring and Inference, perhaps with Sybil Attacks}
 
 Attacker Goals: Learn Customer IP Identification, and Website Identification.
 
-Resources: An attacker has view of some amount of passive network surveillance, and is able to add nodes to the network up to $s\%$ as a source of additional data.
+Analysis related to this class of attack are discussed in more detail
+in Section \ref{sec:collision}. The outlook for this attacker is
+bleak: the difficulty of positioning yourself in several positions of
+a manifold requires possessing (and dedicating to this attack) a large
+percentage of global computation power.
 
-\subsection{Great Firewalls}
-
-Attacker Goals: Prevent usage of the \Mesh{} network.
-
-Resources: The attacker controls the network, has passive surveillance of it, and is able to add nodes up to $s\%$ of the network size.
-
-\subsection{Small-Time Mayhem and QoS Attacks}
+\subsection{Small-Time Trolling and QoS Attacks}
 
 Synopsis: An attacker would like to cause mayhem on as much of the network as possible.
 
-Resources: On the order of ten thousand dollars of networking and computation ability.
+Security minded readers looking for a good time are encouraged to
+perform analysis in this domain. The task here is, given a limited
+budget (perhaps on the order of \$10,000 USD), to disrupt the network
+as much as possible.
 
-% \subsection{Exploitative End Users (Vigna)} -- I think they might have the same ``goals'' as all other attackers, or else it's not really security research.
+\subsubsection{Attacking Manifolds}
 
+Attackers may try a variety of attacks here: randomly dropping
+packets, providing only very slow service, providing intermittently
+slow service, or simply disconnecting. In all cases, the customer
+simply replaces the node in question, leading to a minor inconvenience
+spread across all customers. An additional inconvenience may be caused
+to other relays in the case of dropping packets, since there may be no
+way of determining if A did not forward the packet of if B is lying
+about not having received it. In this case the customer replaces both
+Relays.
+
+\subsubsection{Attacking the Agora}
+
+Attackers have similarly many options for this situation.
+
+One option is to improperly implement the joining protocol. We do not
+view this as an attack, as in this case our ``attacker'' is simply
+paying other Econs for packet forwarding.
+
+Another option is to join the Agora and refuse to provide routing
+table information to users, or refuse to forward packets. This will
+result in some additional routing burden on $\frac{log(n)}{n}$ of the
+Agora queries until the Econ in question is disconnected from the
+network.
+
+A third option is to sit on the Agora while offering no services. In
+this case auctions performed by customers become less efficient
+(suffering from the loss of one participant $\frac{log(n)}{n}$ of the
+time).
 
 \section{Future Work}
 \label{sec:future}
