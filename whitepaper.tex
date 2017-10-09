@@ -387,7 +387,7 @@ this, the Orchid Network uses the Equihash hash function
 (\ref{Equihash}).
 
 Equihash is a memory-asymmetric (proofs require large amounts of RAM,
-verification does not), optimization/amortization-free (it is based on
+verification does not), optimization / amortization-free (it is based on
 a very well studied NP-complete problem), limited parallelism
 proof-of-work scheme. We are not aware of a proof-of-work scheme more
 suited to minimizing the influence of custom hardware.
@@ -543,42 +543,54 @@ To provide assistance to users seeking evasion (Section
 rates determined by the statistical properties of popular non-Orchid
 WebRTC protocols.
 
-\section{Chaining and Informational Attacks on Manifolds}
+\subsection{Chaining}
 
-The primary initial application of the above specification is the
-creation of chains.
+Customers interested in employing Relays for anonymous Internet
+access, will use the above specification to create ``chains'' of
+relays.
 
-In this section we explore what kinds of information are available to different nodes for different manifold structures. Perhaps more importantly, we look at how different types of collusion change a user's privacy, and what the chance of such collusion are given $a$, the percentage of a network controlled by a given attacker, and $n$, the total size of the network.
+\section{Collusion Attacks on Manifolds}
 
-\subsection{Information Available to a Relay or Proxy}
+In this section we explore what kinds of information are available to
+different nodes for different chain structures and analyze how
+different types of collusion impact a user's privacy.
+
+\subsection{Information Available to an Individual Relay or Proxy}
 \label{relay-proxy-info-known}
 
 Due to the inherent structure of IP-based networking, and the \mesh{} protocol, relay nodes gain access to the following information:
 
 \begin{itemize}
-\item The IP Addresses of both up and down. This is required to perform the IP communication.
-\item The size, timing, and number of packets they forward. This is required if they are to forward packets.
-\item A public Ethereum key owned by the user who is paying them. This is required for the selling of bandwidth.
+\item The IP Addresses of all their connections. This is required to perform IP communication.
+\item The size, timing, and number of packets they forward. This is required to perform IP communication.
+\item The public key which controls the tokens paying them. This is required for the sale of bandwidth.
 \end{itemize}
 
-\subsection{Collusion}
+\subsection{Potential Parties to a Collusion}
 \label{sec:collusion}
 
-Definition of Attacker roles:
+The following roles can collude to expose customer information:
 
 \begin{itemize}
-\item Global Adversary. An attacker with a global view of the network. Occurs with probability 1 in all cases.
+\item Global Adversary. An attacker with a global view of the network. Orchid does not currently protect against this type of attacker. Untrustworthy with probability 1.
 \item ISP. The user's Internet service provider. Untrustworthy with probability $s$.
 \item Web. The webserver the proxy is connected to. Untrustworthy with probability $w$.
 \item Relay$_n$. The nth relay in the chain. Untrustworthy with probability $\frac{a}{n}$.
 \item Proxy. The relay proxying bandwidth for the user. Untrustworthy with probability $\frac{a}{n}$.
 \end{itemize}
 
-Definition of attacks:
+\subsection{Types of Attack}
+
+The central goal of collusion attacks is the linking of a specific
+Orchid customer with a specific SSL connection. There are two ways
+this can be done:
 
 \begin{itemize}
-\item Relation. When this is possible, the attacker can deduce the Customer of a Manifold simply by doing lookups of linked IP addresses.
-\item Timing. By controlling the timing of packets a link which cannot be looked up can be inferred.
+\item Relation. When this is possible, the attacker can deduce which
+  customer is talking to a given website simply by doing lookups of
+  linked IP addresses.
+\item Timing. By controlling the timing of packets a link which cannot
+  be looked up can be inferred.
 \end{itemize}
 
 \subsection{Zero Relays, Zero Proxies: Direct Connection}
@@ -942,10 +954,9 @@ Some users wishing to offer Proxy services may not be comfortable offering ``ope
 %% attacker is then, $seen_t = (1-\frac{seen_t}{N})c$
 
 
-\section{Economic Soundness}
-\label{sec:economic-soundness}
-
-.
+%% TODO tonight?
+%% \section{Economic Soundness}
+%% \label{sec:economic-soundness}
 
 \section{Firewall Circumvention Features}
 \label{sec:evasion}
@@ -1024,13 +1035,60 @@ initial release. We plan on addressing this in future versions.
 \section{Current State of the Software}
 \label{sec:current}
 
-[Note the current state of the software is: being actively coded right
-now. The following describes where we will be at the time of
-whitepaper release.]
+[Note the software is being actively developed right now. The
+  following describes where we hope to be when we publicly release
+  this whitepaper. Current, and potentially obsolete comments are in
+  brackets.]
+
+\subsection{Software for the Ethereum Platform}
+
+We have a ERC20 compliant token, a smart-contract implementing
+stochastic micropayments as described in Section \ref{sec:tickets},
+including javascript helper functions for the creation, validation,
+and claiming of ticket winnings. Readers interested in viewing or
+auditing the code are invited to visit [TODO: github link.]
+
+[Initial implementation here is complete. We are beginning the
+  security audits of this, and polishing while we wait.]
+
+\subsection{Core Networking Client}
+
+We have completed an initial implementation of the proceeding protocol
+in Microsoft's TypeScript (a statically typed variant of the
+javascript language which compiles to javascript.) Readers interested
+in auditing the code are invited to view it at [TODO: github link.]
+
+[Initial implementation is ongoing, and may lead to minor changes to
+  this document. After the software is complete, the security audit
+  will begin.]
+
+\subsection{User Interface}
+
+We have constructed a genuinely user-friendly interface to provide
+users with minimal technical ability use of our Ethereum and Core
+Networking software.
+
+[Initial implementation is ongoing. Security audit will begin on
+  completion, usability testing will start in earnest during our alpha
+  release.]
 
 \section{Performance Scaling}
 \label{sec:performance}
 
+\subsection{Algorithmic Performance}
+
+\subsection{Pricing-Mediated Participation}
+
+The Orchid Protocol is built around tokens. These tokens will allow,
+through the pricing mechanism, will allow for graceful handling of a
+change in balance between buyers and sellers.
+
+For example, if Relays are in short supply, rather than
+
+\subsection{Real-World Performance}
+
+[TODO: once the software is complete, we'll want fancy graphs showing
+  real system performance, etc.]
 
 \section{Attack Analysis and Attacker User Stories}
 \label{sec:attack-stories}
@@ -1074,17 +1132,16 @@ The items in this section fall into two categories: nice-to-haves, and features 
 \subsection{Proof of Space}
 \label{future:proof-of-space}
 
-Exploding function, way of verifying.
+As mentioned in Section \ref{medallions}, we are very interested in
+exploring alternative proof types. This is an important issue both
+because of the environmental impact of proof-of-work systems, and
+because our current proof-of-work algorithm requires full blown
+computers to act as network routers.
 
-\subsection{Content Storage}
-\label{subsec:ccn}
-
-The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, \Mesh{} may be as good as possible. However, if we
-
-\subsection{Saturated Links}
-\label{subsec:saturated-links}
-
-TODO: this would have to be the standard global protocol to work. Idea is have every ``guard node'' send at 1MB/sec or so... Customers then pay for that bandwidth, rather than minimum amount of bandwidth needed (the regular case).
+We are excited to explore the possibility of using disk space to be
+the scarce resource at the core of our security, which might allow old
+phones or similar hardware to profitably participate in the Orchid
+network.
 
 \subsection{Protecting Content Hosts}
 \label{subsec:protocol-extentions}
@@ -1097,6 +1154,18 @@ Many prior approaches (Section \ref{sec:prior-approaches}) discovered that conte
   \caption{A rendezvous node acting as a relay between a Service and a Customer}
 \end{figure}
 
+\subsection{Securing Ethereum Traffic}
+
+As discussed in our section on firewall avoidance (\ref{sec:evasion}),
+the Ethereum network traffic of clients is likely to be the weak
+link. Because all nodes must maintain this information, use of the
+Orchid protocol to distribute Ethereum information seems like a
+natural fit.
+
+Unfortunately, relying on those you are paying for information about
+payments leads to tricky issues. We hope to add this in the near
+future, but will not be including it in our initial release.
+
 \subsection{Orchid as a Platform}
 
 Although we anticipate that design of the core system will take up
@@ -1108,11 +1177,13 @@ the Orchid Network.
 \begin{enumerate}
 \item APIs for websites to directly interface to the network, and
   incorporate tokens into their service.
-\item Static Website Hosting and File Storage.
+\item On-Network file storage and static website hosting.
 \item File Sharing.
 \item (Okay, these require more build up I think:) an email/messaging
-  service, arbitration services.
+  service, arbitration / moderation services.
 \end{enumerate}
+
+%% The issue with modern networking from an surveillance perspective is that it is fundamentally about connections between computers. So long as the model is that a user's computer connects to a specific webserver to access a website, \Mesh{} may be as good as possible. However, if we
 
 \nocite{*}
 \printbibliography
