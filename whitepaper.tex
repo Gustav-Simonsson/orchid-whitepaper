@@ -75,8 +75,8 @@ as I2P and Tor suffer from a tragedy of the commons – only a few thousand unpa
   Contributions include:
 
   \begin{itemize}
-  \item A blockchain-based payment mechanism with transaction costs on
-    the order of a packet.
+  \item A blockchain-based stochastic payment mechanism with
+    transaction costs on the order of a packet.
   \item A commodity specification for the sale of bandwidth.
   \item A method for distributed inductive proofs in peer-to-peer
     systems which make Eclipse attacks arbitrarily difficult.
@@ -450,11 +450,19 @@ If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}
 
 \subsection{Risk Management}
 
-One of the drawbacks of stochastic payments is that some users will get unlucky. Customers using Orchid as a VPN alternative may be pleasantly surprised if their bill is randomly cheaper than expected, but a random overrun may cause them to quit the network.
+One of the drawbacks of stochastic payments is that some users will
+get unlucky. Customers using Orchid as a VPN alternative may be
+pleasantly surprised if their bill is randomly cheaper than expected,
+but a random overrun may cause them to quit the network.
 
-The probability a mine will be exhausted after $k$ uses is: $\binom{m}{k-1} p^{k} (1-p)^{m-k}$, where $m$ is the number of tickets issued, $k$ is the number of tickets required to exhaust the source, and $p$ are the odds given to Econs. If users initially deposits \$20, and a \$2 face value is commonly used to mitigate transaction costs, this means that $k$ is fixed at 10.
+The probability a mine will be exhausted after $k$ uses is:
+$\binom{m}{k-1} p^{k} (1-p)^{m-k}$, where $m$ is the number of tickets
+issued, $k$ is the number of tickets required to exhaust the source,
+and $p$ are the odds given to Econs. This has variance with respect to
+ticket source lifespan of $m p (1-p)$, which is quite stable for very
+low values of $p$.
 
-[need more on this]
+[TODO: survivorship plot]
 
 \section{Bandwidth Mining}
 \label{sec:mining}
