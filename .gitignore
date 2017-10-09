@@ -11,3 +11,6 @@ tramp
 *.log
 *.toc
 *.run.xml
+whitepaper.pdf
+*.swp
+*-blx.bib
