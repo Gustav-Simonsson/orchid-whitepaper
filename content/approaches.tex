@@ -1,0 +1,48 @@
+%%% approaches.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:01:02 2017.
+
+\subsection{Unprotected Internet Access}
+
+Users simply browsing the internet without protection are simply
+handing over their data to their ISP, the websites they use, and
+anyone either of those companies wishes to share it with.
+
+\subsection{Virtual Private Networking (VPN) Services}
+
+VPNs create encrypted connections between an end user and the VPN
+server, which can be effective for circumventing
+censorship. Unfortunately, VPN services are a very poor approach for
+those users seeking anonymity – the VPN provider has complete payment
+information for the subscriber in question, and may be hacked,
+wiretapped, or otherwise compelled to report your browsing
+information.
+
+\subsection{Tor}
+
+Tor\cite{TOR} is a free software project famous for introducing the
+idea of Onion Routing to a wider audience. In the system, users
+download a global list of relays and exit nodes, select from that list
+randomly, and form ``onion routes'' from their selection. Onion routes
+are an ordered list of relays; packets sent along an onion route are
+encrypted for each peer in turn, ensuring that each node must have
+received a packet enroute to the exit node for the exit to understand
+it. A side effect of this forwarding is that, unless several nodes are
+compromised or run by the same user, no two relays know both who sent
+a packet and where it went.
+
+%% TODO: section on Dingledine knowing ~75% of relay operators personally.
+
+%% \subsection{Tor with Incentives}
+
+%% \subsection{I2P}
+
+%% I2P is billed as a “next generation” onion router. It is primarily
+%% focused on communication internal
+
+%% \subsection{Mixmaster, Mixminion, and other Chaumian relay schemes}
+
+%% These are cool!

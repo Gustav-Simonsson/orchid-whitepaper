@@ -1,0 +1,21 @@
+%%% external-libraries.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:01:48 2017.
+
+\Orchid’s functionality is built on several important primitives. As some readers may not be familiar with these primitives, or be familiar with the specific properties used in the \Orchid{} Network, we briefly summarize them here.
+
+\subsection{WebRTC}
+
+WebRTC\cite{webrtc} is a system originally designed to facilitate real-time communication between web browsers. It provides excellent implementations NAT and firewall traversal methods, including STUN, ICE, TURN, and RTP-over-TCP. By selecting WebRTC as the basis for our networking protocol, rather than custom coded TCP and UDP networking code, we both get a world-class implementation of these technologies, and (to an extent) mask our user's traffic as general web traffic.
+
+\subsection{NACL}
+
+NaCL\cite{nacl} is a cryptography library by Daniel J. Bernstein et al., focused on building the core operations needed to build high-level cryptographic tools. It was chosen as the source for cryptographic primitives on this project due to both it and its author's sterling reputation. All cryptographic operations described below are implemented using NaCL, aside from Ethereum smart contract cryptographic code.
+
+\subsection{Ethereum}
+
+Ethereum\cite{ethereum} is a decentralized blockchain and platform that includes a native currency (ETH) and Turing-complete smart contracts. The smart contracts proved extremely useful for the design of \Orchid, allowing us to offload a plethora of design concerns related to the tracking of token balances and the verification / fairness of our \emph{Ticket} payment channels.
+

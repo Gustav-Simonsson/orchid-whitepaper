@@ -1,0 +1,49 @@
+%%% performance.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:08:14 2017.
+
+In this section we will examine how the system will function as the
+number of users grows.
+
+\subsection{Algorithmic Performance}
+
+There are broadly three parts to the \Orchid{} Protocol: Ethereum-based
+payments, manifolds, and the Agora.
+
+Ethereum-based payments scale with Ethereum as normal transactions.
+Having reviewed the Ethereum system design, we are confident that even
+if the \Orchid{} Network is extremely successful, and becomes a
+significant percentage of the Ethereum's total transaction volume,
+this component will continue functioning as designed.
+
+Manifolds are simply chains of bandwidth sellers which all have
+performance independent of the total number of \Orchid{} Network
+participants.
+
+The Agora is built on a foundation of the well-studied Chord DHT. The
+number of connections that Econs must maintain grows at a rate of
+O(log n), to a maximum of 256 connections. Queries on the network
+require O(log n) hops. Although these operations do become slower as
+the network increases in size, we do not believe any significant
+impact on end user perceived performance will result.
+
+\subsection{Allocation of Scarce Resources}
+
+The \Orchid{} Protocol is built around tokens. These tokens will allow,
+through price discovery, for graceful handling of a change in balance
+between buyers and sellers.
+
+For example, if Relays are in short supply, rather than providing all
+customers with a slow experience, customers will engage in a bidding
+war to determine who can use the system until the shortage is
+corrected. Conversely, if Relays are in abundant supply, some Relays
+may leave the system until such time as prices rise.
+
+\subsection{Real-World Performance}
+
+[TODO: once the software is complete, we'll want fancy graphs showing
+  real system performance, etc.]
+

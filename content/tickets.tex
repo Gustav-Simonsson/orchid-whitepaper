@@ -1,0 +1,73 @@
+
+Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \Orchid{} Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item. Making matters more troublesome, we will soon see that the transaction costs also include paying miners on the Ethereum block chain.
+
+\subsection{How Much Will A Packet Cost?}
+
+For the purposes of this discussion, let us assume that a packet is 1e3 bytes in length. To calculate an upper bound, we observe that the most expensive bandwidth known to mankind is AWS's Singapore CloudFront bandwidth, at \$0.14 per 1e9 bytes. This yields a per-packet cost of 1.4e-5 cents (\$0.00000014). Because bandwidth is a wasting good (any unsold bandwidth is lost forever), the actual price is likely to be significantly lower than this upper bound.
+
+\subsection{Ethereum Transaction Costs}
+
+Because the \Orchid{} System uses Ethereum as its payment processor, we might also be curious about what the expected cost of sending money in the system is. Although the transaction costs may vary according to [Gustav please save me]. A reasonable estimate of likely transaction costs are \$0.20 for urgent type transactions (happening on the order of 20 seconds), down to \$0.01 for non-urgent transactions (happening on the order of 20 minutes).
+
+\subsection{Building Micropayments from Macropayments}
+
+With transaction costs now discussed, and looming large, let us now look at what methods exist for controlling them.
+
+One potentially interesting approach, which was employed in MojoNation\cite{mojonation}, is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling up using Ethereum as a payment processor in this scheme would result in at minimum a \$0.01 transaction fee. Using our upper bound, we can see this price is around 100 megabytes of bandwidth. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee. For these reasons, is tempting to believe that there exists no deterministic payment scheme suited to fully anonymous bandwidth sales using Ethereum as the payment processor. We therefore turn our attention to stochastic payments.
+
+To explore stochastic payments, let us consider a lottery ticket (hereafter simply \emph{ticket}) which has a 1e-5 chance of being worth \$1.40. How much is it worth in expectation? The answer is 1.4e-5 cents, exactly the upper bound we established for the cost of a packet. In the event that the lottery ticket is a winner, cashing in on it with urgency will cost around 14\% ($\frac{\$0.20}{\$1.4}$) in transaction costs, and with non-urgency around 0.7\% ($\frac{\$0.01}{\$1.4}$). A surprising outcome of this approach is that the effective Ethereum transaction costs may be set arbitrary low by simply multiplying the face value by some factor, and reducing the odds of winning by the same. As this approach possesses the desired properties, we have chosen it as the method of payment in the \Orchid{} Network.
+
+\subsection{Implementation Constraints}
+
+Now that we have located a suitable abstraction for our payments, the question becomes: how should they be implemented? The main requirements are:
+
+\begin{itemize}
+\item The method for constructing new tickets must be reusable, as otherwise transaction fees will once again be an issue.
+\item Double spending must be prevented, or failing that not profitable.
+\item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
+\end{itemize}
+
+Of those requirements, the last element is perhaps the most troublesome. To the best of our knowledge, no method for constructing lottery tickets exist which does not depend on computation similar to that of asymmetric encryption. A modest computer can do around 1e4 such computations per second, but can easily send 1e6 packets per second when connected to high speed Internet. For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect during trade''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until Section \ref{tokens-bot}.
+
+[Better version solicited]. We now describe a design which meets the remaining two requirements. Setup phase:
+
+\begin{enumerate}
+\item Alice deposits money into an Ethereum smart contract which will control outbound payments until some time in the future ($\geq$ 1 minute from now).
+\item Bob generates a random number $N$, and sends the hash $h=H(N)$ to Alice.
+\end{enumerate}
+
+Ticket production:
+
+\begin{enumerate}
+\item Alice creates the tuple $t = (timestamp, face value, odds, nonce, h)$, signs it $s = SIG(t)$, and sends the pair $(t, s)$ to Bob.
+\item Bob then computes XOR($N$, $s$), and if the result is $\geq odds$, wins.
+\item To redeem winners, Bob sends $(N, t, s)$ to the Ethereum smart contract managing Alice's lottery tickets along with a payment address.
+\end{enumerate}
+
+To prevent double-spending, two methods are employed. First, some portion of Alice's initial smart-contract deposit exists only to prevent double-spending. In the event of a double spend, Alice will suffer losses of 2x the double-spend amount. However, this alone is not sufficient to prevent double-spending, because Alice might decide to over-spend on a grand scale. To address this second issue, the value of winning lottery tickets begins decreasing exponentially 20 seconds after $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy is then used by Bob to compute the ``wasting rate'' of Alice's smart contract balance.
+
+Lottery ticket type payments are not novel to \Orchid. For interested readers, we recommend the extremely detailed and helpful\cite{DAM}, which includes discussion of extending tickets to support anonymous payments.
+
+\subsection{Balance of Trade}
+\label{tokens-bot}
+
+As mentioned above, the realities of symmetric encryption performance prevent us from sending payment with every packet, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
+
+If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq xy$ or (2) the total amount of work that Bob can perform is $\leq xy$. As we will see in our discussion of the Agora (Section \ref{sec:agora}), setup costs exist on the \Orchid{} Network which support trade imbalances in excess of 1e3 packets. Because sellers in the Agora generally pay a higher setup cost than buyers, and because Customers asymmetrically know how much work they will require, the \Orchid{} Network has Customers pre-pay.
+
+\subsection{Risk Management}
+
+One of the drawbacks of stochastic payments is that some users will
+get unlucky. Customers using \Orchid{} as a VPN alternative may be
+pleasantly surprised if their bill is randomly cheaper than expected,
+but a random overrun may cause them to quit the network.
+
+The probability a mine will be exhausted after $k$ uses is:
+$\binom{m}{k-1} p^{k} (1-p)^{m-k}$, where $m$ is the number of tickets
+issued, $k$ is the number of tickets required to exhaust the source,
+and $p$ are the odds given to Econs. This has variance with respect to
+ticket source lifespan of $m p (1-p)$, which is quite stable for very
+low values of $p$.
+
+[TODO: survivorship plot]
+

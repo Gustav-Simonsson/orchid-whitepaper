@@ -1,0 +1,81 @@
+%%% firewall.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:07:15 2017.
+
+The above system would be of little use if only users already
+possessing free and open access to the Internet could use it. In this
+section we will discuss features which ease access for those users
+whose Internet access is provided by their attacker.
+
+Please note that if an adversary is willing to completely block all
+Internet access, no defense in this area is possible. All defense
+analysis in this section therefore assumes that the attacker suffers
+some cost for blanket blocking, and seeks to maximize this cost in the
+hope that sufficiently costly attacks will not be performed.
+
+\subsection{Bootstrapping}
+
+One of the first attacks we anticipate firewall providers to attempt
+against the \Orchid{} Network is to create a list of Entry Econs, and to
+block all access to them. This is because if customers can not access
+Entry Econs, they could not use the network. Complicating matters, a
+competent attacker must be assumed to have any list of IP addresses
+available to customers.
+
+%% To address this initially, we will provide a service which allows
+%% users to perform a ``group buy'' of a small VPS instance to act as a
+%% relay in exchange for tokens. Customers would then use this relay as a
+%% mechanism for accessing the rest of the network, making the security
+%% analysis identical to that in Section \ref{sec:collision}, with Orchid
+%% Labs also acting as a secondary ISP. Since this VPS's IP address is
+%% drawn from IP addresses used to host websites generally, we anticipate
+%% that blanket blocking of these IP addresses would be quite costly.
+
+To address this initially, we will provide a service which allows
+users to learn fresh Relay IP addresses in exchange for proof-of-work.
+To hinder blocking of the bootstrapping back and forth itself, we will
+provide access to this boostrapping service via web, email, and
+popular instant messaging platforms. The user will copy/paste a
+challenge from their client's options screen into the most convenient
+communications mechanism, then copy/paste the reply back into the
+client.
+
+\subsection{DPI, Inference, and Active Probing}
+
+More sophisticated firewalls employ methods such as Deep Packet
+Inspection (DPI; analysis of the contents of packets rather than just
+the headers), timing inference (the use of aggregate statistical
+measures over packet size, quantity, and timing), as well as active
+probing (attempting connection with the user or the server they are
+connecting to in an attempt to identify the service being provided.)
+
+We do not anticipate the use of deep packet inspection or active
+probing to provide significant information. Through our use of WebRTC,
+all communication is encrypted and there are no open ports unless an
+active WebRTC offer has been issued. Since this matches the behavior
+of all other uses of WebRTC, this behavior can not disambiguate \Orchid{}
+users.
+
+Timing inference is potentially an effective method for detecting
+\Orchid{} users, as the timing and size of web requests over an encrypted
+stream are unlikely to look like other kinds of WebRTC traffic
+(\cite{peekaboo}). To address this, users accessing the \Orchid{} Network
+in situations where inference attacks are likely are encouraged to use
+``bandwidth burning'' (Section \ref{bandwidth-burning}).
+
+\subsection{Disclosure: Ethereum Traffic}
+
+Because the current client employs an Ethereum client to track payment
+statuses, and Ethereum has its own non-hardened networking signature,
+detection related to this Ethereum traffic is likely to be the weak
+link. Firewall operators may simply ask ``is the computer running
+Ethereum \emph{and} consuming large amounts of WebRTC traffic?''
+
+To maintain project focus, hardening of Ethereum and/or serving
+Ethereum traffic over the \Orchid{} Network is not a feature of our
+initial release. We plan on addressing this in future versions, see
+Section \ref{securing-eth}.
+

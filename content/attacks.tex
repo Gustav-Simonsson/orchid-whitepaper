@@ -1,0 +1,107 @@
+%%% attacks.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:00:13 2017.
+
+\subsection{Bug Bounty / White Hat Policy}
+
+TODO: we should offer a “hall of fame”, a cash/token reward, and maybe a t-shirt or coffee mug or something?
+
+%% Note that token rewards are very interesting, since we could set aside a fixed amount and pay out x\% of that amount for each vulnerability which is found.. it would likely become the largest bug bounty program in history. If the issue is that putting those tokens aside might be difficult at this point, I also think that incentivizing vulnerability disclosure this a very compelling reason to inflate the currency.
+
+\subsection{Attacker Goals}
+
+\subsubsection{Information Gathering}
+
+The largest class of attacks against which the \Orchid{} Protocol must defend against are those which reveal information about its users. Because \Orchid{} is implemented as an overlay on the existing Internet, some information is unavoidably shared with some peers. In the list below, such information is marked with a “*”. Any information which is not specifically listed as unavoidably shared in this document, but for which a method is discovered to uncover that information is termed an \emph{informational attack} and is covered by \Orchid’s White Hat Bug Bounty. For more information on what is shared, see the protocol specification in Section \ref{sec:mining} and discussion of collusion in Sction \ref{sec:collusion}, and our reference implementation of the network\cite{oursoftware}.
+
+Types of data which are assumed to be of interest to an attacker (timeless):
+
+\begin{itemize}
+\item Real-World Identity Information. A user’s given name, SSN, address, etc.
+\item Website Account Information. The user accounts at a specific website. Note this can be different from Real-World Identity Information.
+\item *IP Information. The IP address from which a user is accessing the \Orchid{} Network. Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+\item *Ethereum Information. The keys associated with a user’s wallet (*public or private). Note that in some usage scenarios this may be equivalent to learning Real-World Identity Information.
+\item *\Orchid{} Network Information. The keys associated with a node’s current business on the \Orchid{} network (*public or private).
+\end{itemize}
+
+Types of Behavioral information which are assumed to be of interest to an attacker (time and manifold associated data):
+
+\begin{itemize}
+\item *Customer Identification. The attacker learns the IP address of a customer.
+\item *Relay Identification. The attacker learns the IP address of a relay.
+\item *Proxy Identification. The attacker learns the IP address of a proxy.
+\item *Link Identification. The attacker learns that two IP addresses where employed in a manifold.
+\item *Website Access. The attacker learns that an outbound connection was made from the \Orchid{} network to a specific website.
+\item *Webserver Access. The attacker learns that an outbound connection was made from the \Orchid{} network to a specific webserver (which may host multiple websites).
+\item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \Orchid{} user.
+\item *Purchase Linking. The attacker learns that two transactions share a common payer.
+\item *Purchase Information. The attacker learns the quantity and timing of bandwidth sent over a Manifold.
+\end{itemize}
+
+Although all of the above behavioral information is shared with other nodes on the \Orchid{} Network during normal operation, as described below, in most contexts it is assumed that users will only be directly harmed by Behavioral Information Gathering if the attacker can learn several pieces of information at once (for example, to say that user X accessed website Y the attacker would need: buyer identification, website access information and several pieces of link identification). It is for this reason that peers following the reference spec do not store or share any of the above information, except as required to provide the services a customer has purchased.
+
+\subsection{Economic Attacks}
+\label{econ-attacks}
+
+Unlike similar systems, \Orchid{} must also concern itself with attacks on payment mechanisms. The taxonomy used in this paper is:
+
+\begin{enumerate}
+\item Economic Exploits. Profitable undesirable behavior. (Example: if a user gives out “free sample” bandwidth, some users might exclusively use free sample bandwidth).
+\item Economic Denial of Service (EDoS). The ability to pay to overwhelm another node on the \Orchid{} Network with purchases, thereby taking them offline.
+\end{enumerate}
+
+\subsection{QoS Attacks}
+\label{qos}
+
+Some adversaries may be satisfied simply slowing down the system performance of \Orchid{} network users generally, thereby potentially diminishing usage.
+
+\subsection{Man-in-the-Middle Attacks}
+\label{mitm}
+
+Actions that can be performed only after inserting oneself between two interacting parties are collectively referred to as man-in-the-middle attacks. Encrypted information may be logged for analysis of metadata (Section \ref{inference-attacks}), non-encrypted data may additionally be changed to control behavior. If key exchange is not secured, the man in the middle may also trick two parties into wrongly believing the attacker's key is the other parties key.
+
+\subsection{Sybil Attacks}
+
+Malicious actions, performed by pretending to be multiple users, are termed Sybil attacks, after a patient suffering from multiple personality disorder. Applications of this type of attack include:
+
+\begin{itemize}
+\item Submitting multiple reviews to Yelp, Amazon, etc.
+\item Achieving faster downloads on BitTorrent by pretending to be multiple leachers\cite{freeridingBittorrent}.
+\end{itemize}
+
+\subsection{Eclipse Attacks}
+
+In an Eclipse Attack, the Attacker's goal is to hide part of a system from itself. The methods employed are generally the network equivalent of privilege escalation attacks: gain control of network positions which have more control of the network, then use that control to acquire more control.
+
+\begin{itemize}
+\item Segmenting the Bitcoin mining P2P network, allowing for so-called “51\% attacks” when the attacker controls substantially less than 51\% of the compute power\cite{bitcoinEclipse}.
+\item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link\cite{bittorrentSybilAttacks}.
+\end{itemize}
+
+\subsection{Inference Attacks}
+\label{inference-attacks}
+
+Deanonymization which stems from a statistical modeling of system behavior are termed Inference Attacks or Monitoring Attacks. These can be especially effective when combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoSing a specific peer off of the network and observing how traffic patterns respond.
+
+\begin{itemize}
+\item Inferring medical illnesses, family income, and investment choices of end- users from SSL encrypted web traffic\cite{broadInferenceAttacks}.
+\item Deanonymizing Tor, I2P and \Orchid{} traffic from global traffic logs\cite{mixTrafficAnalysis}.
+\item Learning the private key of an OpenSSL server through timing analysis\cite{opensslTimingAttack}.
+\end{itemize}
+
+\subsection{Denial of Service Attacks}
+
+Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. Because system behavior during “unexpected” circumstances is often poorly specified and tested, perhaps surprisingly, DoS attacks are quite useful for deanonymizing nodes in P2P networks. Notable examples:
+
+\begin{itemize}
+\item Targeted DoS attacks used in concert with sybil-attack based monitoring to deanonymize Tor traffic\cite{DOSvsSec}.
+\item DoS off lining for complete control of I2P’s floodfill database, requiring only 20 sybil nodes, thereby deanonyimizing all traffic on the network\cite{I2P-vigna}.
+\end{itemize}
+
+\subsection{Hacking}
+
+Particularly motivated attackers might directly compromise nodes on the network, converting historically trustworthy peers into attack vectors. When bandwidth is deployed using Manifolds, such hacking may potentially be performed iteratively, allowing an attacker to eventually ``backtrace'' a connection. Such attacks are out of scope for the \Orchid{} system, but do have important security implications. If the \Orchid{} Network's design achieves its goals, this will be the main attack against users of the system.
+

@@ -1,5 +1,5 @@
-
-export PATH := $(PATH):/Library/TeX/texbin
+SHELL := /bin/bash
+PATH  := $(PATH):/Library/TeX/texbin
 
 whitepaper.pdf: whitepaper.tex draft.tex whitepaper.bib
 	rm -f whitepaper.pdf

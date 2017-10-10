@@ -1,0 +1,202 @@
+%%% agora.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:06:22 2017.
+
+The Agora, named after the greek work for market, is a P2P network
+similar in structure to a Distributed Hash Table (DHT), which serves
+as a meeting ground for buyers and sellers of bandwidth.
+
+\subsection{Fundamental Agora Operations}
+
+At a high-level, the operations provided by the Agora are:
+
+\begin{itemize}
+\item A method for Econs to join the Agora.
+\item A method for asking Econs what services they have for sale.
+\item A method for selecting a subset of all peers, randomly weighted by computational resources, such that the \emph{lookup property} holds: $$lookup(rand(address)) \approx rand(Econ)$$
+\end{itemize}
+
+The \emph{lookup property} is important because it allows customers to
+know with assurance that their chosen Econ is an attacker with
+probability $\frac{a}{n}$.
+
+To implement these operations, the Agora takes the structure of a DHT
+with no keys and values. To perform the random selection, a user
+simply generates a random address and locates the Econ closest to that
+point.
+
+\subsection{Fundamental Econ Operations}
+
+The operations supported by Econs on the Agora are:
+
+\begin{itemize}
+\item \emph{Get Routing Table and Medallion}. This returns the Econ's proof of work and signed routing table for inspection, along with the cost of relaying traffic to members of the routing table.
+\item \emph{Relay Traffic}. Pays the Econ to forward traffic to one of the peers in its routing table.
+\item \emph{List Services}. Asks the Econ for a list of services it sells.
+\item \emph{Purchase Service}. Employ the Econ as a service provider.
+\end{itemize}
+
+The first two of these are used by customers to navigate to an Econ of
+interest, while the second two are used to negotiate the purchase of
+services once that Econ is found.
+
+Navigation through the Agora takes a form similar to that used in
+Manifolds. A customer connects to some known Econ (found through
+bootstrapping, see \ref{bootstrapping}), inspects its routing table,
+and pays to forward traffic to the Econ closest to its chosen
+point. As we will see in the section on routing tables, this allows
+customers to keep their IP addresses secret, while still providing
+relatively efficient random access to Econs of $O(log^2 n)$ packets.
+
+\subsection{Chord Routing Structure}
+
+[need graphic]
+
+Econs are connected in the \Orchid{} Protocol using the same scheme used
+in the Chord DHT.
+
+Addresses are viewed as a ring of size $2^{256}$, and the distance
+between peers at addresses $a, b \in [0, 2^{256}-1]$ is defined to be
+$n$ s.t. $0 \leq n < 2^{256}$ and $a + n \equiv b \pmod{2^{256}}$.
+
+For a collection of Econs in an Agora, $A$, the forced connections for
+a given Econ $e$ are defined to be $\min_{f \in A} dist(e+t, f)$, for
+each of 256 target addresses $t \in \{1, 2, 4, .. 2^{255}\}$.
+
+We chose to use this routing structure because of its maturity,
+successful track record in deployed systems, and correctness
+proofs. Readers interested in learning more are encouraged to
+read\cite{CHORD}. For our purposes, it is enough to note that the
+following two properties are provided by this routing scheme:
+
+\begin{enumerate}
+\item \emph{Finite, Deterministic Connections}. Every Econ has a
+  number of forced connections $\leq 256$.
+\item \emph{Logarithmic Traversal Distance}. Given a random address
+  $t$ and a random connected Econ $e$ with connections $C$, that
+  $distance(e, t) \approx 2 * \min_{f \in C} distance(f, t)$. Because
+  the distance will half with each hop, the expected traversal length
+  on the network is $log_2(n)$ where $n$ is the network size.
+\end{enumerate}
+
+\subsection{Medallions on the Agora}
+
+To prevent attackers from choosing their location on the Agora, the
+location of Econs is defined to be the hash of their Medallion.  To
+prevent an attacker from running more Econs than is proportional to
+their share of the Agora's total computational power, every Econ
+checks the validity of all its connections' Medallions every Medallion
+cycle. In the event that a valid Medallion is not supplied, it is
+disconnected from the network.
+
+\subsection{Signed Routing and Eclipse Attacks}
+
+%% In a fully distributed system, no one (except, perhaps, an attacker)
+%% has a global view of the network. Attackers often seek to exploit this
+%% by choosing to omit mention of options they do not wish others to use.
+
+%% For example, imagine if in the above routing scheme an attacker chose
+%% to lie about what connections it has – if the buyer has no way of
+%% detecting this, they might be led off to a fake Agora in which all
+%% ``participants'' were owned by the attacker. To put a stop to this
+%% situation, Agora's routing tables are verified non-malicious by the
+%% peers contained on them via an inductive proof.
+
+%% To do this, an Econ joining the network first computes its forced
+%% connections list $C$, then demonstrates to each $c \in C$ that (1)
+%% every connection in $C$ is indeed forced, and (2) it is possible to
+%% route from every element of $C$ to every other element. It does this
+%% by supplying the chain of signed routing tables that led it to each
+%% element of $C$.
+
+%% Once the proof has been sent
+
+
+
+
+%% When a node would like to establish a forced connection, that node
+%% must first prove to each node on its forced connections list that each
+%% other node on that list is a member of the same Agora. To do this, we
+%% show them a chain of routing tables that connects them.
+
+
+One of the issues that arises in distributed networks is that no one (except, perhaps, an attacker) has a global view of the network. For example, imagine if in the above routing scheme an attacker chose to lie about what connections it has – if the buyer has no way of detecting this, they might be led off to a fake Agora in which all “participants” were owned by the attacker. To put a stop to this situation, Agora's routing tables are verified non-malicious by the peers contained on them.
+
+When a node would like to establish a forced connection, that node must prove to each node on its forced connections list that each other node on that list is a member of the same Agora. To do this, we first select a random econ $G$ by finding the Econ with an address closest to the hash of all the connections in the routing table $H(C_i)$. Then we supply:
+
+\begin{enumerate}
+\item Proof that all the Econs on the list can all route to $G$.
+\item Proof that $G$ can route to each Econ
+\item Proof that each Econ on the list is indeed a forced connection.
+\end{enumerate}
+
+These proofs all take the form of signed routing table chains which lead from $C_i$ to $G$, or in the case of (3) the chain of signed routing tables which led from the Entry Econ to each $C_i$. Once such proof has been provided, all of the peers on the new routing table sign the table, and the connecting Econ signs theirs. For those elements of $C_i$ for whom the new Econ is a forced connection, the same proof is sent to each of their connections for signature.
+
+Because this is the only method for adding Econs to the Agora, these requirements form an inductive proof of the Agora's soundness. If one of the nodes in $C_i$ attempts to supply a fake routing table, it will not route to the same $G$ as the other Econs in $C_i$. If one of the nodes $C_i$ is not a member of the Agora, $G$ will not be able to route to them. If the Econ seeking to connect has lied about $C_i$ being nearest nodes to his forced connection points, (3) will demonstrate that to be false.
+
+From these properties, we can see that the avenues left for an attacker are:
+
+\begin{itemize}
+\item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a 1e-8\% chance of such a collision happening, and if it does occur around 1e3\% of all system queries will be impacted. At 100 million nodes the chance drops to 1e-12\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Agora Regeneration \ref{agora-regen}.
+\item If an attacker has now joined the network, but was forced to use a valid routing table, the only attacks it can perform are related to selling services, not routing traffic on the Agora. As this is the situation expected in the rest of our attack models (that an attacker will control a number of econs proportional to the computational resources), we do not consider this an attack.
+\end{itemize}
+
+\subsection{Eclipse Attacks and Regeneration}
+\label{agora-regen}
+
+Long lived P2P networks suffer from Eclipse attacks. Although the
+above signed routing scheme can make these arbitrarily difficult by
+involving ever increasing number of peers for verification, another
+approach is simply to limit the lifespan of peers. For this reason,
+Econs on the Agora must change keys every 100 Ethereum blocks.
+
+%% This is ensured by $XOR(address, Eth)$
+
+%% [Todo: finalize randomization schedule here.]
+
+\subsection{Finding Entry Nodes}
+\label{bootstrapping}
+
+The distribution of Entry Nodes is a difficult topic. If oppressive governments are able to access this list, they will block user's abilities to access the list. We have therefore located essential services that would be internet-breaking if they were blocked, and have devised methods for adding Entry Node information to the data contained in them.
+
+\subsection{Identifying \emph{the} Agora}
+
+The above discussion discussion of security is ultimately meaningless if there is no way to locate ``the right Agora'' on a fresh machine. Any distribution method which exists for \emph{Entry Econs} can not be presumed immune from infiltration by fake Entry Nodes. To do so, we simply estimate the computing power of a given Agora, and select the right one. This is justified by our core security assumptions (Section \ref{core-security}).
+
+\begin{itemize}
+\item Density Estimation. Because an Econ's forced connections are defined to be the econs nearest to some set of points in a $2^{256}$ address space, in any real-world situation there will be measurable gaps between the ideal connections and the actual ones. To estimate density in this space, we can observe that these connections as the result of a random binomial process: every point between the ideal point and the actual point is a failure, and the actual point is a success. Therefore, for a given number of missing nodes $M$ and a given number of realized connections $C$, The uniform prior MAP estimate of network density is $$\frac{C}{C + M} 2^{256}$$.
+\item Traversal Distance. The Agora provides address look ups in $O(log_2(n))$ hops. We can use this in reverse to estimate network density.
+\end{itemize}
+
+One might be inclined to believe that density estimation is enough, however a clever attacker in possession of a sybil network of modest size, will have free choice for which node is to be put forward as the the Entry Econs for the false network, while the Entry Econs from the ``real Agora'' will have a density which is a random sample from the network. To make matters worse, if the traversal distance is chosen as the metric, one might imagine an attacker who anticipates this, and so creates sub-optimal routing tables which require longer than the $O(log_2(n))$ to traverse. Thankfully, sub-optimally connected Agoras will perform worse on the density metric. The verification method used in the \Orchid{} System is to traverse to a random address, saving the routing tables along the way, and then perform a density estimate using the routing table from all but the first two hops.
+
+%% \subsection{Economics}
+
+%% \subsubsection{Price Discovery}
+
+%% Uers may set their own price for bandwidth, but this is hardly
+%% satisfying. Some users may price themselves out of the market, and
+%% other users may charge too little. We therefore provide the following
+%% algorithm for users who wish to maximize their profit as bandwidth
+%% sellers:
+
+%% \begin{algorithm}[H]
+%%   \KwData{Quantity of bandwidth the user wishes to sell, $Q$}
+%%   \KwData{Amount of data sold in the last 10 minutes, $S_t$}
+%%   \KwData{Price of the previous data sold, $P_t$}
+%%   \KwResult{A New Price $P_{t+1}$}
+%%   \While{$S_t > Q$}{
+%%     return $S_t$ * 1.1;
+%%   }
+%%   return $(S_t - Q) * 0.01 * P_t$ ;
+%%   \caption{Automatic Price Scaling}
+%% \end{algorithm}
+
+%% \subsubsection{Auction Design}
+
+\subsection{Proxy Whitelists}
+
+Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the internet may result in a visit from local law enforcement. Econs on the Agora may therefore set a whilelist of websites they will allow users to contact when using them as a Proxy, and specify their whitelists in their responses to \emph{Get Offers}.

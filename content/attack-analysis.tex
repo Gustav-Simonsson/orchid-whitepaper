@@ -1,0 +1,91 @@
+%%% attack-analysis.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:08:49 2017.
+
+\subsection{Oppressive Web Applications}
+
+Attacker Goals: Identify all \Orchid{} Relay and Proxy IP addresses.
+
+Because the Agora contains all Relays and Proxies, this is the inverse
+attack of the one discussed in Section \ref{sec:evasion}.
+
+The number of forced connections on the Agora grows at O(log n) where
+n is the network size. If an attacker holds $m\%$ of global
+computation, they will learn log(n) ip addresses each time they
+complete a proof-of-work computation. In $c$ epochs they will
+therefore learn $1 - (1 - \frac{log(n)}{n})^c$ percent of the Relay and
+Proxy IP addresses.
+
+Readers familiar with the how the blocking of Tor traffic panned out
+may worry the above describes a dire issue for the
+system. Fortunately, this is not the case. Tor has around 1,000 exit
+nodes, which allowed for easy filtering. In our case, largely due to
+our support for whitelists, we expect to have hundreds of thousands of
+exit nodes. In addition to this forming a much larger computational
+challenge to unmask using the above method, blocking these IP
+addresses would result in the oppressive Web Application blocking
+their own users.
+
+\subsection{Corporate Networks and ``Great'' Firewalls}
+
+Attacker Goals: Prevent usage of the \Orchid{} network by users to whom
+you provide Internet access.
+
+Features related to this are discussed in more detail in Section
+\ref{sec:evasion}. The outlook for this attacker is bleak: \Orchid{}
+network usage presents as WebRTC connections relaying a fixed amount
+of data. There are no open ports to probe, and no IP addresses which
+can be relied on to ``out'' them.
+
+\subsection{Passive Monitoring and Inference, perhaps with Sybil Attacks}
+
+Attacker Goals: Learn Customer IP Identification, and Website Identification.
+
+Analysis related to this class of attack are discussed in more detail
+in Section \ref{sec:collusion}. The outlook for this attacker is
+bleak: the difficulty of positioning yourself in several positions of
+a manifold requires possessing (and dedicating to this attack) a large
+percentage of global computation power.
+
+\subsection{Small-Time Trolling and QoS Attacks}
+
+Synopsis: An attacker would like to cause mayhem on as much of the network as possible.
+
+Security minded readers looking for a good time are encouraged to
+perform analysis in this domain. The task here is, given a limited
+budget (perhaps on the order of \$10,000 USD), to disrupt the network
+as much as possible.
+
+\subsubsection{Attacking Manifolds}
+
+Attackers may try a variety of attacks here: randomly dropping
+packets, providing only very slow service, providing intermittently
+slow service, or simply disconnecting. In all cases, the customer
+simply replaces the node in question, leading to a minor inconvenience
+spread across all customers. An additional inconvenience may be caused
+to other relays in the case of dropping packets, since there may be no
+way of determining if A did not forward the packet of if B is lying
+about not having received it. In this case the customer replaces both
+Relays.
+
+\subsubsection{Attacking the Agora}
+
+Attackers have similarly many options for this situation.
+
+One option is to improperly implement the joining protocol. We do not
+view this as an attack, as in this case our ``attacker'' is simply
+paying other Econs for packet forwarding.
+
+Another option is to join the Agora and refuse to provide routing
+table information to users, or refuse to forward packets. This will
+result in some additional routing burden on $\frac{log(n)}{n}$ of the
+Agora queries until the Econ in question is disconnected from the
+network.
+
+A third option is to sit on the Agora while offering no services. In
+this case auctions performed by customers become less efficient
+(suffering from the loss of one participant $\frac{log(n)}{n}$ of the
+time).
