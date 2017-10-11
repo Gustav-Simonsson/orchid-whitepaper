@@ -1,7 +1,10 @@
 SHELL := /bin/bash
 PATH  := $(PATH):/Library/TeX/texbin
 
-whitepaper.pdf: whitepaper.tex draft.tex whitepaper.bib
+TEX_SOURCES = $(wildcard *.tex) $(wildcard */*.tex)
+BIB_SOURCES = $(wildcard *.bib) $(wildcard */*.bib)
+
+whitepaper.pdf: $(TEX_SOURCES) $(BIB_SOURCES)
 	rm -f whitepaper.pdf
 	pdflatex whitepaper
 	biber whitepaper
