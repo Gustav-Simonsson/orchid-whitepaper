@@ -11,6 +11,15 @@ whitepaper.pdf: $(TEX_SOURCES) $(BIB_SOURCES)
 	pdflatex whitepaper
 	pdflatex whitepaper
 
+draftpaper.pdf: $(TEX_SOURCES) $(BIB_SOURCES)
+	rm -f draftpaper.pdf
+	pdflatex draftpaper
+	biber draftpaper
+	pdflatex draftpaper
+	pdflatex draftpaper
+
+draft: draftpaper.pdf
+
 clean: FORCE
 	rm -rf `find . -name "*.aux" -o -name "*.blg" -o -name "*.dvi" -o -name "*.log" -o -name "*.lot" -o -name "*.lof" -o -name "*.toc" -o -name "*.bbl" -o -name "*.bcf" -o -name "*.run/xml"`
 
