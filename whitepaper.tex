@@ -31,7 +31,10 @@
 \titlelabel{\thetitle.\quad}
 
 \title{\Orchid: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
-\include{draft}
+\ifdefined\isdraft
+  \include{draft}
+\fi
+
 \author{{David L. Salamon with} \\ {Jay Freeman, Gustav Simonsson, Brian J. Fox} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
 \date{\today{}}
 
@@ -70,9 +73,9 @@
 \label{medallions}
 \input{content/medallions}
 
-\section{Tickets}
-\label{sec:tickets}
-\input{content/tickets}
+\section{Payments}
+\label{sec:payments}
+\input{content/payments}
 
 \section{Bandwidth Mining}
 \label{sec:mining}
