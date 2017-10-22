@@ -1,5 +1,5 @@
 %%% whitepaper.tex: -*- LaTeX -*-  The general structure for the whitepaper.
-%%% 
+%%%
 %%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
 %%% Author: Brian J. Fox (bfox@meshlabs.org) Tue Oct 10 11:36:56 2017.
 %%% Author: A shitload of others.
@@ -18,6 +18,8 @@
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{mfirstuc}
+\usepackage{cleveref}
+\usepackage{verbatim}
 
 \usepackage[backend=biber,style=numeric-comp,url=true]{biblatex}
 \bibliography{whitepaper}
@@ -25,6 +27,8 @@
 %% \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 \newcommand{\orchid}{Orchid}
 \newcommand{\Orchid}{\orchid}
+\newcommand{\tOM}{the \Orchid{} Market}
+\newcommand{\TOM}{The \Orchid{} Market}
 
 \usepackage{titlesec}
 \titlelabel{\thetitle.\quad}
@@ -34,11 +38,16 @@
   \include{draft}
 \fi
 
+<<<<<<< HEAD
 \author{{David L. Salamon, Jay Freeman, Gustav Simonsson, Brian J. Fox, Stephen F. Bell, and Dr. Steven R. Waterhouse}}}
+=======
+\author{{David L. Salamon, Brian J. Fox, Jay Freeman, and Gustav Simonsson with} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
+>>>>>>> b5a4dec049754a871ac72141f78be3d30f2622b1
 \date{\today{}}
 
 \raggedbottom
 
+\usepackage[parfill]{parskip}
 \begin{document}
 
 \maketitle
@@ -46,7 +55,6 @@
 \begin{abstract}
 \input{content/abstract}
 \end{abstract}
-
 
 \newpage
 \tableofcontents
@@ -119,7 +127,21 @@
 \label{sec:future}
 \input{content/future-work}
 
+\newpage
+
 %% \nocite{*}
 \printbibliography
+
+\newpage
+
+\appendix
+
+% hide subsubsections from the TOC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\section{Auctions}
+\label{sec:auctions}
+\input{content/auctions}
+% show subsubsections in the TOC again
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
 \end{document}
