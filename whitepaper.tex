@@ -17,6 +17,7 @@
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{mfirstuc}
+\usepackage{cleveref}
 
 \usepackage[backend=biber,style=numeric-comp,url=true]{biblatex}
 \bibliography{whitepaper}
@@ -116,7 +117,21 @@
 \label{sec:future}
 \input{content/future-work}
 
+\newpage
+
 %% \nocite{*}
 \printbibliography
+
+\newpage
+
+\appendix
+
+% hide subsubsections from the TOC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\section{Auctions}
+\label{sec:auctions}
+\input{content/auctions}
+% show subsubsections in the TOC again
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
 \end{document}

@@ -1,0 +1,336 @@
+When purchasing bandwidth, price-sensitive customers can be taken
+advantage of by attackers offering very low prices. For example,
+imagine a customer who plans to purchase a length 4 chain on a
+lowest-bid basis. An attacker who knows this can set their prices to
+the minimum possible amount, thereby achieving greater than
+$\frac{a}{n}$ chance of being picked for each node in the chain.
+
+To address this, customers using \tOM{} select a random subset of the
+bandwidth selling population, then select their providers randomly
+from the set of affordable chains of the required length that can be
+created from that random subset.
+
+This creates a circumstance where attackers need to ``get lucky'' both
+in their assigned location, and also in the price they select relative
+to the prices set by the other randomly selected sellers. Even given
+this constraint, familiar market properties such as the ability of a
+seller to influence demand through price changes are maintained.
+
+\subsection{Appendix Overview}
+
+In this Appendix, we will look at what strategies are available to
+privacy minded bandwidth buyers, and what the performance of the
+different strategies are.
+
+A simplified model of \tOM{} is introduced, suited to analysis of this
+problem, and several example approaches are worked out both in theory
+and for concrete examples. It is our hope that readers of this section
+will come away with an understanding of the trade-offs which were made
+in selecting our algorithm for bandwidth purchases, and may be
+dissuaded from hard coding their client to employ a different method.
+
+\subsection{Simplified Model for Analysis}
+
+The full complexity of \tOM{} need not be considered to evaluate
+auction strategies. To simply our analysis, we introduce here a set of
+assumptions about participant goals:
+
+\begin{enumerate}
+\item \textbf{Sellers}. Sellers are in possession of $r$ ``bandwidth
+  slots'' to which they would like to sell access. The sole goal of
+  sellers is to maximize their earnings from this source.
+\item \textbf{Attackers}. Attackers are in possession of $a \geq 2$
+  sellers. Their sole goal is to have a single buyer purchase more
+  than one of the slots from their sellers, which is termed a
+  successful attack.
+\item \textbf{Buyers}. Buyers seek to buy three bandwidth slots from
+  three different sellers (thereby thwarting attackers), at the lowest
+  price possible.
+\end{enumerate}
+
+Rather than concern ourselves with the details of \tOM{}, we will
+assume that all buyers instead possess an up-to-date list of all
+current medallion holders and their current bandwidth price. We will
+also not concern ourselves with the distinction between Relays and
+Proxies, or the complexities introduced by whitelists and other
+capability filtering.
+
+Now that we have a basic structure, and an understanding of
+participant goals, let us flesh out a game structure:
+
+\begin{enumerate}
+\item \textbf{Setup} The strategy to be used by buyers is told to all
+  sellers, and all attackers. The strategy to be used by sellers,
+  which may change depending on buyer strategy, is told to attackers.
+\item \textbf{Phase One}. All sellers select a price. Seller prices
+  are then revealed to the attackers, who then select their prices.
+\item \textbf{Phase Two}. All prices are revealed to the
+  buyers. Buyers are asked in random order to select up to three
+  available offers from the list.
+\item \textbf{Phase Three}. Profit is distributed.
+  \begin{enumerate}
+  \item Sellers and attackers receive money equal to their offer price
+    from any buyers who selected them.
+  \item Buyers receive some profit amount specific to each buyer if
+    they purchased three slots without suffering an attack, less the
+    price paid for those slots.
+  \item Any attackers who successfully attacked a buyer receives a
+    buyer-specific bounty $U_b$.
+  \end{enumerate}
+\end{enumerate}
+
+The market is then an n-player game for which we seek three
+strategies: what buyers should do, what sellers should do, and what
+attackers should do. We have made the buyer ``go first'' on purpose in
+the above design, as buyers are the least economically normal in their
+needs.
+
+Some readers may take issue with the idea that a buyer's strategy is
+shared with attackers in the above game. We do this explicitly because
+a motivated attacker who is initially unsuccessful in an attack may
+still acquire information on the rough prices paid by a given buyer
+(for example by determining the IP address and pricing of all sellers,
+then monitoring the Internet connection of that buyer to determine
+which bandwidth seller was used as the first hop.) Over time this
+information leakage may be used to infer the strategy being employed,
+hence we feel it is best to simply assume it is possessed by the
+attacker for the purposes of this analysis.
+
+\subsubsection{Success Criteria}
+
+A successful solution will be determined by performance on the
+following criteria:
+
+\begin{enumerate}
+\item \textbf{Security}. The customer is maximally protected from
+  attacks given a fixed budget and chain length.
+\item \textbf{Stability}. No member of any of the three groups can
+  improve their personal utility by changing strategies.
+\item \textbf{Economically compatible}. Sellers can raise and lower
+  prices to modulate the number of purchase orders they receive,
+  allowing for familiar methods to be employed for maximizing seller
+  profit.
+\end{enumerate}
+
+Stability should be given special attention by those readers familiar
+with optimization but unfamiliar with game theory, as there is
+considerable temptation to propose group-level ``optimal strategies''
+wherein the members of a group band together to protect their
+interests as a whole. Although such behavior may appear rational on
+its surface, the incentive structures present in fully anonymous,
+distributed markets prevent them from being stable. For example, it
+might appear that sellers in a situation where the total slots on
+offer exceeds demand might band together and set a minimum price (a
+\emph{trust} in economic terms, superrationality\cite{metamagic} in
+game theoretic terms, a class revolution in Marxist terms.)
+Unfortunately, because additional profit will be available to any
+sellers who lower their price below the trust price, such an
+arrangement is not stable. For this reason, we will not be considering
+them in this analysis. This is not to rule out their eventual
+application in this domain; perhaps future advances in blockchain
+technology will allow for distributed verification of adherence to
+such agreements.
+
+Another potential surprise is that we attempt to explicitly determine
+how an attacker should behave so as to maximally exploit buyers, and
+include the stability of such strategies as a criterion for
+``success.'' We do this because there is no other way to provide
+bounds on the security of a given approach.
+
+\subsection{Selection Attacks}
+
+Before we delve too far into discussion of buyer strategy, let us
+first consider the goals of the attacker, and what constitutes an
+attack. If we imagine a perfectly paranoid buyer, with infinite budget
+and no information other than what is contained on the list of
+sellers, it is plain they can do no better than random selection. This
+gives attackers a successful attack rate of $(\frac{a}{n})^2$. As this
+is the best possible result, we consider a strategy affording such
+odds of attack secure.
+
+An attack in this area is then any method whereby an attacker might
+increase the chance of successful attack above $(\frac{a}{n})^2$
+probability.
+
+\subsection{Candidate Strategies}
+
+With that background out of the way, we now proceed to evaluate buyer strategies.
+
+\subsubsection{Lowest-Price}
+
+If the buyer elects to go with the lowest cost provider, a component
+attacker will set their prices to the lowest allowed (0 tokens). This
+yields a successful attack of $\frac{a}{z}$ where $z$ is the number of
+nodes charging zero.
+
+For example, consider a market with three genuine sellers each
+offering a single slot at the price points: \{2, 4, 6\}, and a buyer
+with maximum total price of 12. A competent attacker will enter the
+market at the prices \{0, 0\}, and so will be guaranteed the sale,
+putting the chance of successful attack at $1$.
+
+\subsubsection{Price-Weighted Random}
+
+If the buyer elects to make the chance of purchase some monotonic
+function of the difference in cost of bandwidth, this results in
+moderately better performance of:
+
+$$\frac{a f(0)}{\sum_{e \in S} f(e)}$$
+
+Returning to the above example, and using the inverse squared increase
+in cost as our function, we arrive at $\frac{288}{337} \approx 85\%$
+chance of successful attack. While 85\% is much better than 100\%, it
+is still unsatisfying.
+
+\subsubsection{Random Selection From Affordable Relays}
+
+If the buyer elects to select randomly from sellers charging less than
+$\frac{1}{3}$ of their maximum price, a component attacker will set
+their prices to be at or below that maximum. When in doubt, the
+attacker can again select a price of 0.
+
+Returning to our example, a component attacker will enter the market
+at the prices 0 and 1, or equivalent, leading to two non-attack
+combinations: \{(0, 2, 4), (1, 2, 4)\}, and two attack combinations:
+\{(0, 1, 2) and (0, 1, 4)\}. This yields a chance of successful attack
+of $\frac{1}{2}$.
+
+\subsubsection{Random Selection Subject to Cost}
+\label{best-auction-strat}
+
+If the buyer elects to select randomly from triples of sellers $(S_i,
+S_j, S_k)$ such that the total cost is less than or equal to the
+maximum cost, the attacker can then select their prices so as to (1)
+maximize the number of triples $(A_i, A_j, S_k)$ which the buyer can
+afford, (2) minimize the number of triples $(A_i, S_j, S_k)$ which the
+buyer can afford.
+
+Returning to our example, a competent attacker will enter the market
+at the prices 1 and 4.1, or equivalent, leading to 5 non-attack
+combinations: \{(1, 2, 4), (1, 2, 6), (1, 4, 6), (2, 4, 4.1), (2, 4,
+6)\} and three attack combinations: $\{(1, 2, 4.1), (1, 4, 4.1), (1,
+4.1, 6)\}$ Hence the chance of successful attack is $\frac{3}{8}$.
+
+Note the effective ``crowding out'' that is accomplished by the
+attacker selecting the 4.1 price point -- only one of four
+combinations which include 4.1 is \emph{not} a successful attack. It
+is remarkable that even after accounting for such behavior on the part
+of an attacker, random selection subject to cost is still better than
+discarding the seller charging 6 from consideration.
+
+\subsubsection{Random Cost Selection, Normalized by Peer}
+
+A natural question to ask is: what if we bias our random sample to
+prevent peers from being underrepresented? Unfortunately, the answer
+is attackers will use this to their advantage.
+
+Continuing the above example, a component attacker will select 1 and
+6.1 as their prices, or equivalent. Because we the buyer can only
+afford 6.1 when paired with 1, adjusting the odds results in a
+$\frac{3}{7}$ chance of a successful attack.
+
+\subsubsection{Random Cost Selection, Normalized by Pair}
+
+Another idea, similar to the one above, is to ask: what if we bias our
+random sample to normalize the probability of \emph{pairs} of sellers
+being selected?
+
+Continuing the above example, a component attacker will again select 1
+and 6.1 as their prices, or equivalent, this time realizing a success
+rate of $\frac{24}{49}$, as pairs involving 6.1 were quite
+underrepresented.
+
+\subsection{Stability Analysis}
+
+Now that we have outlined some candidate approaches, the question
+arises: are buyers incentivized to deviate from a given strategy, and
+if so what happens to the security properties of each strategy as
+attackers seek to exploit a mixed population of buyers?
+
+To avoid analysis for analysis' sake, we have omitted sections for
+strategies which are suboptimal/unstable from both a pricing
+perspective and from a security perspective.
+
+\subsubsection{Lowest-Price}
+
+Lowest-price is stable against economic incentives (the price chosen
+is already the lowest possible), but as we have seen is sub-optimal
+from a security perspective. This means that security-conscious buyers
+will use a different strategy, presumably Random Selection Subject to
+Cost.
+
+Attackers interested in attacking those buyers who are deviating from
+Lowest-Price are faced with an interesting dilemma -- deploying the
+attack described in section \ref{best-auction-strat}, actually results
+in a situation where all buyers performing a Lowest-Price selection
+will always avoid attack.
+
+When applied outside of our simplified model, this results in a
+second-level game, wherein security conscious users become
+progressively more incentivized to employ a Lowest-Price selection
+algorithm the more unlikely an attacker believes this to be a
+possibility. Thankfully in a realistic situation, the attacker can
+simply deploy some small fraction of their nodes at the minimum
+possible price, thereby rendering the problem academic.
+
+\subsubsection{Random Selection Subject to Cost}
+
+This strategy is stable from a security standpoint, but not stable to
+economic incentives -- those buyers who are not interested in security
+will employ Lowest-Cost selection. This leads to a situation where
+attackers will either set their prices to zero so as to exploit that
+behavior, or alternatively set their prices higher to avoid wasting
+resources attacking connections of minimal interest.
+
+This decision on the part of attackers is good news for security
+conscious buyers, as the secondary optimization constraint provides
+incentive to deviate from optimally exploiting behavior.
+
+\subsection{Economic Compatibility Analysis}
+
+We will now turn our attention to the question of seller
+strategies. Our goal here is to show the extent to which the usual
+sort of economic algorithms can be employed by sellers.
+
+We have omitted sections for strategies which are suboptimal/unstable
+from both a pricing perspective and from a security perspective.
+
+\subsubsection{Lowest-Price}
+
+As this approach is the expected case in economics, it is fully
+economically compatible.
+
+\subsubsection{Random Selection Subject to Cost}
+
+Although it may not initially appear that these strategies are not
+economically compatible, when we consider that the population of
+buyers will not share a maximum price, the density of interest for a
+seller's goods takes on the familiar shape of price sensitivity.
+
+[TODO: plot. Need to generate a list of power-law'd max-prices, and
+  plot the number of buyers for a given price. Point is interest
+  decreases if your raise the price, increases if you lower it.]
+
+Since sellers can modulate the number of purchase orders they receive
+by raising and lowering their prices in the usual way, Random
+Selection Subject to Cost is economically compatible.
+
+\subsection{Conclusion}
+
+We have now walked through our analysis of those auction methods
+suited for buyers on \tOM{}, and thereby showed how Random Selection
+Subject to Cost was selected for general use.
+
+The reason we have selected a ``pure random'' approach stems from the
+attacker having both full knowledge of a buyer's strategy, and from
+attackers picking their prices after sellers have chosen theirs.  In
+this context, the best that a biased sample can do is nothing, while
+at worst it allows the attacker to increase their chance of
+selection. Rather than bias our sample, we have sought to maximize the
+number of options available to buyers and have randomly selected from
+that set uniformly.
+
+Readers who are worried about this increase in cost relative to a more
+traditional auction model are encouraged to consider the premium to be
+``the price of security'' -- as we have seen it is trivial to achieve
+a lower price by leaving oneself wide open to attack.
