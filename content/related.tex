@@ -1,4 +1,4 @@
-\section{Related Work}
+%% \section{Related Work} (Defined in the enclosing document - do not define the title of the section here.)
 The \orchid{} project draws upon a large body of previous work in the areas of peer-to-peer networks (P2P), blockchain, cryptography, and overlay networks. \orchid{} then combines the insights provided by those earlier works with more recent P2P research in Blockchain technology, notably Ethereum\cite{11} and Zcash\cite{12}.
 
 The following sections describe the role previous work plays in the \orchid{} project.
@@ -32,7 +32,7 @@ The Gnutella network's designers remedied the shortcomings of Napster centralize
 \subsubsection{The Tor Network}
 \label{subsec: tornetwork}
 
-[THIS SECTION NEEDS work - TOR was Bram Cohen an then Dingeldine etc. funded by ARPA https://en.wikipedia.org/wiki/Tor_(anonymity_network)]
+THIS SECTION NEEDS work - Tor was Bram Cohen and then Dingeldine etc. funded by ARPA\cite{86}
 
 Tor was developed in the mid-1990’s by the United States Navy. Since then, development by the open-source community and the use of Tor has remained flat. There are today roughly 7,000 nodes, 3,000 exit nodes, and approximately 2 million users worldwide.
 
@@ -90,18 +90,18 @@ Blockchain designs such as those of Bitcoin, Ethereum, Zcash, and others are exa
 \subsubsection{Ethereum}
 Ethereum\cite{31}, along with Bitcoin, have pioneered new forms of application-specific cryptographic tokens (\ref{subsection: cryptographictokens}). By supporting smart contracts based on arbitrarily selected methods of computation, blockchain systems can be used to create custom ledgers that provide application-specific capabilities such as voting, administrative functionality, and fee payments.
 
-Ethereum\cite{29} is a decentralized blockchain platform that has the capability to execute and deploy \textit{smart contracts}. Ethereum's smart contract code is immutable and fully deterministic in its execution (unless non-deterministic behaviour is explicitly added). This allows any node to verify the execution of a smart contract and audit the resulting changes to application state. This enables Etherum's smart contracts to run exactly as programmed.
+Ethereum\cite{29} is a decentralized blockchain platform that has the capability to execute and deploy \textit{smart contracts}. Ethereum's smart contract code is immutable and fully deterministic in its execution (unless non-deterministic behaviour is explicitly added). This allows any node to verify the execution of a smart contract and audit the resulting changes to application state. This enables Ethereum's smart contracts to run exactly as programmed.
 
 Ethereum applications run atop a powerful shared global infrastructure. Applications can rapidly transfer value and represent ownership of assets, enabling software developers to create markets, store registries of debts or promises, move funds in accordance with rules created in the past — and more. All without a third party provider or counterparty risk.
 
 Ethereum's capabilities are useful in general, nowhere more than in emerging markets that must contend with server downtime, corruption, and fraudulent behavior.
 
-\subsubsection{Etherum and \orchnet{} compliance with ERC20/ERC23}
+\subsubsection{Ethereum and \tOM{} compliance with ERC20/ERC23}
 Most tokens deployed on the Ethereum network conform to the ERC20 standard\cite{38}. This standard specifies a simple API for the transfer of tokens and metadata. The API is small and simple enough that it is often used to more easily and quickly integrate tokens into user wallets implemented in either hardware or software.
 
 For example, the Augur and Gnosis platforms use ERC20 tokens to create prediction markets from token data. More generally, ERC20 enables arbitrary smart contracts to more easily interface with the \orchid{} protocol. This can be valuable to IoT devices seeking to securely access Internet endpoints.
 
 ERC20-compliance also makes it easier for token exchanges and applications to benefit from the expanded capabilities provided by new types of ERC20 tokens. This in turn enables different applications to use ERC20-compliant tokens to exchange information and status.
 
-ERC23\cite{41} is a backwards-compatible extension to ERC20 which solves several issues around accidental transfer of tokens to smart contracts which cannot interact with them. The Ethereum ecosystem is moving fast and support of ERC23 increases the safety of \ORT{} token usage for both end users and autonomous agents such as IoT devices.
+ERC23\cite{41} is a backwards-compatible extension to ERC20 which solves several issues around accidental transfer of tokens to smart contracts which cannot interact with them. The Ethereum ecosystem is moving fast and support of ERC23 increases the safety of \orchid{} token usage for both end users and autonomous agents such as IoT devices.
 
