@@ -233,7 +233,8 @@ $\frac{3}{7}$ chance of a successful attack.
 
 Another idea, similar to the one above, is to ask: what if we bias our
 random sample to normalize the probability of \emph{pairs} of sellers
-being selected?
+being selected? By controlling which pairs are rare, the attacker
+again increases the liklihood of successful attack.
 
 Continuing the above example, a component attacker will again select 1
 and 6.1 as their prices, or equivalent, this time realizing a success
@@ -253,38 +254,39 @@ perspective and from a security perspective.
 
 \subsubsection{Lowest-Price}
 
-Lowest-price is stable against economic incentives (the price chosen
-is already the lowest possible), but as we have seen is sub-optimal
-from a security perspective. This means that security-conscious buyers
-will use a different strategy, presumably Random Selection Subject to
-Cost.
+Lowest-price is stable against economic incentives as the price chosen
+is already the lowest possible. From a security perspective, however,
+it is sub-optimal and so unstable. Security-conscious buyers will use
+a different strategy, presumably Random Selection Subject to Cost.
 
-Attackers interested in attacking those buyers who are deviating from
-Lowest-Price are faced with an interesting dilemma -- deploying the
-attack described in section \ref{best-auction-strat}, actually results
-in a situation where all buyers performing a Lowest-Price selection
-will always avoid attack.
-
-When applied outside of our simplified model, this results in a
-second-level game, wherein security conscious users become
-progressively more incentivized to employ a Lowest-Price selection
-algorithm the more unlikely an attacker believes this to be a
-possibility. Thankfully in a realistic situation, the attacker can
-simply deploy some small fraction of their nodes at the minimum
-possible price, thereby rendering the problem academic.
+This leads to an interesting situation wherein the attacker is forced
+to decide how to allocate their resources between these two types of
+buyers, to the security benefit of both groups, as discussed in the
+next section.
 
 \subsubsection{Random Selection Subject to Cost}
 
-This strategy is stable from a security standpoint, but not stable to
-economic incentives -- those buyers who are not interested in security
-will employ Lowest-Cost selection. This leads to a situation where
-attackers will either set their prices to zero so as to exploit that
-behavior, or alternatively set their prices higher to avoid wasting
-resources attacking connections of minimal interest.
+As the inverse of the previous discussion, this strategy is stable
+from a security standpoint, but not stable to economic incentives --
+those buyers who are not interested in security will employ
+Lowest-Cost selection.
 
-This decision on the part of attackers is good news for security
-conscious buyers, as the secondary optimization constraint provides
-incentive to deviate from optimally exploiting behavior.
+Some readers may be surprised by the claim that this strategy is
+stable from a security standpoint. Perhaps some buyers on \tOM{} will
+use their knowledge about how an attacker should go about exploiting
+Random Selection Subject to Cost, to create their own improved
+selection method? As previously discussed, \tOM{} is not secure
+against inference of buying strategies, and more troubling there is no
+way of knowing the extent to which an attacker may have inferred an
+alternative chosen method. Therefore for sufficiently paranoid buyers
+this method is stable, as it performs best under worst-case
+assumptions.
+
+However, in as much as some number of \tOM{} buyers ignore this
+advice, or simply employ the Lowest-Cost selection method, this is
+good news for security conscious buyers. Any secondary attack
+optimization will only cause attackers fail to optimally exploit
+Random Selection Subject to Cost.
 
 \subsection{Economic Compatibility Analysis}
 
@@ -302,9 +304,9 @@ economically compatible.
 
 \subsubsection{Random Selection Subject to Cost}
 
-Although it may not initially appear that these strategies are not
-economically compatible, when we consider that the population of
-buyers will not share a maximum price, the density of interest for a
+Although it may not initially appear that this strategy is
+economically compatible, when a population of buyers which do not
+share a maximum price are considered, the frequency of interest in a
 seller's goods takes on the familiar shape of price sensitivity.
 
 [TODO: plot. Need to generate a list of power-law'd max-prices, and
@@ -322,15 +324,16 @@ suited for buyers on \tOM{}, and thereby showed how Random Selection
 Subject to Cost was selected for general use.
 
 The reason we have selected a ``pure random'' approach stems from the
-attacker having both full knowledge of a buyer's strategy, and from
-attackers picking their prices after sellers have chosen theirs.  In
-this context, the best that a biased sample can do is nothing, while
-at worst it allows the attacker to increase their chance of
-selection. Rather than bias our sample, we have sought to maximize the
-number of options available to buyers and have randomly selected from
-that set uniformly.
+assumption an attacker will both full knowledge of a buyer's strategy,
+and from the assumption that attackers will pick their prices after
+legitimate sellers have chosen theirs.  In this context, the best that
+a biased sample can do is nothing, while at worst it allows the
+attacker to increase their chance of selection. Rather than bias our
+sample, we have maximized the number of options available and selected
+from that space uniformly.
 
-Readers who are worried about this increase in cost relative to a more
-traditional auction model are encouraged to consider the premium to be
-``the price of security'' -- as we have seen it is trivial to achieve
-a lower price by leaving oneself wide open to attack.
+Readers who are worried about this increase in cost to buyers relative
+to a more traditional auction model are encouraged to consider the
+premium to be ``the price of security'' -- as we have seen it is
+trivial to achieve a lower price by leaving oneself wide open to
+attack.
