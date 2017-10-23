@@ -1,27 +1,35 @@
 %%% medallions.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
-%%% 
+%%%
 %%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
 %%% Author: Brian J. Fox (bfox@meshlabs.org)
 %%% Author: A truckload of others
 %%% Birthdate: Tue Oct 10 12:02:20 2017.
 
-Medallions form the bridge between our core security assumptions and the network as a whole. To produce a medallion, a peer takes a public key $K$, and the previous Ethereum block hash $E$, then performs a large number of computations to locate a salt $S$ such that $H(K, E, S) \geq N$, where $N$ is some difficulty scaling factor. When a new Ethereum block is added to the chain, a new $S$ must be calculated to keep the Medallion current.
+Fully decentralized, fully anonymous digital systems suffer from
+attacks in which a single malicious user pretends to be thousands of
+users (Sybil Attacks.)
 
-%% \begin{algorithm}[H]
-%%   \KwData{A public key K}
-%%   \KwData{The most recent Ethereum block hash E}
-%%   \KwData{Difficulty scaling factor N}
-%%   \KwResult{A Medallion $M$}
-%%   let $M$ = rand()\;
-%%   \While{H(M, E, K) $<$ N}{
-%%     $M$ = rand()\;
-%%   }
-%%   \caption{Creation of Medallions}
-%% \end{algorithm}
+To combat this class of attack, the \Orchid{} Protocol employs
+Medallions -- data which demonstrates that a given public keys was in
+possession of a sizable amount of computation at a given time. As
+computation is an expensive resource, the use of Medallions places
+budgetary limitations bounds a given attacker's ability to impersonate
+multiple users.
+
+\subsection{Medallion Specification}
+
+To produce a medallion, a peer takes a public key $K$, and the most
+recent Ethereum block hash $E$, then (iteratively or in parallel)
+locates a salt $S$ such that $H(K, E, S) \geq N$, where $N$ is some
+difficulty scaling factor.
+
+Because it is key specific, it cannot be used to impersonate multiple
+public keys. Because it is tied to an Ethereum block hash, it cannot
+be precomputed.
 
 \subsection{Selection of Proof-Type}
 
-Readers who are familiar with other distributed market based networks will have recognized our core security assumptions (Section \ref{core-security}) as forming the basis for proof-of-work systems (bitcoin, etc), and may be inclined to ask: why not use proof-of-stake, proof-of-idle, or other less energetically wasteful methods for proving “realness”?
+Readers who are familiar with other distributed market based networks will have recognized Medallions as being similar in premise to proof-of-work systems (bitcoin, etc), and may be inclined to ask: why not use proof-of-stake, proof-of-idle, or other less energetically wasteful methods for proving “realness”?
 
 Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. As our attack model includes oppressive governments, this can not be counted on. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a ``hostile takeover'' much more difficult. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
 
@@ -29,7 +37,7 @@ Proof-of-space looks much more interesting. Although we are not sure that a suit
 
 Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Econs), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of econs for this attack to cease being devastating, we are not using proof-of-idle for this release.
 
-\subsection{Hash function selection}
+\subsection{Hash Function Selection}
 
 [TODO: Professor Boneh should be consulted before this is finalized.]
 
@@ -43,4 +51,3 @@ verification does not), optimization / amortization-free (it is based on
 a very well studied NP-complete problem), limited parallelism
 proof-of-work scheme. We are not aware of a proof-of-work scheme more
 suited to minimizing the influence of custom hardware.
-
