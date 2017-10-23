@@ -1,5 +1,5 @@
 %%% approaches.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
-%%% 
+%%%
 %%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
 %%% Author: Brian J. Fox (bfox@meshlabs.org)
 %%% Author: A truckload of others
@@ -7,19 +7,31 @@
 
 \subsection{Unprotected Internet Access}
 
-Users simply browsing the internet without protection are simply
-handing over their data to their ISP, the websites they use, and
-anyone either of those companies wishes to share it with.
+Users who access the internet without protection provide their
+complete browsing history to their ISP, the websites they use, and
+anyone those companies choose to share it with or sell it to.
 
 \subsection{Virtual Private Networking (VPN) Services}
 
-VPNs create encrypted connections between an end user and the VPN
-server, which can be effective for circumventing
-censorship. Unfortunately, VPN services are a very poor approach for
-those users seeking anonymity – the VPN provider has complete payment
-information for the subscriber in question, and may be hacked,
-wiretapped, or otherwise compelled to report your browsing
-information.
+Virtual Private Networks (VPNs) use encryption to securely transport a
+VPN subscriber's traffic across a larger insecure network. Once the
+VPN has received the traffic, it decrypts it and retransmits it across
+a different large, insecure network. The retransmission can assist
+users in circumventing access restrictions imposed by websites, and to
+a lesser extent reduce the tracking of their browsing habits by
+websites. The encryption prevents the user's ISP from seeing their
+traffic, thereby preventing monitoring attacks, but it does so by
+effectively making the VPN a new ISP for the user -- any attack an ISP
+could previously perform is now available to the VPN provider.
+
+VPN users should not assume their VPN provider is
+trustworthy. Although VPN service providers do face more competition
+than ISPs, they ultimately draw talent from the same sources, and have
+similar bandwidth-for-cash-type business models. It is unlikely that
+VPN providers will not fall prey to the same incentives which led the
+user to not trust their ISP. Additionally, the re-use of IP addresses
+for relaying traffic in VPN setups enables relative ease in blocking
+their use by commercial websites\cite{13}.
 
 \subsection{Tor}
 
@@ -34,15 +46,13 @@ it. A side effect of this forwarding is that, unless several nodes are
 compromised or run by the same user, no two relays know both who sent
 a packet and where it went.
 
-%% TODO: section on Dingledine knowing ~75% of relay operators personally.
+%% @saurik: ref on Dingledine knowing ~75% of relay operators personally?
 
-%% \subsection{Tor with Incentives}
+%% \subsection{Tor with Incentives} ?
 
-%% \subsection{I2P}
+%% \subsection{I2P} ?
 
 %% I2P is billed as a “next generation” onion router. It is primarily
-%% focused on communication internal
+%% focused on communication internal to the network.
 
-%% \subsection{Mixmaster, Mixminion, and other Chaumian relay schemes}
-
-%% These are cool!
+%% \subsection{Mixmaster, Mixminion, and other Chaumian relay schemes} ?
