@@ -1,0 +1,146 @@
+%%% medallions.tex: -*- LaTeX -*-  DESCRIPTIVE TEXT.
+%%% 
+%%% Copyright (c) 2017 Brian J. Fox & Orchid Labs, Inc.
+%%% Author: Brian J. Fox (bfox@meshlabs.org)
+%%% Author: A truckload of others
+%%% Birthdate: Tue Oct 10 12:02:20 2017.
+
+Medallions form the bridge between our core security assumptions and the network as a whole. Since our fundamental security goal is to limit a well-motivate attacker from gaining control of Orchid, our choice of Medallion creation must meet the following conditions,
+  \begin{enumerate}
+      \item Medallion creation must be \textit{easy} for a non-malicious node to create
+      \item Medallions  must be \textit{easy} to verify
+      \item Medallions must be \textit{difficult} to create in bulk
+  \end{enumerate}
+With these conditions, we define \textit{difficulty} to mean prohibitive scalability in time and money. In short, we want a proof-of-work system where it is \textit{easy} for a normal node to obtain entry to the STAR network but difficult for an attacker to scale entry into the STAR network. We will discuss our choice of proof-of-work over other methods such as proof-of-stake %\cite{bentov2016snow, kiayias2017ouroboros, houy2014will}
+and proof-of-space %\cite{dziembowski2015proofs, park2015spacecoin}
+in section %\ref{SECTION}
+
+Two primary methods currently exist that satisfy the requirements above: challenge-response protocols, and crypto-puzzles. Unfortunately, challenge-response protocols may not provide sufficient security within the Orchid model as an attacker may be able to precompute challenge and responses via collusion. This leaves crypto-puzzles of which there are many in existence today \cite{nakamoto2008bitcoin, Equihash} each with their own trade-offs. Again, in order to satisfy the requirements of Orchid only a subset of those crypto-puzzles are suitable. Namely, crypto-puzzles which can not easily be parallelized, made into an ASIC, or scaled trivially. Recently, researchers have discovered algorithms that produce easy to verify results that are tunable creation difficulty \cite{Equihash}. These collection of algorithms exploit the trend that memory and total silicon area is expensive to scale \cite{abadi2005moderately, dwork2005pebbling}. These class of algorithms are called asymmetric memory-hard functions and we use them for medallion creation. There are several varieties of these functions \cite{tromp2014cuckoo, lorimermomentum, Equihash} but we have chosen to use Equihash. Equihash is based on the k-XOR birthday problem and provides memory hardness via a time-space trade-off\footnote{Note that it is no coincidence that this time-space trade-off is reminiscent of time-memory trade-offs as first discovered by \cite{hellman1980cryptanalytic}}. Since Equihash is tunable, simple, is based of an NP problem, and has gained acceptance in the cryptocurrency community, we believe that using such a function as our basis for proof-of-work provides accepted security and a level of future-proofing.
+
+To produce a medallion, a peer takes a public key $K$, and the previous Ethereum block hash $E$, then performs a series of computations in order to locate a salt $S$ such that $F(K, E, S, ...) \geq N$, where $N$ is some difficulty scaling factor. When a new Ethereum block is added to the chain, a new $S$ must be calculated to keep the Medallion current.
+
+% If needed to explain why time-space trade-offs are important but probably a bit much:
+%
+%	Time-space trade-offs are an analog to time-memory trade-offs often used in cryptanalysis. These methods take 
+%	advantage of intermediate computations that allow a hard problem to be more efficiently solved if some amount 
+%	of pre-computation or computed state is performed. In the case of Equihash, storing k-bit strings allows one to 
+%	store possible XOR wins and perform linear algebra on the system to obtain a result. Notice that this is not
+%	unlike sieving in the quadratic sieve.
+
+%%%%%%%%%%%%%%%%%% Proof of Space Ref %%%%%%%%%%%%%%%%%%
+
+% @inproceedings{dziembowski2015proofs,
+%   title={Proofs of space},
+%   author={Dziembowski, Stefan and Faust, Sebastian and Kolmogorov, Vladimir and Pietrzak, Krzysztof},
+%   booktitle={Annual Cryptology Conference},
+%   pages={585--605},
+%   year={2015},
+%   organization={Springer}
+% }
+
+% @techreport{park2015spacecoin,
+%   title={Spacecoin: A cryptocurrency based on proofs of space},
+%   author={Park, Sunoo and Pietrzak, Krzysztof and Alwen, Jo{\"e}l and Fuchsbauer, Georg and Gazi, Peter},
+%   year={2015},
+%   institution={IACR Cryptology ePrint Archive 2015}
+% }
+
+%%%%%%%%%%%%%%%%%% Proof of Stake Ref %%%%%%%%%%%%%%%%%%
+% @article{bentov2016snow,
+%   title={Snow White: Provably Secure Proofs of Stake.},
+%   author={Bentov, Iddo and Pass, Rafael and Shi, Elaine},
+%   journal={IACR Cryptology ePrint Archive},
+%   volume={2016},
+%   pages={919},
+%   year={2016}
+% }
+
+% @inproceedings{kiayias2017ouroboros,
+%   title={Ouroboros: A provably secure proof-of-stake blockchain protocol},
+%   author={Kiayias, Aggelos and Russell, Alexander and David, Bernardo and Oliynykov, Roman},
+%   booktitle={Annual International Cryptology Conference},
+%   pages={357--388},
+%   year={2017},
+%   organization={Springer}
+% }
+
+% @article{houy2014will,
+%   title={It Will Cost You Nothing to'Kill'a Proof-of-Stake Crypto-Currency},
+%   author={Houy, Nicolas},
+%   journal={Browser Download This Paper},
+%   year={2014}
+% }
+
+%%%%%%%%%%%%%%%%%% Mem-Hard Algorithm Refs %%%%%%%%%%%%%%%%%%
+% @article{tromp2014cuckoo,
+%   title={Cuckoo Cycle: a memory-hard proof-of-work system.},
+%   author={Tromp, John},
+%   journal={IACR Cryptology ePrint Archive},
+%   volume={2014},
+%   pages={59},
+%   year={2014}
+% }
+
+% @misc{lorimermomentum,
+%   title={Momentum--a memory-hard proof-of-work via finding birthday collisions, 2014},
+%   author={Lorimer, Daniel} %,
+%   Url={http://www.hashcash.org/papers/momentum.pdf}
+% }
+
+%%%%%%%%%%%%%%%%%% Time-Space Trade-off Refs %%%%%%%%%%%%%%%%%%
+% @article{hellman1980cryptanalytic,
+%   title={A cryptanalytic time-memory trade-off},
+%   author={Hellman, Martin},
+%   journal={IEEE transactions on Information Theory},
+%   volume={26},
+%   number={4},
+%   pages={401--406},
+%   year={1980},
+%   publisher={IEEE}
+% }
+
+%%%%%%%%%%%%%%%%%% Finding Hard Functions %%%%%%%%%%%%%%%%%%
+
+% @article{abadi2005moderately,
+%   title={Moderately hard, memory-bound functions},
+%   author={Abadi, Martin and Burrows, Mike and Manasse, Mark and Wobber, Ted},
+%   journal={ACM Transactions on Internet Technology (TOIT)},
+%   volume={5},
+%   number={2},
+%   pages={299--327},
+%   year={2005},
+%   publisher={ACM}
+% }
+
+% @inproceedings{dwork2005pebbling,
+%   title={Pebbling and proofs of work},
+%   author={Dwork, Cynthia and Naor, Moni and Wee, Hoeteck},
+%   booktitle={CRYPTO},
+%   volume={5},
+%   pages={37--54},
+%   year={2005},
+%   organization={Springer}
+% }
+
+%%%%%%%%%%%%%%%%%% Misc References %%%%%%%%%%%%%%%%%%
+% @misc{nakamoto2008bitcoin,
+%   title={Bitcoin: A peer-to-peer electronic cash system},
+%   author={Nakamoto, Satoshi},
+%   year={2008}
+% }
+
+% \subsection{Hash function selection}
+
+% [TODO: Professor Boneh should be consulted before this is finalized.]
+
+% One of the concerns when selecting a hash function for proof-of-work
+% systems is that an attacker may construct custom hardware specifically
+% for performing the computation. To minimize the possible impact of
+% this, the \Orchid{} Network uses the Equihash hash function\cite{Equihash}.
+
+% Equihash is a memory-asymmetric (proofs require large amounts of RAM,
+% verification does not), optimization / amortization-free (it is based on
+% a very well studied NP-complete problem), limited parallelism
+% proof-of-work scheme. We are not aware of a proof-of-work scheme more
+% suited to minimizing the influence of custom hardware.
+
