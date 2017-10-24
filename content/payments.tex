@@ -1,4 +1,5 @@
 \subsection{Orchid Payment Requirements}
+\label{sec:paymentreqs}
 
 Paying for bandwidth presents a rather unique set of challenges. In most other payment systems, the cost of an item is substantially greater than the cost of sending a packet, and so the networking cost may be safely ignored as just another transaction cost. In the \Orchid{} Network however, the cost of a packet is the \emph{price being paid}, and so even if the transaction costs for sending payment are as low as a single packet, they would be equal in cost to the purchased item.
 
@@ -55,11 +56,7 @@ ERC20\cite{ERC20} defines a standard API for token ledgers built on top of Ether
 \subsection{The Orchid Token}
 \label{sec:oct}
 
-TODO: refactor, this miner censorship part ended up a bit long winded
-
-The Orchid Network is using an Ethereum-based ERC20 token in order to satisfy the payment requirement of censorship-resistance. Similar to most public blockchain networks, Ethereum transactions cannot be censored unless the validator (miners in the Ethereum network) chooses to not include them in their created blocks. As blocks are mined randomly among all miners, proportionally to hash power, it would require the vast majority of miners to actively censor Orchid payments to significantly disrupt the Orchid Network. For example, even if 90\% of the hash power chooses to not include Orchid related transactions, the Orchid Network would still function with the only caveat that transactions would take, on average, ten times longer to confirm. A more severe form of censorship would be if a large group of miners, say 51\%, chooses to censor Orchid related transactions by rejecting blocks including them \cite{BitcoinEconomics}. This is valid according to the Ethereum protocol rules and effectively creates a soft-fork. However, organising large-scale miner collusion to create such a soft-fork comes with great risk of loss of profit, as if the soft-fork fails to achieve sufficient hashing power the colluding miners would miss out on their block rewards. Aside from the profit risk, we consider this possibility extremely unlikely given the decentralized nature of Ethereum miners and the lack of legal and regulatory limitations on blockchain mining strategies.
-
-The following sections discuss how we are able to lower transaction fees for ERC20 transfers to enable sending of arbitrarily small token amounts. Payment anonymity is discussed in section \ref{sec:anon}.
+The Orchid Network is using an Ethereum-based ERC20 token in order to satisfy the payment requirement of unforgeability, availability and irreversibility. The following sections discuss how we are able to lower transaction fees for ERC20 transfers to enable sending of arbitrarily small token amounts. Payment anonymity is discussed in section \ref{sec:anon}.
 
 The Orchid Token (OCT) is used for payments within the Orchid Network. The Orchid Token is a new, Ethereum-based, ERC20-compatible, fixed-supply token. The supply is fixed at 1e8 tokens where each token has 1e18 non-divisible subunits (same divisibility as Ether).
 
@@ -76,6 +73,10 @@ In decentralized systems built on other decentralized systems, new tokens decoup
 A liquid market for a system-specific token can enable users heavily reliant on the system to hedge against the potential failure of the system by taking short positions. If this seem far fetched we should note that the original intention of financial derivatives was to allow businesses to hedge against unfortunate future events. With the advent of decentralized exchanges such as 0x\cite{ETH0x} and etherdelta\cite{EtherDelta}, and prediction markets such as Augur\cite{Augur} and Gnosis\cite{Gnosis}, derivatives on Ethereum-based tokens and systems are not too far away. In fact, such derivatives can be even more effective\cite{ETHDerivatives} than traditional financial derivatives, as the former have no trusted party, are permissionless and potentially even anonymous.
 
 New tokens also make it easier to engineer specific incentives for stakeholders; as the tokens exclusively derive their value from the new system, they act as powerful incentives for anyone working towards the success of the system. Ethereum smart contracts can implement autonomous locking of tokens to ensure that token holders can only access their tokens according to a defined schedule. This aligns incentives over time and puts the focus of token holders on the long-term success of the \emph{system} rather than social structures such as specific teams or associated corporations. If the Orchid Network simply used Ether, and stakeholders received a lockup of Ether, they would actually be more incentivized to work towards the overall success of Ethereum rather than towards any specific system making use of Ethereum. While this author certainly finds such an outcome not too terrible, it can be argued it would not be an optimal incentive alignment for the Orchid Network and project.
+
+\subsection{Ethereum Censorship Resistance}
+
+Similar to most public blockchain networks, Ethereum transactions cannot be censored unless the validator (miners in the Ethereum network) chooses to not include them in their created blocks. As blocks are mined randomly among all miners, proportionally to hash power, it would require the vast majority of miners to actively censor Orchid payments to significantly disrupt the Orchid Network. For example, even if 90\% of the hash power chooses to not include Orchid related transactions, the Orchid Network would still function with the only caveat that transactions would take, on average, ten times longer to confirm. A more severe form of censorship would be if a large group of miners, say 51\%, chooses to censor Orchid related transactions by rejecting blocks including them \cite{BitcoinEconomics}. This is valid according to the Ethereum protocol rules and effectively creates a soft-fork. However, organising large-scale miner collusion to create such a soft-fork comes with great risk of loss of profit, as if the soft-fork fails to achieve sufficient hashing power the colluding miners would miss out on their block rewards. Aside from the profit risk, we consider this possibility extremely unlikely given the decentralized nature of Ethereum miners and the lack of legal and regulatory limitations on blockchain mining strategies.
 
 \subsection{Building Micropayments from Macropayments}
 
@@ -126,12 +127,11 @@ The authors of MICROPAY1 construct iterative improvements in MICROPAY2, and MICR
 \subsection{Orchid Payment Scheme}
 \label{sec:orchid-payments}
 
-TODO refactor
+Now that we have located a suitable abstraction for our payments, the question becomes: how should they be implemented?
 
-Now that we have located a suitable abstraction for our payments, the question becomes: how should they be implemented? The main requirements are:
-
+Alongside the requirements discussed in section \ref{sec:paymentreqs} we also want to satisfy:
 \begin{itemize}
-\item The method for constructing new tickets must be reusable without requiring an on-chain transaction, as otherwise transaction fees will once again be an issue.
+\item $Reusability$, the method for constructing each new ticket must not require new transaction fees or new on-chain transactions for each ticket, as otherwise transaction fees will once again be an issue.
 \item Double spending must be prevented, or failing that not profitable.
 \item The system must be sufficiently performant in terms of computational cost so as not to overwhelm the cost of a packet.
 \end{itemize}
@@ -140,104 +140,165 @@ Of those requirements, the last element is perhaps the most troublesome. To the 
 
 For this reason, although it was not sufficient for use alone, we are forced to employ a balance-of-trade approach similar to the one mentioned above. This in turn leads to a new requirement, namely ``the balance of trade must be kept sufficiently small so as to not cause an incentive to disconnect during trade''. As this is a mechanism design issue caused by an implementation reality, let us for now focus on implementation by assuming a solution exists, and defer further discussion until section \ref{tokens-bot}.
 
-Regarding payment anonymity, at the time this paper was written, the Ethereum network saw a protocol upgrade \cite{ETHByz} that among other things added support for verifying zk-SNARKs such as those used in the zcash network\cite{zcash-zksnarks}. While verification of zcash transactions on Ethereum have been demonstrated using these new protocol primitives, it is too early for the Orchid protocol to use them to achieve anonymous payments. The Orchid Project aims to closely follow development of zk-SNARKs, zk-STARKs \cite{zkstarks} and other modern zero-knowledge based technologies in order to apply them in the Orchid protocol when feasible implementations of required primitives are available on the Ethereum network (or another network providing similar security and flexibility of smart contracts).
-
-The Orchid payment scheme is a pseudo-anonymous, probablistic micropayment scheme inspired by MICROPAY1 and related constructs. It mitigates front-running and parallel (double) spending attacks without the need for a trusted party by leveraging Ethereum smart contracts and slashable penalty deposits. The pseudo-anonymity of Orchid payments is equivalent to what can be achieved in regular Ethereum transactions (although Orchid clients employ available privacy techniques such as one-time addresses and key separation between node identities and payment addresses to achieve limited anonymity).
+The Orchid payment scheme is a pseudo-anonymous, probablistic micropayment scheme inspired by MICROPAY1 and related constructs. It mitigates front-running and parallel (including double) spending attacks without the need for a trusted party by leveraging Ethereum smart contracts and slashable penalty deposits. The pseudo-anonymity of Orchid payments is equivalent to what can be achieved in regular Ethereum transactions (although Orchid clients employ additional privacy techniques such as one-time addresses and key separation between node identities and payment addresses to achieve limited anonymity).
 
 The trusted party introduced in MICROPAY2 and MICROPAY3 can effectively be replaced by Ethereum smart contract code. The EVM allows to implement arbitrary logic (within economic bounds on the computation) for validating micropayment tickets, and provides primitives\cite{ETHSpec} for the ECDSA\cite{ECDSA} recovery operation as well as cryptographic hash functions.
 
-TODO: Someone (probably David) please rescue Gustav with formal notation
-A Orchid payment ticket has the following fields:
+\subsubsection{Payment Ticket Definitions:}
+\label{payments-definitions}
 
+Orchid payment tickets have the following fields:
+\begin{description}%[align=right,labelwidth=5cm] % Changing labelwidth changes horizontal alignment on page
+  \item [$H$ (function)] -- cryptographic hash function (more details in section \ref{payments-optimization})
+  \item [$timestamp$ (uint32)] -- Unix time denoting when the ticket value begins decreasing exponentially
+  \item [$rand$ (uint256)] -- random integer chosen by $recipient$
+  \item [$nonce$ (uint256)] -- random integer chosen by the ticket sender
+  \item [$faceValue$ (uint256)] -- value of a winning ticket
+  \item [$minValueMarket$ (uint256)] -- expected value of a ticket based on the bandwidth market
+  \item [$minValueAccepted$ (uint256)] -- expected value of a ticket based on what the a recipient accepts
+  \item [$winProb$ (uint256)] -- probability that a particular ticket wins $faceValue$ from the sender
+  \item [$recipient$ (uint160)] -- 160-bit Ethereum account address of the ticket recipient
+  \item [$randHash$ (uint256)] -- digest of $H(rand)$
+  \item [$ticketHash$ (uint256)] -- digest of $H(randHash, recipient, faceValue, winProb, nonce)$
+  \item [$(v1, r1, s1)$ (tuple)] -- ECDSA signature elements of the ticket sender
+  \item [$(v2, r2, s2)$ (tuple)] -- ECDSA signature elements of $recipient$
+\end{description}
+
+\subsubsection{Payment Ticket Cryptographic Choices}
+\label{payments-optimization}
+In order to reduce the cost of Orchid micropayments, we have chosen certain cryptographic functions over others due to their reduced Ethereum gas costs compared to other arbitrary functions.
+\begin{description}
+    \item[$H$] -- Keccak-256 -- chosen over other hashes due to having the lowest gas cost (36 gas\cite{ETHSpec} for hashing 32 bytes) of all hash functions available in the EVM
+    \item[$ECDSA$] -- secp256k1 with Keccak-256, chosen over other curves due to the EVM support for ECDSA recovery of this curve as well as compatibility with existing blockchain software libraries and tools
+\end{description}
+
+\subsubsection{Payment Ticket Generation:}
+\label{payment-generation}
+      {\color{red} \texttt{TODO: describe prior setup where ticket sender locks up Orchid Tokens in the ticket smart contract. Make note that Sig(key, value) defines a signature using the private key of the sender's account that previously locked up CHI tokens in the Orchid Payment smart contract}}
+
+Let \textit{Alice} be a recipient and \textit{Bob} be a sender,
 \begin{enumerate}
-\item $timestamp$ TODO define timestamp and it's usage
-\item $rand$, an unsigned 256 bit integer (uint256) representing the random number choosen by $recipient$
-\item $randHash$, a Keccak-256 hash of $rand$
-\item $nonce$, uint256, the random number choosen by the ticket sender
-\item $faceValue$, uint256, the value paid out if the ticket is a winning one
-\item $winProb$, uint256, the probability of the ticket allowing the recipient to claim $faceValue$ from the sender
-\item $recipient$, the 160-bit address of the $recipient$
-\item $(v1, r1, s1)$ values corresponding to the ECDSA signature of the ticket sender
-\item $(v2, r2, s2)$, values corresponding to the ECDSA signature of $recipient$
-\end{enumerate}
-
-Payment Ticket Generation:
-
-TODO: describe prior setup where ticket sender locks up Orchid Tokens in the ticket smart contract
-
-\begin{enumerate}
-\item The recipient picks a random 256-bit number, $rand$, calculates $randHash$, the Keccak-256 hash of the number, and sends it to the sender.
-\item The sender chooses values for $(nonce, faceValue, winProb, recipient)$ based on information outside the scope of this specification (such as general bandwidth market data and public capabilities signed by $recipient$).
-\item The sender calculates $ticketHash$, the Keccak-256 hash over $(randHash || recipient || faceValue || winProb || nonce)$
-\item The sender signs ticketHash with the private key of her account that previously locked up CHI tokens in the Orchid Payments smart contract.
-\item The resulting ticket consists of:
-\begin{enumerate}
-\item $randHash$
-\item $recipient$
-\item $faceValue$
-\item $winProb$
-\item $nonce$
-\item $ticketHash$
-\item $creator$ (address of the sender key that signed $ticketHash$)
-\item $creatorSig$ (the sender's signature over $ticketHash$)
- \end{enumerate}
+  \item \textit{Alice} picks a random 256-bit number, $rand$, calculates $randHash$, and sends the digest to \textit{Bob}
+  \item \textit{Bob} chooses values for $(nonce, faceValue, winProb, recipient)$ \footnote{Using information {\color{red}(to be described later?}) of this specification such as: general bandwidth market data and public capabilities signed by $recipient$}
+  \item \textit{Bob} calculates $ticketHash$
+  \item \textit{Bob} calculates Sig(PrivKey, $ticketHash$)
+  \item The resulting ticket consists of:
+    \begin{enumerate}
+      \item $randHash$
+      \item $recipient$
+      \item $faceValue$
+      \item $winProb$
+      \item $nonce$
+      \item $ticketHash$
+      \item $creator$ (address of the sender key that signed $ticketHash$)
+      \item $creatorSig$ (the sender's signature over $ticketHash$)
+     \end{enumerate}
 \end{enumerate}
 
 Note that while this ticket is valid in the sense that the recipient can fully verify it, the recipient needs to sign it (see below) in order to be able to claim it in the Orchid Payment Ethereum smart contract.
 
-Payment Ticket Verification:
-
+\subsubsection{Payment Ticket Verification:}
+\texttt{Alice} (bandwidth seller) will then perform the following operations,
 \begin{enumerate}
-\item Verify that $randHash$ equals Keccak-256($rand$)
-\item Verify that $faceValue$ is equal to or greater than the expected minimum value (based on what the recipient accepts in terms of the bandwidth market)
-\item Verify that $winProb$ is equal to or greater than the expected minimum value (based on what the recipient accepts)
-\item Verify that $recipient$ equals the Ethereum account address published by the recipient
-\item Verify that $creator$ equals the Ethereum account address published by the sender
-\item Verify that $creatorSig$ is a signature by the private key who's public key is the creator address
-\item Verify that $creator$ has sufficient Orchid Tokens locked in the Orchid Payments smart contract
-\item Ticket is now proven to be valid, and may be a win
-\item (TODO: think about how to formally define this, as it is predicated on EVM and solidity constraints) If Keccak-256($ticketHash || rand$) interpreted as an unsigned 256-bit integer is less than or equal to $winProb$ then the ticket is a win
+  \item[] \textbf{Verify:} \begin{enumerate}
+  	\item $randHash$ $=$ $H(rand)$
+    \item $faceValue$ $\geq$ $minValueMarket$%\{the expected minimum value (based on what the recipient accepts in terms of the bandwidth market)\}
+    \item $winProb$ $\geq$ $minValueAccepted$%\{the expected minimum value (based on what the recipient accepts)\}
+    \item $recipient$ $=$ \{the Ethereum account address published by the recipient\}
+    \item $creator$ $=$ \{the Ethereum account address published by the sender\}
+  \end{enumerate}
+  \item[] \textbf{Validate:} \begin{enumerate}
+  	\item Validate: $creatorSig$ is a signature by the private key who's public key is the creator address
+  \end{enumerate}
+  \item[] \textbf{Check:} \begin{enumerate}
+  	\item Validate: $creator$ has sufficient Orchid Tokens locked in the Orchid Payment smart contract
+  \end{enumerate}
+\end{enumerate}
+Ticket is now proven to be valid, and may be a winning ticket\\
+
+\subsubsection{Claiming Payment from a Ticket:}
+
+While the recipient can locally fully verify whether a ticket is valid and if it's a winning ticket, the actual payout of tokens in winning tickets is done by a Orchid Payment smart contract.\\
+
+This smart contract exposes a solidity API that takes as input:
+\begin{enumerate}%[label=(\alph*)]
+  \item $rand$
+  \item $nonce$
+  \item $faceValue$
+  \item $winProb$
+  \item $receipient$
+  \item $recipientSig$ ($recipient$ signature over $ticketHash$)
+  \item $creatorSig$ (the sender's signature over $ticketHash$)
 \end{enumerate}
 
-Payment Ticket Claiming:
+\subsubsection{The smart contract executes:}
 
-While the recipient can, locally, fully verify whether a ticket is valid and whether it's winning, the actual payout of tokens in winning tickets is done by a Orchid Payments smart contract.
+{\color{red} \texttt{TODO: good notation / formalism here. We want to ensure that the reader understands when this protocol/algorithm spends eth gas and when it aborts and does not. Might also want to move the description of Alice below to a previous section; maybe Sec.\ref{payment-generation}}}\\
 
-This smart contract exposes a solidity API (see Appendix TODO) that takes as input:
-\begin{enumerate}
-\item $rand$
-\item $nonce$
-\item $faceValue$
-\item $winProb$
-\item $receipient$
-\item $recipientSig$ ($recipient$ signature over $ticketHash$)
-\item $creatorSig$ (the sender's signature over $ticketHash$)
-\end{enumerate}
+Suppose Alice is a user who wishes to buy bandwidth. Alice must have an Ethereum account address, $addressAlice$, and Orchid tokens. Note that this address will have an associated public key, $PubKeyAlice$. Alice must also have Orchid tokens \textit{locked up} in an Ethereum smart contract as defined in previous sections and locked with $PubKeyAlice$. In the previous section, Alice's address would be the Ethereum account address equaling the public key recovered from $creatorSig$ over $ticketHash$.
 
-The smart contract executes:
-
-TODO: good notation / formalism here
-
-SLASH, a temporary boolean value, is set to FALSE.
+Let SLASH be a temporary boolean value which is set to FALSE and $PubKey$ be the public key recovered from $recipientSig$ over $ticketHash$,
 
 \begin{enumerate}
-\item Verify that $randHash$ equals Keccak-256($rand$). If invalid, execution is aborted (voids the transaction so no state transitions occur).
-\item Calculate ticketHash as Keccak-256($randHash || recipient || faceValue || winProb || nonce$).
-\item Verify that the public key recovered from $recipientSig$ over $ticketHash$ equals the $recipient$ address. If not, abort execution.
-\item Verify that the Ethereum account address equaling the public key recovered from $creatorSig$ over $ticketHash$ has Orchid Tokens locked up in the penalty escrow account. If not, abort execution.
-\item Verify that the address recovered in (4) has enough Orchid Tokens locked up in it's ticket account to pay for the ticket. If not, set SLASH to TRUE and continue execution.
-\item Verify if Keccak-256($ticketHash$ || $rand$) interpreted as a uint256 is less than or equal to $winProb$. If not, abort execution.
-\item If SLASH is FALSE, then the ticket is paid out: $faceValue$ is transferred from the creator's ticket funds to $recipient$
-\item If SLASH is TRUE, then creator is slashed:
-\item Send creator's ticket funds, if any, to $recipient$ (this is from prior validations guaranteed to be less than $faceValue$)
-\item Set creator's penalty escrow account to zero (burns / slashes those tokens)
+  \item[] \textbf{Calculate:} \begin{enumerate}
+		\item $ticketHash$ %= Keccak-256($randHash, recipient, faceValue, winProb, nonce$)
+  \end{enumerate}
+
+  \item[] \textbf{Verify:} \begin{enumerate}
+  	\item $randHash$; If not, abort execution\footnote{Since the transaction was aborted, not Ethereum state transition occurs and no gas is spent}. %= Keccak-256($rand$); If not, abort execution; transaction is voided so no state transitions occur.
+    \item $PubKey$ = $recipient$ address; If not, abort execution.
+  \item $addressAlice$ has Orchid Tokens locked up in the penalty escrow account. If not, abort execution.
+  \item $addressAlice$ has enough Orchid Tokens locked up in it's ticket account to pay for the ticket. If not, set SLASH to TRUE and continue execution.
+  \item $H(ticketHash, rand)$\footnote{interpreted as a uint256} $\leq$ $winProb$. If not, abort execution.
+  \end{enumerate}
+
+  \item[] \textbf{Determine:} \begin{enumerate}
+  	\item If SLASH = FALSE, then the ticket is paid out: $faceValue$ is transferred from the creator's ticket funds to $recipient$.
+  	\item If SLASH = TRUE, then creator is slashed.
+  \end{enumerate}
+
+  \item[] \textbf{Settlement:} \begin{enumerate}
+  	\item Send creator's ticket funds, if any, to $recipient$ (this is from prior validations guaranteed to be less than $faceValue$).
+  	\item Set creator's penalty escrow account to zero (burns / slashes those tokens).
+  \end{enumerate}
+
 \end{enumerate}
 
-Note that while the slashing of the penalty escrow prevents double-spending by creating a disincentive for the ticket sender where they will lose more than they can gain from a potential double spend, there is still a danger of a ticket sender over-spending on a grand scale. To address this, the value of winning lottery tickets begin to decrease exponentially at $T$ seconds after the ticket was created (TODO: timestamp field), thereby providing a strong incentive for winners to cash in immediately. This immediacy can be used by the recipient to calculate the ``wasting rate'' of the sender's Orchid token balance.
+Note that while the slashing of the penalty escrow prevents double-spending by creating a disincentive for the ticket sender where they will lose more than they can gain from a potential double spend, there is still a danger of a ticket sender over-spending on a grand scale. To address this, the value of winning lottery tickets should begin to decrease exponentially at $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy can be used by the recipient to calculate the ``wasting rate'' of the sender's Orchid token balance.
+
+\begin{quote}
+	\color{red}
+    \texttt{Completely unfinished. Here for example sake currently,}
+\end{quote}
+\begin{algorithm}[H]
+  %\color{red}
+  \SetKwInOut{Input}{Let}
+
+  \Input{Alice $\gets$ PubK, \{Nodes\}}
+  \Input{Bob is a Node}
+    \textbf{Handshake}:\\
+    ~~Alice: Bob $\gets$ msg\{I would like to buy bandwidth\}\\
+    ~~Bob:~~Chris $\gets$ msg\{Verify sufficient funds from Alice at time $t$ with rate $r$\}\\
+    ~~~~~~~~~~Alice $\gets$ msg\{Agree to sell bandwidth\}\\
+    ~~~~~~~~~~Alice $\gets$ h :  h = Hash($N$), for some $N \in \{0,1\}^k$, $k \in \mathbb{Z}$\\
+    \textbf{Post-Handshake:}\\
+    ~~Alice: Determine,\\
+    ~~~~~~~~~$t$, $v$, $p$ : $t$ = time stamp, $v$ = value of ticket, $p$ = probability of win\\
+    ~~~~~~~~~$\alpha$ : $\alpha (t, v, p)$ = Sig(PubK, \{$t, v, p, n$, h\}), where $n \in \{0,1\}^k$\\
+    ~~Alice: Bob $\gets$ $\alpha$\\
+    ~~Bob: \While{Alice is using bandwidth}{
+    	Simulate the ticket winning condition with smart contract $\omega$ using $\alpha$ and $N$
+    	%\if{win condition}{
+        %	break
+        %}
+    }
+    ~~~~~~~~Chris $\gets$ $N, \alpha$
+\caption{Ticket Protocol}
+\end{algorithm}
 
 \subsection{Orchid Gas Costs}
 
-TODO: exact gas cost of ticket claiming
+We have measured a gast cost of approximately 87000 from a solidity prototype implementation of the above scheme. This cost is for the full execution of the API for ticket claiming, when called with a winning ticket as input. The ticket claiming execution includes a sub call to the Orchid ERC20 ledger $transfer$ API. The solidity implementation of all Orchid smart contracts will be open sourced when it has reached a more mature state after cryptographic reviews and a minimum of external security auditing.
 
 \subsection{Verifiable Random Functions}
 \label{sec:vrfs}
@@ -311,4 +372,3 @@ On the other hand, to achieve greater anonymity, optional or even mandatory use 
 Finally, an extremely interesting property of zero-knowledge technology such as zk-SNARKs is to dramatically reduce the computational overhead of arbitrary computation, such as Ethereum smart contract execution\cite{zksnarks-blockchain}. While generation of zk-SNARK proofs is expensive, the verification is cheaper - even compared to the original code. Since only the verification needs to be executed on-chain, a zero-knowledge proof of claiming an Orchid Ticket could be made cheaper to verify than the original verification code.
 
 Going further, recursive SNARKs \cite{RecursiveSnarks} have the potential to aggregate a set of SNARK proofs into a single proof. While they may be more applicable for blockchain consensus protocols\cite{ScalingTezos}, they may also be useful for Orchid to e.g. batch multiple ticket claims into a single smart contract transaction while avoiding linear gas cost complexity.
->>>>>>> Payments reqs, bibliography, more sections
