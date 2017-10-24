@@ -22,7 +22,7 @@ Those weaknesses in VPNs led to the development of decentralized overlay network
 Peer-to-peer protocols date back to the Napster file sharing network.\cite{42}. Napster used incentives to encourage subscribers to host music files in return for being able to download files from other peers.
 
 \subsubsection{The Napster Network}
-Napster used a centralized directory service that indexed files and the locations of peers. The eventual loss of data sharing anonymity that resulted from that approach made Napster susceptible to legal action by the MPAA (Motion Picture Association of America). That in turn eventually forced Napster out of business.
+Napster used a centralized directory service that indexed files and the locations of peers. The centralization of knowledge that resulted from Napster's approach rendered them susceptible to legal action by the MPAA (Motion Picture Association of America). That in turn eventually forced Napster out of business.
 
 The vulnerability of Napster's centralized directory inspired the designers or Napster's successor, Gnutella, to  distribute the index of files and node addresses across each peer in the network\cite{43}.
 
@@ -59,7 +59,7 @@ The techniques of Onion Routing described here (and Garlic Routing described in 
 
 Onion Routing describes that system's ``layered'' approach to data encryption. Onion routing creates paths through a P2P network in which messages are repeatedly encrypted by the originating node, then decrypted successively by each node that the message transits through. Intermediate nodes receive only the routing instructions needed to route the message. Only the final (exit) node receives both the routing instructions and the  message.
 
-One frequently cited example of Onion Routing is the Tor network (Section~\ref{subsec: tornetwork}). 
+One frequently cited example of Onion Routing is the Tor network (Section~\ref{subsec: tornetwork}).
 
 \subsubsection{Garlic Routing}
 \label{subsec-garlicrouting}
@@ -81,7 +81,7 @@ One aspect of I2P which requires significant improvement is its management of it
 
 
 \subsection{Blockchain Platforms}
-Blockchain protocols enable permissionless, decentralized consensus on global state and the use of cryptographic tokens to provide incentives to run nodes. 
+Blockchain protocols enable permissionless, decentralized consensus on global state and the use of cryptographic tokens to provide incentives to run nodes.
 
 Blockchain designs such as those of Bitcoin, Ethereum, Zcash, and others are examples of blockchain protocols that use state transition functions to add or change entries in their global state. These protocols also reward nodes for validating transactions and forming consensus on their ordering using techniques such as Proof-Of-Work\cite{44}.
 
@@ -102,4 +102,3 @@ For example, the Augur and Gnosis platforms use ERC20 tokens to create predictio
 ERC20-compliance also makes it easier for token exchanges and applications to benefit from the expanded capabilities provided by new types of ERC20 tokens. This in turn enables different applications to use ERC20-compliant tokens to exchange information and status.
 
 ERC23\cite{41} is a backwards-compatible extension to ERC20 which solves several issues around accidental transfer of tokens to smart contracts which cannot interact with them. The Ethereum ecosystem is moving fast and support of ERC23 increases the safety of \orchid{} token usage for both end users and autonomous agents such as IoT devices.
-
