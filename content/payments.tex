@@ -174,7 +174,7 @@ In order to reduce the cost of Orchid micropayments, we have chosen certain cryp
 
 \subsubsection{Payment Ticket Generation:}
 \label{payment-generation}
-      {\color{red} \texttt{TODO: describe prior setup where ticket sender locks up Orchid Tokens in the ticket smart contract. Make note that Sig(key, value) defines a signature using the private key of the sender's account that previously locked up CHI tokens in the Orchid Payment smart contract}}
+%%      {\color{red} \texttt{TODO: describe prior setup where ticket sender locks up Orchid Tokens in the ticket smart contract. Make note that Sig(key, value) defines a signature using the private key of the sender's account that previously locked up CHI tokens in the Orchid Payment smart contract}}
 
 Let \textit{Alice} be a recipient and \textit{Bob} be a sender,
 \begin{enumerate}
@@ -233,7 +233,7 @@ This smart contract exposes a solidity API that takes as input:
 
 \subsubsection{The smart contract executes:}
 
-{\color{red} \texttt{TODO: good notation / formalism here. We want to ensure that the reader understands when this protocol/algorithm spends eth gas and when it aborts and does not. Might also want to move the description of Alice below to a previous section; maybe Sec.\ref{payment-generation}}}\\
+%% {\color{red} \texttt{TODO: good notation / formalism here. We want to ensure that the reader understands when this protocol/algorithm spends eth gas and when it aborts and does not. Might also want to move the description of Alice below to a previous section; maybe Sec.\ref{payment-generation}}}\\
 
 Suppose Alice is a user who wishes to buy bandwidth. Alice must have an Ethereum account address, $addressAlice$, and Orchid tokens. Note that this address will have an associated public key, $PubKeyAlice$. Alice must also have Orchid tokens \textit{locked up} in an Ethereum smart contract as defined in previous sections and locked with $PubKeyAlice$. In the previous section, Alice's address would be the Ethereum account address equaling the public key recovered from $creatorSig$ over $ticketHash$.
 
@@ -347,11 +347,11 @@ With the Ethereum Byzantium release, it is now possible to implement linkable ri
 
 To achieve full anonymity guarantees against any malicious actor, whether observer, sender or recipient of payments, we have to look at zero knowledge technology.
 
-TODO: TumbleBit - can it be implemented in EVM?
+%% TODO: TumbleBit - can it be implemented in EVM?
 
 zk-SNARK\cite{zkSNARKs} technology as applied in the zcash network \cite{zcash-zksnarks} can provide stronger anonymity guarantees compared to ring signatures. In zcash, transactions between shielded addresses provide full anonymity of the sender, recipient and amount.
 
-TODO: zk-STARK and Fast Reed-Solomon Interactive Oracle Proofs of Proximity section 1.3
+%% TODO: zk-STARK and Fast Reed-Solomon Interactive Oracle Proofs of Proximity section 1.3
 
 \subsection{Non-interactive}
 
