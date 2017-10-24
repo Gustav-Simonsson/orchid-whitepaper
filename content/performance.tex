@@ -5,12 +5,12 @@
 %%% Author: A truckload of others
 %%% Birthdate: Tue Oct 10 12:08:14 2017.
 
-In this section we will examine how the system will function as the
+In this section we examine how the system will function as the
 number of users grows.
 
 \subsection{Algorithmic Performance}
 
-There are broadly three parts to the \Orchid{} Protocol: Ethereum-based
+Broadly, there are three parts to the \Orchid{} Protocol: Ethereum-based
 payments, manifolds, and \tOM{}.
 
 Ethereum-based payments scale with Ethereum as normal transactions.
@@ -19,14 +19,14 @@ if the \Orchid{} Network is extremely successful, and becomes a
 significant percentage of the Ethereum's total transaction volume,
 this component will function within design tolerances.
 
-Manifolds are simply chains of bandwidth sellers (Relays and Proxies)
-all of which have performance independent of the total number of
+Manifolds are chains of bandwidth sellers (Relays and Proxies)
+all of which have performance characteristics independent of the total number of
 \Orchid{} Network participants.
 
 The core operations of \tOM{} are based on the well-studied Chord
 DHT. The number of connections that Peddlers must maintain grows at a
-rate of O(log n), to a maximum of 256 connections. Queries on the
-network require O(log n) hops. Although these operations do become
+rate of $O(log{}n)$, to a maximum of 256 connections. Queries on the
+network require $O(log{}n)$ hops. Although these operations do become
 more burdensome as the network increases in size, we do not believe
 any significant impact on performance will result.
 
