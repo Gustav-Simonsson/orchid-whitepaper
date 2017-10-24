@@ -21,31 +21,21 @@ These are ambitious goals, and are not realized by the system described in this 
 
 We would like to extend special thanks to Professor Dan Boneh, Professor Paul Vigna, Justin Sheek, Brian Vohaska, and all of our early investors and advisors. Without their passion for this problem domain, and their willingness to take a risk chasing a solution, this project would not have seen the light of day.
 
-\subsection{Document Structure}
-
-This document begins with an overview of the system (Section \ref{sec:overview}), describes the kind of attacks and attackers that can be reasonably anticipated against such a system (Section \ref{sec:attacks}), and then discusses the lessons that can be learned from the previous deployment of similar systems (Section \ref{sec:prior-work}). We include these sections in the hope that they might help jog the readers memory, perhaps alert them to interesting references, and assist intuition for the context in which the system will be deployed.
-
-Once the stage has been set, we will move on to a detailed discussion of the system components themselves. We will detail the external libraries we have chosen to rely on, and why (Section \ref{sec:external-libraries}), describe a micropayment system suited to the sale of bandwidth (Section \ref{sec:payments}), a commodity specification for the sale of bandwidth (Section \ref{sec:mining}), a distributed marketplace for the sale of bandwidth (Section \ref{sec:agora}), and a method of employing our commodity specification for bandwidth to build an uncensorable and anonymous internet connection (Section \ref{sec:bandwidth-mining}). This is to say these sections provide a “nuts and bolts” view of the Orchid Network. Each component uses the previous as building blocks, so it is recommended that you read these sections in order.
-
-We close out with a discussion of what an attacker's experience of the system might be (Section \ref{sec:attack-stories}), both as a means of discussing the security of the system when viewed as a whole, and as a thought experiments for those wishing to assist us in improving system security. Next we discuss non-security features we hope to add in future releases (Section \ref{sec:future}). Readers interested in assisting with the project are encouraged to read these sections carefully.
-
-Because the system is to be fully decentralized, fully autonomous, and fully anonymous, much of this design document is centered on attacks. Although attack analysis is important, and will take up much of our time, it is ultimately no more than a necessary conceit to the context in which the market is to operate; please do not let thoughts of security distract you unduly from an understanding the system itself. We look forward to conversing about the system with experts in economics, autonomous markets, network engineers, applications programmers, and anyone with interest.
-
 \subsection{Terms}
 
 \begin{itemize}
 \item Node. A computer running a program which implements the \Orchid{} Protocol.
 \item Medallion. Data used by a node to demonstrate it is in exclusive possession of computational resources.
 \item User. The owner of a node.
-\item Agora. A collection of nodes interacting through the \Orchid{} Distributed Marketplace Protocol.
-\item \emph{The} Agora. The Agora in possesion of the most global computational power.
-\item Econ. A node who is a member of an Agora's collection.
-\item Entry Econ. An econ who is willing to accept direct TCP connections from Users.
-\item Address. The location in Medallion-space inhabited by an Econ.
-\item Customer. A buyer on the Agora.
-\item Relay. A node willing to sell bandwidth to customers.
-\item Proxy. A relay which is additionally willing to interact with web servers on behalf of customers.
-\item Manifold. A chain of relays used for anonymous communication.
+\item Orchid Market. A P2P collection of nodes interacting through the \Orchid{} Distributed Marketplace Protocol.
+\item \emph{The} Orchid Market. \TOM{} in possesion of the most global computational power.
+\item Customer. A buyer on \tOM{}.
+\item Peddler. A node who is a member of an Orchid Market's collection.
+\item Entry Peddler. A Peddler who is willing to accept direct TCP connections from Customers.
+\item Address. The location in Medallion-space inhabited by a Peddler.
+\item Relay. A Peddler willing to sell bandwidth to customers.
+\item Proxy. A Relay which is additionally willing to interact with web servers on behalf of Customers.
+\item Chain. A list of n Relays ending in a Proxy used for anonymous communication by a Customer.
 \item Ticket. A stochastic micropayment.
 \item Attack. A method for causing the non-consensual transfer of money or information.
 \item Attacker. A person or group of people interested in performing attacks.
@@ -53,35 +43,35 @@ Because the system is to be fully decentralized, fully autonomous, and fully ano
 
 \subsection{High-Level System Overview}
 
-\subsubsection{The Agora}
+\subsubsection{\TOM{}}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width = 300pt]{agoraOverview}
-  \caption{An Agora with eight Econs}
+  \caption{An Orchid Market with eight Peddlers}
 \end{figure}
 
-The Agora is a globally distributed P2P market place for bandwidth. Although it is tempting to believe such a market should take the form of a classic order book (a list of currently unfilled bids and asks at different prices), a very important property of bandwidth to be used for anonymity purposes is that purchase decisions are made in a way that places severe limits on what influence can be exerted by an attacker. For this reason, rather than provide an order book, the Agora provides a way to traverse the space of currently valid medallions. Once a location in medallion-space has been selected, a miniature pseudo-auction is held. For example, if the econ at position 2 in the figure wished to buy bandwidth, it would select the median of 1’s, 3’s, 5’s and 6’s price, rounded down. For users not seeking anonymity, the lowest price may be selected instead.
+\TOM{} is a globally distributed P2P market place for bandwidth. \TOM{} connects Peddlers to each other randomly, and has each Peddler verify the ``realness'' of its connected peers.
 
-\subsubsection{Manifolds}
+\subsubsection{Chains}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width = 300pt]{sttc}
-  \caption{A three-Econ Manifold routing traffic for a Customer}
+  \caption{A three-Peddler Chain routing traffic for a Customer}
 \end{figure}
 
-Once relay and proxy bandwidth has been purchased, the customer configures them into a connected chain termed a manifold. In the above picture, Relay 1 receives bandwidth from the Customer, performs cryptographic operations on it, and forwards it to Relay 2. Relay 2 performs a similar role with respect to Relay 1 and the Proxy. The Proxy then sends this data to a web server. Any data returned by the web server is sent back to the Customer along another manifold, perhaps implemented using the same nodes in reverse.
+Once relay and proxy bandwidth has been purchased, the customer configures them into a directed acyclic graph termed a Chain. In the above picture, Relay 1 receives bandwidth from the Customer, performs cryptographic operations on it, and forwards the resulting data to Relay 2. Relay 2 performs a similar role with respect to Relay 1 and the Proxy. The Proxy then sends this data to a web server. Any data returned by the web server is sent back to the Customer along another chain, perhaps implemented using the same nodes in reverse.
 
 \subsubsection{Web Browsing}
 
-The majority of initial usage of the \Orchid{} Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use the Agora to create a manifold, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a manifold are working together (Section \ref{sec:collusion}), perhaps because they are run by the same user, no single node knows the Customer's IP Address and the server they communicated with.
+The majority of initial usage of the \Orchid{} Network will likely happen in support of uncensorable, anonymous web browsing. In this use case, the client software will automatically use \tOM{} to create a Chain, and provide additional checks to verify that SSL/TLS is being used in a way suited to this networking model. Unless two or more nodes in a Chain are working together (Section \ref{sec:collusion}), perhaps because they are run by the same user, no single node knows the Customer's IP Address and the server they communicated with.
 
 \subsection{User Stories}
 
 \subsubsection{Bandwidth Miners}
 
-Users with excess computational power and bandwidth may choose to support the \Orchid{} project, as well as earn money, by running an econ on their computer. To do so, they install and run the \Orchid{} software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into Medallions. Econs are compensated for their lost computation by bandwidth customers.
+Users with excess computational power and bandwidth may choose to support the \Orchid{} Network, as well as earn money, by running a Peddler on their computer. To do so, they install and run the \Orchid{} software package and supply a payment address. To verify realness while preserving anonymity, the software will convert computational resources into Medallions. Peddlers are compensated for their lost computation by bandwidth consumers.
 
 \subsubsection{Resisting Oppressive Governments}
 
