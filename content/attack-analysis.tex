@@ -12,16 +12,16 @@ Attacker Goals: Identify all \Orchid{} Relay and Proxy IP addresses.
 Because \tOM{} contains all Relays and Proxies, this is the inverse
 attack of the one discussed in Section \ref{sec:evasion}.
 
-The number of forced connections on \tOM{} grows at O(log n) where
+The number of forced connections on \tOM{} grows at $O(log{} n)$ where
 n is the network size. If an attacker holds $m\%$ of global
-computation, they will learn log(n) ip addresses each time they
+computation, they will learn $log(n)$ IP addresses each time they
 complete a proof-of-work computation. In $c$ epochs they will
 therefore learn $1 - (1 - \frac{log(n)}{n})^c$ percent of the Relay and
 Proxy IP addresses.
 
 Readers familiar with the how the blocking of Tor traffic panned out
-may worry the above describes a dire issue for the
-system. Fortunately, this is not the case. Tor has around 1,000 exit
+may worry the above describes a dire issue for the system.
+Fortunately, this is not the case. Tor has around 1,000 exit 
 nodes, which allowed for easy filtering. In our case, largely due to
 our support for whitelists, we expect to have hundreds of thousands of
 exit nodes. In addition to this forming a much larger computational
