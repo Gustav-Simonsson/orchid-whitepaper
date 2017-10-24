@@ -11,7 +11,7 @@ number of users grows.
 \subsection{Algorithmic Performance}
 
 There are broadly three parts to the \Orchid{} Protocol: Ethereum-based
-payments, manifolds, and the Agora.
+payments, manifolds, and \tOM{}.
 
 Ethereum-based payments scale with Ethereum as normal transactions.
 Having reviewed the Ethereum system design, we are confident that even
@@ -23,8 +23,8 @@ Manifolds are simply chains of bandwidth sellers (Relays and Proxies)
 all of which have performance independent of the total number of
 \Orchid{} Network participants.
 
-The core operations of the Agora are based on the well-studied Chord
-DHT. The number of connections that Econs must maintain grows at a
+The core operations of \tOM{} are based on the well-studied Chord
+DHT. The number of connections that Peddlers must maintain grows at a
 rate of O(log n), to a maximum of 256 connections. Queries on the
 network require O(log n) hops. Although these operations do become
 more burdensome as the network increases in size, we do not believe
@@ -48,8 +48,8 @@ TODO: once the software is complete, we'll want fancy graphs showing
 real system performance, etc. Desired graphs:
 
 \begin{enumerate}
-\item Manifold setup time as a function of Agora size.
-\item Agora join time as a function of Agora size.
+\item Manifold setup time as a function of Orchid Market size.
+\item Orchid Market join time as a function of Orchid Market size.
 \item How quickly the price adjusts to scarcity, abundance.
 \item Add any interesting ideas here!
 \end{enumerate}
