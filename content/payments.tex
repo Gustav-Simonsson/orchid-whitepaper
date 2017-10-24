@@ -198,6 +198,7 @@ Let \textit{Alice} be a recipient and \textit{Bob} be a sender,
 Note that while this ticket is valid in the sense that the recipient can fully verify it, the recipient needs to sign it (see below) in order to be able to claim it in the Orchid Payment Ethereum smart contract.
 
 \subsubsection{Payment Ticket Verification:}
+\label{payment-ticket-verif}
 \texttt{Alice} (bandwidth seller) will then perform the following operations,
 \begin{enumerate}
   \item[] \textbf{Verify:} \begin{enumerate}
@@ -357,9 +358,9 @@ zk-SNARK\cite{zkSNARKs} technology as applied in the zcash network \cite{zcash-z
 
 In section \ref{sec:vrfs}, we show that by replacing the random number commitment in the Orchid Payment Scheme with a VRF makes the scheme more non-interactive by removing the communication steps associated with the random number commitment. Instead of the recipient having to communicate the commitment to the sender before the sender can construct tickets, the sender would be able to immediately construct tickets from only public recipient information.
 
-Each recipient would generate a new keypair specifically for the VRF and publish the public key alongside other public recipient information detailed in section [TODO ref to bandwidth market]. The sender would simply configure this public key in the ticket, and the recipient would sign received tickets with the corresponding private key. The ticket verification logic defined in [TODO ref] would interpret the recipient VRF signature as the value that it compares to the winning probability threshold.
+Each recipient would generate a new keypair specifically for the VRF and publish the public key alongside other public recipient information detailed in section \ref{fund-market}. The sender would simply configure this public key in the ticket, and the recipient would sign received tickets with the corresponding private key. The ticket verification logic defined in section \ref{payment-ticket-verif} would interpret the recipient VRF signature as the value that it compares to the winning probability threshold.
 
-As discussed in section [TODO ref to VRF section], while this would be a relatively simple modification to the payment scheme, the feasibility of VRF verification in the EVM requires further research.
+As discussed in section \ref{sec:vrfs}, while this would be a relatively simple modification to the payment scheme, the feasibility of VRF verification in the EVM requires further research.
 
 \subsection{Performance}
 
@@ -371,4 +372,4 @@ On the other hand, to achieve greater anonymity, optional or even mandatory use 
 
 Finally, an extremely interesting property of zero-knowledge technology such as zk-SNARKs is to dramatically reduce the computational overhead of arbitrary computation, such as Ethereum smart contract execution\cite{zksnarks-blockchain}. While generation of zk-SNARK proofs is expensive, the verification is cheaper - even compared to the original code. Since only the verification needs to be executed on-chain, a zero-knowledge proof of claiming an Orchid Ticket could be made cheaper to verify than the original verification code.
 
-Going further, recursive SNARKs \cite{RecursiveSnarks} have the potential to aggregate a set of SNARK proofs into a single proof. While they may be more applicable for blockchain consensus protocols\cite{ScalingTezos}, they may also be useful for Orchid to e.g. batch multiple ticket claims into a single smart contract transaction while avoiding linear gas cost complexity.
+Going further, recursive SNARKs\cite{RecursiveSnarks} have the potential to aggregate a set of SNARK proofs into a single proof. While they may be more applicable for blockchain consensus protocols\cite{ScalingTezos}, they may also be useful for Orchid to e.g. batch multiple ticket claims into a single smart contract transaction while avoiding linear gas cost complexity.
