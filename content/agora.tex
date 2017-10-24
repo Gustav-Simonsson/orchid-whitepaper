@@ -56,7 +56,9 @@ relatively efficient random access to Peddlers of $O(log^2 n)$ packets.
 %% [need graphic]
 
 Peddlers are connected in the \Orchid{} Protocol using the same scheme
-used in the Chord DHT.
+used in the Chord DHT. We have chosen Chord over Kademlia due to a
+more mature literature, and the existance of machine-checked
+correctness proofs\cite{ChordCorrect}.
 
 Addresses are viewed as a ring of size $2^{256}$, and the distance
 between peers at addresses $a, b \in [0, 2^{256}-1]$ is defined to be

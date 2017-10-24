@@ -1,5 +1,5 @@
 The \Orchid{} Protocol organizes bandwidth sellers into a rigidly
-structured peer-to-peer network termed \tOM{}. Customers connect to
+structured peer-to-peer (P2P) network termed \tOM{}. Customers connect to
 \tOM{} and pay multiple bandwidth sellers to form a proxy chain to a
 specific webserver. Proxy chains allow customers to send and receive
 data from the global Internet.
@@ -8,7 +8,7 @@ data from the global Internet.
 
 Unlike more common methods for sending and receiving data from the
 global Internet, proxy chains in \tOM{} naturally separate information
-about the source of data from information about its destination, or
+about the source of data from information about its destination; no
 single bandwidth seller holds both pieces of information, or knows the
 identity of bandwidth sellers who do. The rigid structure of \tOM{}
 further supports this separation of information by providing strong
@@ -21,68 +21,94 @@ knowledge, \tOM{} provides \emph{fixed rate relaying} to prevent
 traffic analysis, and an incentive for participation not related to
 the hiding or discovery of information: payment in tokens.
 
-Before we describe the details of the system, we will review the
-problem it is to solve, and the general type of solution embodied.
+Before we describe the details of the system, we will briefly review
+the core problems it solves, and the general solutions we have chosen
+for our system's foundation.
 
-
-\subsection{The \emph{Traffic Analysis Problem}}
+\subsection{The \emph{Traffic Analysis} Problem}
 
 \textbf{Problem Statement:} Imagine you are in a cafeteria full of
 mathematicians and wish to send a message to your friend across the
-room without anyone else knowing that fact.
+room without anyone else knowing that fact. You have not already
+negotiated a message passing protocol, so all implementation details
+must be publicly stated to everyone the room. What can be done?
 
+A particularly elegant solution to this problem, proposed by Chaum in
+1981\cite{chaum-mix}, is to have every person act as both a relay and
+a recipient. In this scheme, participants prepare encrypted messages
+which are the digital equivalent of ``envelopes containing envelopes''
+-- to send a message to Alice, you would compute
 
+$$Enc(``To Bob'' || Enc(``To Alice'' || Enc(message, Alice), Bob), Carol)$$
 
-\subsection{Fixed Rate Mix Network}
+and send that message to Carol, who decrypts it and sends it to Bob,
+who decrypts it and sends it to Alice. To prevent traffic analysis
+everyone sends a fixed number of messages every cycle.  To handle
+return addresses, we can have Bob and Carol remember a unique
+messageId and send messages back along the chain.
 
-Imagine you and four other cryptographers are locked in a room
-together. You would like to send a message to one cryptographer, and
-would like to do so without allowing
+Of particular importance to systems using the above method is the
+possibility of a \emph{Collusion}. If Bob and Carol cooperate they can
+determine potentially determine who sent the message, and to whom it
+was sent.
 
-but would like to do so in a way
+\subsection{The \emph{Sybil} Problem}
 
-To incentivize the participation of non-colluding
+The above cafeteria problem statement used physical bodies to
+prevent \emph{Sybil Attacks} -- situations in which one participant
+might pretend to be an arbitrarily large number of
+users. Unfortunately, in digital systems this approach cannot be used.
 
-In the event that a
+\textbf{Problem Statement:} How can we know that someone is ``real''
+in a purely digital context?
 
-In the event that many bandwidth sellers are logging usage
-information, the rigid structure of the \Orchid{} Market allows
-customers to select packet forwarding paths which with a very high
-probability are not controlled by the same
+A solution to this problem can be found in Hashcash\cite{CHORD}. If we
+require those claiming to be ``real'' to expend computational
+resources, we can put Sybil Attackers in a position where claims of
+being an incredible number of network participants requires actually
+possessing an incredible amount of computational resources.
 
-Using the Relay
-Network, customers can send and receive data from the global Internet
-uncensorably and anonymously with a very high probability.
+\subsection{The \emph{Random Selection} Problem}
 
-Adherence to this structure is enforced by
-neighboring peers, and the customer during usage, providing a very
-high degree of certainty that all peers actually adhere to this
-structure.
+The above cafeteria problem statement assumed an easy method for
+sending a message to every other user of the system (yelling across
+the cafeteria). To implement a Chaumian mix which is maximally
+resistant to \emph{Collusion Attacks}, we need to be able to select
+randomly from those relays who are ``real.'' Naively this requires
+being notified whenever someone joins or leaves the network.
+Unfortunately, in real-world P2P networks, having every user maintain
+such a list would result in an unacceptable amount of network traffic
+($O(n^2)$ notifications.)
 
-The \Orchid{} Protocol organizes all participating computers into a
-structured peer to peer network (the \Orchid{} Market.) Customers
-connect to the \Orchid{} Market and pay network participants to
-forward packets; the structure of the network has properties which
-provide uncensorability and anonymity with a high probability for
-customers.
+\textbf{Problem Statement:} How can we maintain a distributed list of
+all currently ``real'' relays such networking overhead is kept to a
+minimum and random selection can be efficiently performed?
 
+A particularly elegant solution to this problem can be found in the
+Chord\cite{CHORD} Distributed Hash Table (DHT). In this scheme, peers
+are assigned unique addresses in a large space and then are connected
+in such a way that lookups can be performed in $O(log(n))$ time. Adding
+or removing a user only requires $O(log(n))$ peers be notified.
 
+\subsection{System Overview}
 
-\subsection{The \Orchid{} Market}
+The Orchid Protocol is, at its core, a combination of the above
+solutions. In our approach, peers are required to
+produce \emph{Medallions} to demonstrate their ``realness'', and are
+then organized into a distributed P2P network termed \tOM{}. To
+keep \tOM{} participants honest, every peer checks the correctness of
+it's neighbor's behavior. Customers then use \tOM{} to select random
+peers for Chaumian message forwarding. To incentivize participation,
+we have Customers pay Relays on a per-forwarded-byte basis.
 
-The \Orchid{} Protocol assigns bandwidth sellers a random position in
-a global ring. Bandwidth sellers form network connections with each
-other based on their position, and verify the correctness of the
-behavior of the peers they are connected to.
-
-\subsection{Purchases}
-
-
-
-\subsection{Document Structure}
-
-The document is structured as a core paper which explores the network
-behavior as a whole, along with several appendixes which explore
-specific topics in extreme detail. Readers are encouraged to read the
-main paper to understand the network function, and explore the
-appendicies on an interest.
+This is a simple idea, but of course the devil is in the details. The
+system is to be fully decentralized, fully autonomous, fully
+anonymous, and is to handle payments. Much of this design document is
+therefore centered on preventing attacks on Customer security, attacks
+on the System's performance, and attacks on the system's economic
+soundness. Although attack analysis is important, and will take up
+much of our time, it is ultimately no more than a necessary conceit to
+the context in which the market is to operate; if you find yourself
+``lost in the woods'' we hope you will use the preceding exposition as
+your north star -- the system's design details are all toward
+realizing a real-world solution to the above trio of problems.
