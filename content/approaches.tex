@@ -8,8 +8,7 @@
 \subsection{Unprotected Internet Access}
 
 Users who access the Internet without protection provide their
-complete browsing history to their ISP, the websites they use, and
-anyone those companies choose to share it with or sell it to.
+complete browsing history and website use to their ISP, who can then share or sell that data.
 
 \subsection{Virtual Private Networking (VPN) Services}
 
@@ -18,14 +17,10 @@ VPN subscriber's traffic across a larger insecure network. Once the
 VPN has received the traffic, it is decrypted and retransmitted across
 a different large insecure network. The retransmission can assist
 users in circumventing access restrictions imposed by websites, and to
-a lesser extent reduce the tracking of their browsing habits by
-websites. The encryption prevents the user's ISP from seeing their
-traffic, thereby preventing monitoring attacks, but it does so by
-effectively making the VPN a new ISP for the user -- any attack an ISP
-could previously perform is now easily performed by the VPN provider.
+a lesser extent, reduce the tracking of their website browsing habits. Encryption prevents the user's ISP from seeing their
+traffic, thereby preventing monitoring attacks. This is accomplished by making the VPN a new ISP for the user.  Any attack an ISP could previously perform can easily be performed by the VPN provider.
 
-VPN users should not assume their VPN provider is
-trustworthy. Although VPN service providers do face more competition
+VPN users should not assume their VPN provider is trustworthy. Although VPN service providers face more competition
 than ISPs, they ultimately draw talent from the same sources, and have
 similar bandwidth-for-cash-type business models. It is unlikely that
 VPN providers will not fall prey to the same incentives which led the
@@ -37,12 +32,9 @@ their use by commercial websites\cite{13}.
 
 Tor\cite{TOR} is a free software project famous for introducing the
 idea of Onion Routing to a wider audience. In this system, users
-download a global list of relays and exit nodes, select from that list
-randomly, and form ``onion routes'' from their selection. Onion routes
-are an ordered list of relays; packets sent along an onion route are
+download a global list of relays and exit nodes, randomly select from that list, and form ``onion routes'' from their selection. Onion routes are an ordered list of relays; packets sent along an onion route are
 encrypted for each peer in turn, ensuring that each node must have
-received a packet enroute to the exit node for the exit to understand
-it. A side effect of this forwarding is that, unless several nodes are
+received a packet enroute for it to be understood by the exit node. The result is that unless several nodes are
 compromised or run by the same user, no two relays know both who sent
 a packet and where it went.
 
