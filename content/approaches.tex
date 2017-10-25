@@ -17,8 +17,11 @@ VPN subscriber's traffic across a larger insecure network. Once the
 VPN has received the traffic, it is decrypted and retransmitted across
 a different large insecure network. The retransmission can assist
 users in circumventing access restrictions imposed by websites, and to
-a lesser extent, reduce the tracking of their website browsing habits. Encryption prevents the user's ISP from seeing their
-traffic, thereby preventing monitoring attacks. This is accomplished by making the VPN a new ISP for the user.  Any attack an ISP could previously perform can easily be performed by the VPN provider.
+a lesser extent, reduce the tracking of their website browsing
+habits. Encryption prevents the user's ISP from seeing their traffic,
+thereby preventing monitoring attacks. This is accomplished by making
+the VPN a new ISP for the user.  Any attack an ISP could previously
+perform can easily be performed by the VPN provider.
 
 VPN users should not assume their VPN provider is trustworthy. Although VPN service providers face more competition
 than ISPs, they ultimately draw talent from the same sources, and have
@@ -31,11 +34,14 @@ their use by commercial websites\cite{13}.
 \subsection{Tor}
 
 Tor\cite{TOR} is a free software project famous for introducing the
-idea of Onion Routing to a wider audience. In this system, users
-download a global list of relays and exit nodes, randomly select from that list, and form ``onion routes'' from their selection. Onion routes are an ordered list of relays; packets sent along an onion route are
-encrypted for each peer in turn, ensuring that each node must have
-received a packet enroute for it to be understood by the exit node. The result is that unless several nodes are
-compromised or run by the same user, no two relays know both who sent
+idea of \emph{Onion Routing} to a wider audience. In this system, users
+download a global list of relays and exit nodes, randomly select from
+that list, and form \emph{onion routes} from their selection. Onion
+routes are an ordered list of relays; packets sent along an onion
+route are encrypted for each peer in turn, ensuring that each node
+must have received a packet enroute for it to be understood by the
+exit node. The result is that unless several nodes are compromised or
+run by the same user, no two relays know both who sent 
 a packet and where it went.
 
 %% @saurik: ref on Dingledine knowing ~75% of relay operators personally?

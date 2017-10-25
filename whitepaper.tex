@@ -25,6 +25,8 @@
 \usepackage{color}
 \usepackage{amsfonts}
 \usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{scrextend}
 %\usepackage[ruled]{algorithm2e}
 
 \usepackage[backend=biber,style=numeric-comp,url=true]{biblatex}
@@ -75,10 +77,6 @@
 \label{sec:prior-work}
 \input{content/approaches}
 
-\section{Related Work}
-\label{sec:related}
-\input{content/related.tex}
-
 \section{External Libraries}
 \label{sec:external-libraries}
 \input{content/external-libraries}
@@ -87,9 +85,9 @@
 \label{medallions}
 \input{content/medallions}
 
-\section{Medallion proof-of-work}
+\section{Medallion Proof-of-Work}
 \label{medallionspow}
-\input{content/selection}
+\input{content/medallionspow}
 
 \section{Payments}
 \label{sec:payments}
@@ -146,5 +144,14 @@
 \input{content/auctions}
 % show subsubsections in the TOC again
 \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+
+% hide subsubsections from the TOC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+\section{Related Work}
+\label{sec:related}
+\input{content/related.tex}
+% show subsubsections in the TOC again
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+
 
 \end{document}

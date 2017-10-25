@@ -31,7 +31,7 @@ Types of Behavioral information which are assumed to be of interest to an attack
 \item *Customer Identification. The attacker learns the IP address of a customer.
 \item *Relay Identification. The attacker learns the IP address of a relay.
 \item *Proxy Identification. The attacker learns the IP address of a proxy.
-\item *Link Identification. The attacker learns that two IP addresses where employed in a Chain.
+\item *Link Identification. The attacker learns that two IP addresses were employed in a Chain.
 \item *Website Access. The attacker learns that an outbound connection was made from the \Orchid{} network to a specific website.
 \item *Webserver Access. The attacker learns that an outbound connection was made from the \Orchid{} network to a specific webserver (which may host multiple websites).
 \item *Ethereum Linking. The attacker learns that an Ethereum public key is held by a \Orchid{} user.
@@ -59,7 +59,7 @@ Some adversaries may be satisfied by slowing down system performance of \Orchid{
 \subsection{Man-in-the-Middle Attacks}
 \label{mitm}
 
-Actions that can be performed only after inserting oneself between two interacting parties are collectively referred to as man-in-the-middle attacks. Encrypted information may be logged for analysis of metadata (Section \ref{inference-attacks}), non-encrypted data may additionally be changed to control behavior. If key exchange is not secured, the man-in-the-middle may also trick two parties into wrongly believing the attacker's key is the other parties key.
+Actions that can be performed only after inserting oneself between two interacting parties are collectively referred to as man-in-the-middle attacks. Encrypted information may be logged for analysis of metadata (Section \ref{inference-attacks}), while non-encrypted data may additionally be changed to control behavior. If key exchange is not secured, the man-in-the-middle may also trick two parties into wrongly believing the attacker's key is the other party's key.
 
 \subsection{Sybil Attacks}
 
@@ -79,10 +79,19 @@ In an Eclipse Attack, the attacker's goal is to hide part of a system from itsel
 \item Removing a file from the BitTorrent DHT by taking over the address space associated with its magnet link\cite{bittorrentSybilAttacks}.
 \end{itemize}
 
+\subsection{Denial of Service Attacks}
+
+Attacks centered around taking a specific resource offline are termed Denial of Service Attacks (DoS). System behavior during “unexpected” circumstances is often poorly specified and tested. DoS attacks are useful for deanonymizing nodes in P2P networks. Notable examples:
+
+\begin{itemize}
+\item Targeted DoS attacks used in concert with Sybil Attack based monitoring to deanonymize Tor traffic\cite{DOSvsSec}.
+\item DoS off-lining for complete control of I2P’s floodfill database, requiring only 20 Sybil nodes, thereby deanonyimizing all traffic on the network\cite{I2P-vigna}.
+\end{itemize}
+
 \subsection{Inference Attacks}
 \label{inference-attacks}
 
-Deanonymization which stems statistical modeling system behavior are termed Inference Attacks or Monitoring Attacks. These are often combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoS-ing a specific peer off of the network and observing how traffic patterns respond.
+Deanonymization which stems from statistical modeling system behavior are termed Inference Attacks or Monitoring Attacks. These are often combined with “probing moves” such as carefully crafted or timed requests, or other attacks such as DoS-ing a specific peer off of the network and observing how traffic patterns respond.
 
 \begin{itemize}
 \item Inferring medical illnesses, family income, and investment choices of end-users from SSL encrypted web traffic\cite{broadInferenceAttacks}.
@@ -90,15 +99,6 @@ Deanonymization which stems statistical modeling system behavior are termed Infe
 \item Learning the private key of an OpenSSL server through timing analysis\cite{opensslTimingAttack}.
 \end{itemize}
 
-\subsection{Denial of Service Attacks}
-
-Attacks centered around taking a specific resource offline are termed Denial of Service Attacks. System behavior during “unexpected” circumstances is often poorly specified and tested. DoS attacks are useful for deanonymizing nodes in P2P networks. Notable examples:
-
-\begin{itemize}
-\item Targeted DoS attacks used in concert with Sybil Attack based monitoring to deanonymize Tor traffic\cite{DOSvsSec}.
-\item DoS off-lining for complete control of I2P’s floodfill database, requiring only 20 Sybil nodes, thereby deanonyimizing all traffic on the network\cite{I2P-vigna}.
-\end{itemize}
-
 \subsection{Hacking}
 
-By converting historically trustworthy peers into attack vectors, motivated attackers might directly compromise nodes on the network. When bandwidth is deployed using Chains, iterative hacking may eventually allow an attacker to ``backtrace'' a connection. Such attacks have important security implications but are out of the \Orchid{} Network's scope. If the \Orchid{} Network's design achieves its goals, this will be the main attack against users of the system.
+By converting historically trustworthy peers into attack vectors, motivated attackers might directly compromise nodes on the network. When bandwidth is deployed using Chains, iterative hacking may eventually allow an attacker to ``backtrace'' a connection. Such attacks have important security implications but are out of the scope of the \Orchid{} Network. If the \Orchid{} Network's design achieves its goals, this will be the main attack against users of the system.
