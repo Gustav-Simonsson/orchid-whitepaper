@@ -58,7 +58,7 @@ relatively efficient random access to Peddlers of $O(log^2 n)$ packets.
 
 Peddlers are connected in the \Orchid{} Protocol using the same scheme
 used in the Chord DHT. We have chosen Chord over Kademlia due to a
-more mature literature, and the existance of machine-checked
+more mature literature, and the existence of machine-checked
 correctness proofs\cite{ChordCorrect}.
 
 Addresses are viewed as a ring of size $2^{256}$, and the distance
@@ -82,7 +82,7 @@ following two properties are provided by this routing scheme:
 \item \emph{Logarithmic Traversal Distance}. Given a random address
   $t$ and a random connected Peddler $e$ with connections $C$, that
   $distance(e, t) \approx 2 * \min_{f \in C} distance(f, t)$. Because
-  the distance will half with each hop, the expected traversal length
+  the distance will halve with each hop, the expected traversal length
   on the network is $log_2(n)$ where $n$ is the network size.
 \end{enumerate}
 
@@ -115,7 +115,7 @@ Because this is the only method for adding Peddlers to \tOM{}, these requirement
 From these properties, we can see that the avenues left for an attacker are:
 
 \begin{itemize}
-\item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a 1e-8\% chance of such a collision happening, and if it does occur around 1e3\% of all system queries will be impacted. At 100 million nodes the chance drops to 1e-12\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Regeneration \ref{market-regen}.
+\item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a \num{1e-8}\% chance of such a collision happening, and if it does occur around \num{1e3}\% of all system queries will be impacted. At 100 million nodes the chance drops to \num{1e-12}\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Regeneration (see Section \ref{market-regen}).
 \item If an attacker has now joined the network, but was forced to use a valid routing table, the only attacks it can perform are related to selling services, not routing traffic on \tOM{}. As this is the situation expected in the rest of our attack models (that an attacker will control a number of Peddlers proportional to the computational resources), we do not consider this an attack.
 \end{itemize}
 

@@ -12,7 +12,7 @@ Attacker Goals: Identify all \Orchid{} Relay and Proxy IP addresses.
 Because \tOM{} contains all Relays and Proxies, this is the inverse
 attack of the one discussed in Section \ref{sec:evasion}.
 
-The number of forced connections on \tOM{} grows at $O(log{} n)$ where
+The number of forced connections on \tOM{} grows at $O(log{}(n))$ where
 n is the network size. If an attacker holds $m\%$ of global
 computation, they will learn $log(n)$ IP addresses each time they
 complete a proof-of-work computation. In $c$ epochs they will
@@ -77,7 +77,7 @@ Attackers have similarly many options for this situation.
 
 One option is to improperly implement the joining protocol. We do not
 view this as an attack, as in this case our ``attacker'' is simply
-paying other Econs for packet forwarding.
+paying other Peddlers for packet forwarding.
 
 Another option is to join \tOM{} and refuse to provide routing table
 information to users, or refuse to forward packets. This will result

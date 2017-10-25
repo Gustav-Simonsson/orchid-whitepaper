@@ -1,5 +1,5 @@
 %% \section{Related Work} (Defined in the enclosing document - do not define the title of the section here.)
-The \orchid{} project draws upon a large body of previous work in the areas of peer-to-peer networks (P2P), blockchain, cryptography, and overlay networks. \orchid{} then combines the insights provided by those earlier works with more recent P2P research in Blockchain technology, notably Ethereum\cite{11} and Zcash\cite{12}.
+The \orchid{} project draws upon a large body of work in the areas of peer-to-peer networks (P2P), blockchain, cryptography, and overlay networks. \orchid{} then combines the insights provided by those earlier works with more recent P2P research in Blockchain technology, notably Ethereum\cite{11} and Zcash\cite{12}.
 
 The following sections describe the role previous work plays in the \orchid{} project.
 
@@ -12,11 +12,11 @@ The following sections describe the role previous work plays in the \orchid{} pr
 %If these need descriptions, where will they come from? Or remove? Or?
 
 \subsection{Virtual Private Networks}
-Virtual Private Networks (VPNs) use encryption to securely transport a VPN subscriber's traffic across a larger insecure network. That encryption may enable users to circumvent access restrictions or prevent the tracking of a user's browsing habits or unique online identifiers such as their IP address.
+Virtual Private Networks (VPNs) use encryption to securely transport a VPN subscriber's traffic across a larger insecure network. This encryption may prevent tracking of browsing habits and unique online identifiers, such as a user's IP address, and circumvent access restrictions.
 
-But VPN users cannot assume that their VPN connection is truly secure or anonymous. Some VPN service providers track their customers' network activity, then sell the data to third-party commercial entities without the approval, or even the knowledge, of the VPN subscribers. The IP addresses of a VPN provider's network nodes may also be identifiable. That can enable governmental or commercial entities such as Netflix to block traffic to and from a VPN provider’s servers.\cite{13}.
+VPN users should not assume that their VPN connection is truly secure or anonymous. Some VPN service providers track their customers' network activity, then sell the data to third-party commercial entities without the approval, or even the knowledge, of the VPN subscribers. The IP addresses of a VPN provider's network nodes may also be identifiable. That can enable governmental or commercial entities such as Netflix to block traffic to and from a VPN provider’s servers.\cite{13}.
 
-Those weaknesses in VPNs led to the development of decentralized overlay networks. Decentralized overlay networks provide VPN services with a continuously changing set of exit nodes. If a site blocks traffic one from VPN exit node, one ore more alternative exit nodes are dynamically put into service.
+Those weaknesses in VPNs led to the development of decentralized overlay networks. Decentralized overlay networks provide VPN services with a continuously changing set of exit nodes. If a site blocks traffic one from VPN exit node, one or more alternative exit nodes are dynamically put into service.
 
 \subsection{Peer-to-Peer Protocols}
 Peer-to-peer protocols date back to the Napster file sharing network.\cite{42}. Napster used incentives to encourage subscribers to host music files in return for being able to download files from other peers.
@@ -24,10 +24,10 @@ Peer-to-peer protocols date back to the Napster file sharing network.\cite{42}. 
 \subsubsection{The Napster Network}
 Napster used a centralized directory service that indexed files and the locations of peers. The centralization of knowledge that resulted from Napster's approach rendered them susceptible to legal action by the MPAA (Motion Picture Association of America). That in turn eventually forced Napster out of business.
 
-The vulnerability of Napster's centralized directory inspired the designers or Napster's successor, Gnutella, to  distribute the index of files and node addresses across each peer in the network\cite{43}.
+The vulnerability of Napster's centralized directory inspired the designers of Napster's successor, Gnutella, to  distribute the index of files and node addresses across each peer in the network\cite{43}.
 
 \subsubsection{The Gnutella Network's Distributed-Index Response}
-The Gnutella network's designers remedied the shortcomings of Napster centralized directory by implementing a distributed-index approach. This approach delivered improved resilience and scalability over Tor. Those improvements also inspired the development of additional frameworks for distributing indexes across P2P networks. One notable example is the adoption of Distributed Hash Tables (DHTs) to enable efficient discovery of nodes and resources in P2P networks.
+The Gnutella network's designers remedied the shortcomings of Napster centralized directory by implementing a distributed-index approach. This approach delivered improved resilience and scalability over Napster. Those improvements also inspired the development of additional frameworks for distributing indexes across P2P networks. One notable example is the adoption of Distributed Hash Tables (DHTs) to enable efficient discovery of nodes and resources in P2P networks.
 
 \subsubsection{The Tor Network}
 \label{subsec: tornetwork}
@@ -43,21 +43,21 @@ Tor was developed in the mid-1990’s by the United States Navy. Since then, dev
  % \caption{The Tor network}
 %\end{figure}
 
-Tor's use of centralized node selection, and the network's reliance on volunteers to provide node services including exit node services, causes Tor to suffer from slowness of throughput, from the inability to use BitTorrent or other P2P file sharing systems, and from the ability of exit nodes to inspect the contents of exit traffic. In addition, Tor has no mechanism for preventing exit nodes from being forced to access illegal or dangerous information on behalf of other users.
+Tor's use of centralized node selection and reliance on volunteers to provide node services, including exit node services, negatively impacts Tor's throughput. This stems from Tor's inability to use BitTorrent or other P2P file sharing systems, and from the ability of exit nodes to inspect the contents of exit traffic. In addition, Tor has no mechanism for preventing exit nodes from being forced to access illegal or dangerous information on behalf of other users.
 
 Despite those issues, Tor's relatively small development community continues to investigate how the Tor network might be made faster, more reliable, and more secure\cite{25}. A key part of that discussion is how to bring lower latency / higher bandwidth nodes into the network\cite{20, 21, 22, 23, 24}.
 
-To achieve those goals the Tor network must find a way to offer users' incentives. But  retrofitting a means of receiving financial contributions from users onto a network not initially designed to receive them presents multiple obstacles. For a start, Tor's inability to tightly couple payment with routing makes it difficult to effectively manage anonymous digital payments. The Tor community's insistence that some nodes continue to route for free while others receive payment for being “gold star” members adds another layer of complexity.
+To achieve those goals, the Tor network must find a way to offer users' incentives. Retrofitting Tor with a means of receiving financial contributions from users presents multiple obstacles. Tor's inability to tightly couple payment with routing makes it difficult to effectively manage anonymous digital payments. The Tor community's insistence that some nodes continue to route for free while others receive payment for being “gold star” members adds yet another layer of complexity.
 
 Another non-technical reason for Tor’s limited growth is that it is often perceived as a tool designed primarily to enable technically sophisticated users (``techies'') to access illegal services or dark web sites. One example of that sort of hidden service was the \textit{Silk Road} web site that offered a variety of illegal goods and services.\cite{18,19}.
 
-In contrast, \orchid{} will not enable hidden services and focus only on open, secure, anonymous access to the Internet.
+In contrast, the \orchid{} Network will not enable hidden services and focus only on open, secure, anonymous access to the Internet.
 
 \subsubsection{Onion Routing}
 \label{subsec-onionrouting}
 The techniques of Onion Routing described here (and Garlic Routing described in Section~\ref{subsec-garlicrouting}), combined with encryption, deliver a greater level of anonymous routing across P2P networks.
 
-Onion Routing describes that system's ``layered'' approach to data encryption. Onion routing creates paths through a P2P network in which messages are repeatedly encrypted by the originating node, then decrypted successively by each node that the message transits through. Intermediate nodes receive only the routing instructions needed to route the message. Only the final (exit) node receives both the routing instructions and the  message.
+Onion Routing is a ``layered'' approach to data encryption that creates paths through a P2P network. Messages are repeatedly encrypted by the originating node, then decrypted successively by each node that the message transits through. Intermediate nodes receive only the routing instructions needed to route the message. Only the final (exit) node receives both the routing instructions and the  message.
 
 One frequently cited example of Onion Routing is the Tor network (Section~\ref{subsec: tornetwork}).
 
@@ -73,11 +73,11 @@ The Invisible Internet Project (\textit{I2P}) is a decentralized anonymizing net
   %\caption{The anonymous Internet}
 %\end{figure}
 
-Garlic Routing bundles multiple messages together into a single packet referred to as a \textit{bulb}. Each message in a bulb is in turn encrypted in the layered encryption style of Onion Routing. The bundling of messages means that accesing I2P hidden is significantly faster than Tor for hidden services. (However, because I2P only partially supports routing to the wider Internet a full comparison of the performance improvements is problematic.). Bundling also makes traffic analysis more difficult.
+Garlic Routing bundles multiple messages together into a single packet referred to as a \textit{bulb}. Each message in a bulb is in turn encrypted in the layered encryption style of Onion Routing. The bundling of messages means that accessing I2P is significantly faster than Tor for hidden services. I2P only partially supports routing to the wider Internet making a full comparison of the performance improvements difficult to assess. Bundling also makes traffic analysis more difficult to determine.
 
-I2P users connect to each other using peer-to-peer encrypted tunnels but without a centralized directory ala Tor. In addition, I2P completely separates incoming and outgoing traffic. Packet switching rather than circuit switching is then used to provide transparent load balancing of messages across multiple peers. These design features combine to improve both security and anonymity
+I2P users connect to each other using peer-to-peer encrypted tunnels but without a centralized directory as used by Tor. I2P completely separates incoming and outgoing traffic. Packet switching, rather than circuit switching, is then used to provide transparent load balancing of messages across multiple peers. These design features are combined to improve both security and anonymity.
 
-One aspect of I2P which requires significant improvement is its management of its distributed database of nodes. I2P originally used Kademlia as originally designed in 2002\cite{27}. That initial version of Kademlia continuously consumed so much CPU and network bandwidth that it could not be scaled. I2P then transitioned to an algorithm they called \textit{floodfill}. However, the floodfill mechanism also suffers from design flaws that can be exploited to corrupt and manipulate the information in I2P's distributed database\cite{28}.
+One aspect of I2P which requires significant improvement is its management of its distributed database of nodes. I2P originally used Kademlia as originally designed in 2002\cite{27}. The initial version of Kademlia continuously consumed so much CPU and network bandwidth that it could not be scaled. I2P then transitioned to an algorithm they called \textit{floodfill}. However, the floodfill mechanism also suffers from design flaws that can be exploited to corrupt and manipulate the information in I2P's distributed database\cite{28}.
 
 
 \subsection{Blockchain Platforms}
@@ -95,8 +95,8 @@ Ethereum applications run atop a powerful shared global infrastructure. Applicat
 Ethereum's capabilities are useful in general, nowhere more than in emerging markets that must contend with server downtime, corruption, and fraudulent behavior.
 
 \subsubsection{Ethereum and \tOM{} ERC20 Tokens}
-Most tokens deployed on the Ethereum network conform to the ERC20 standard\cite{ERC20}. This standard specifies a simple API for the transfer of tokens and metadata. The API is small and simple enough that it is often used to more easily and quickly integrate tokens into user wallets implemented in either hardware or software.
+Most tokens deployed on the Ethereum network conform to the ERC20 standard\cite{ERC20}. This standard specifies a compact and simple API for the transfer of tokens and metadata that can easily and quickly integrate tokens into hardware or software user wallets.
 
-For example, the Augur\cite{Augur} and Gnosis\cite{Gnosis} platforms use ERC20 tokens to create prediction markets from token data. More generally, ERC20 enables arbitrary smart contracts to more easily interface with the \orchid{} protocol. This can be valuable to IoT devices seeking to securely access Internet endpoints.
+For example, the Augur\cite{Augur} and Gnosis\cite{Gnosis} platforms use ERC20 tokens to create prediction markets from token data. ERC20 enables arbitrary smart contracts to easily interface with the \orchid{} protocol. This can be valuable to IoT devices seeking to securely access Internet endpoints.
 
 ERC20-compliance also makes it easier for token exchanges and applications to benefit from the expanded capabilities provided by new types of ERC20 tokens. This in turn enables different applications to use ERC20-compliant tokens to exchange information and status.

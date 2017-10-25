@@ -45,7 +45,7 @@ and send that message to Carol, who decrypts it and sends it to Bob,
 who decrypts it and sends it to Alice. To prevent traffic analysis
 everyone sends a fixed number of messages every cycle.  To handle
 return addresses, we can have Bob and Carol remember a unique
-messageId and send messages back along the chain.
+message identifier and send messages back along the chain.
 
 Of particular importance to systems using the above method is the
 possibility of a \emph{Collusion}. If Bob and Carol cooperate they can
@@ -71,7 +71,7 @@ possessing an incredible amount of computational resources.
 \subsection{The \emph{Random Selection} Problem}
 
 The above cafeteria problem statement assumed an easy method for
-sending a message to every other user of the system (yelling across
+sending a message to every other user of the system (e.g., yelling across
 the cafeteria). To implement a Chaumian mix which is maximally
 resistant to \emph{Collusion Attacks}, we need to be able to select
 randomly from those relays who are ``real.'' Naively this requires
@@ -92,21 +92,19 @@ or removing a user only requires notifying $O(log(n))$ peers.
 
 \subsection{System Overview}
 
-The Orchid Protocol is, at its core, a combination of the above
+The \Orchid{} Protocol is, at its core, a combination of the above
 solutions. In our approach, peers are required to
 produce \emph{Medallions} to demonstrate their ``realness'', and are
-then organized into a distributed P2P network termed \tOM{}. To
+then organized into a distributed P2P network termed the \emph{\Orchid{} Market}. To
 keep \tOM{} participants honest, every peer checks the correctness of
-it's neighbor's behavior. Customers then use \tOM{} to select random
+its neighbor's behavior. Customers then use \tOM{} to select random
 peers for Chaumian message forwarding. To incentivize participation,
 we have Customers pay Relays on a per-forwarded-byte basis.
 
 This is a simple idea, but of course the devil is in the details. The
 system is to be fully decentralized, fully autonomous, fully
 anonymous, and is to handle payments. Much of this design document is
-therefore centered on preventing attacks on Customer security, attacks
-on the system's performance, and attacks on the system's economic
-soundness. Although attack analysis is important, and will take up
+therefore centered on preventing attacks on customer security, the system's performance, and the system's economic soundness. Although attack analysis is important, and will take up
 much of our time, it is ultimately no more than a necessary conceit to
 the context in which the market is to operate; if you find yourself
 ``lost in the woods'' we hope you will use the preceding exposition as

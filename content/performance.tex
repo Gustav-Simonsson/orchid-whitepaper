@@ -25,8 +25,8 @@ all of which have performance characteristics independent of the total number of
 
 The core operations of \tOM{} are based on the well-studied Chord
 DHT. The number of connections that Peddlers must maintain grows at a
-rate of $O(log{}n)$, to a maximum of 256 connections. Queries on the
-network require $O(log{}n)$ hops. Although these operations do become
+rate of $O(log{}(n))$, to a maximum of 256 connections. Queries on the
+network require $O(log{}(n))$ hops. Although these operations do become
 more burdensome as the network increases in size, we do not believe
 any significant impact on performance will result.
 
