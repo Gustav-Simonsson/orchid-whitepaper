@@ -1,20 +1,14 @@
-The \Orchid{} Protocol organizes bandwidth sellers into a rigidly
+The \Orchid{} Protocol organizes bandwidth sellers into a %rigidly
 structured peer-to-peer (P2P) network termed \tOM{}. Customers connect to
-\tOM{} and pay multiple bandwidth sellers to form a proxy chain to a
-specific webserver. Proxy chains allow customers to send and receive
-data from the global Internet.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width = 400pt]{overview}
-  \caption{Direct connection, VPN connection, Orchid connection}
-\end{figure}
+\tOM{} and pay bandwidth sellers in order to form a proxy chain to
+specific resource on the Internet. 
+%Proxy chains allow customers to send and receive data from the global Internet.
 
 Unlike more common methods for sending and receiving data from the
 global Internet, proxy chains in \tOM{} naturally separate information
 about the source of data from information about its destination; no
 single relay or proxy holds both pieces of information, or knows the
-identity of someone who does. The rigid structure of \tOM{} further
+identity of someone who does. The structure of \tOM{} further
 supports this separation of information by providing strong resistance
 against \emph{collusion attacks} -- the ability of a group of
 bandwidth sellers to overcome this separation of knowledge.
@@ -29,7 +23,7 @@ Before we describe the details of the system, we will briefly review
 the core problems it solves, and the general solutions we have chosen
 for our system's foundation.
 
-\subsection{The \emph{Traffic Analysis} Problem}
+\subsection*{The \emph{Traffic Analysis} Problem}
 
 \textbf{Problem Statement:} Imagine you are in a cafeteria full of
 mathematicians and wish to send a message to your friend across the
@@ -56,7 +50,7 @@ possibility of a \emph{Collusion}. If Bob and Carol cooperate they can
 potentially determine who sent a given message, and to whom it was
 sent.
 
-\subsection{The \emph{Sybil} Problem}
+\subsection*{The \emph{Sybil} Problem}
 
 The above cafeteria problem statement used physical bodies to
 prevent \emph{Sybil Attacks} -- situations in which one participant
@@ -72,7 +66,7 @@ resources, we can put Sybil Attackers in a position where claims of
 being an incredible number of network participants requires actually
 possessing an incredible amount of computational resources.
 
-\subsection{The \emph{Random Selection} Problem}
+\subsection*{The \emph{Random Selection} Problem}
 
 The above cafeteria problem statement assumed an easy method for
 sending a message to every other user of the system (e.g., yelling across
@@ -94,7 +88,7 @@ are assigned unique addresses in a large space and then are connected
 in such a way that lookups can be performed in $O(log(n))$ time. Adding
 or removing a user only requires notifying $O(log(n))$ peers.
 
-\subsection{System Overview}
+\subsection*{System Overview}
 
 The \Orchid{} Protocol is, at its core, a combination of the above
 solutions. In our approach, peers are required to

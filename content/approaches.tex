@@ -5,12 +5,12 @@
 %%% Author: A truckload of others
 %%% Birthdate: Tue Oct 10 12:01:02 2017.
 
-\subsection{Unprotected Internet Access}
+\subsection*{Unprotected Internet Access}
 
 Users who access the Internet without protection provide their
 complete browsing history and website use to their ISP, who can then share or sell that data.
 
-\subsection{Virtual Private Networking (VPN) Services}
+\subsection*{Virtual Private Networking (VPN) Services}
 
 Virtual Private Networks (VPNs) use encryption to securely transport a
 VPN subscriber's traffic across a larger insecure network. Once the
@@ -31,7 +31,7 @@ user to not trust their ISP. Additionally, the re-use of IP addresses
 for relaying traffic in VPN setups enables relative ease in blocking
 their use by commercial websites\cite{13}.
 
-\subsection{Tor}
+\subsection*{Tor}
 
 Tor\cite{TOR} is a free software project famous for introducing the
 idea of \emph{Onion Routing} to a wider audience. In this system, users
@@ -43,6 +43,12 @@ must have received a packet enroute for it to be understood by the
 exit node. The result is that unless several nodes are compromised or
 run by the same user, no two relays know both who sent 
 a packet and where it went.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width = 400pt]{overview}
+  \caption{Direct connection, VPN connection, Orchid connection}
+\end{figure}
 
 %% @saurik: ref on Dingledine knowing ~75% of relay operators personally?
 
