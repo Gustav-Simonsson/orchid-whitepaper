@@ -1,0 +1,162 @@
+
+\subsection{Payment Ticket Cryptographic Choices}
+\label{payments-optimization}
+In order to reduce the cost of Orchid micropayments, we have chosen certain cryptographic functions over others due to their reduced Ethereum gas costs compared to other arbitrary functions.
+\begin{description}%[align=right, labelwidth=0cm]
+    \item[$h$ (Keccak-256)] -- Any secure cryptographic hash function could be used in the \Orchid{} protocol. However, Keccack was specifically chosen over other hashes in our system because it has the lowest gas cost  of all hash functions available in the EVM\footnote{Etherium cost of 36 gas\cite{ETHSpec} for hashing 32 bytes}. This was chosen to further minimize \Orchid{} transaction cost.
+    \item[$sig(sk, r)$ (ECDSA)] -- Using the secp256k1 curve with Keccak-256 as the internal cryptographic hash function. Again, this choice was made because the EVM has built in support for ECDSA thus reducing the \Orchid{} gas cost. Furthermore, the curve choice is compatible with existing blockchain software libraries and tools.
+\end{description}
+
+\subsection{Payment Ticket Definitions}
+\label{payments-definitions}
+
+Orchid payment tickets have the following fields:
+
+\begin{description}[align=right, labelwidth=4.2cm]
+  \item [$h$ (function)] -- cryptographic hash function
+  \item [$timestamp$ (uint32)] -- time denoting when value will begin decreasing
+  \item [$recipient$ (uint160)] -- 160-bit Ethereum account address of the ticket recipient
+  \item [$rand$ (uint256)] -- random integer chosen by $recipient$
+  \item [$nonce$ (uint256)] -- random integer chosen by the ticket sender
+  \item [$faceValue$ (uint256)] -- value of a winning ticket
+  \item [$marketValue$ (uint256)] -- expected value of a ticket based on the bandwidth market
+  \item [$acceptedValue$ (uint256)] -- expected value of a ticket based on what the a recipient accepts
+  \item [$winProb$ (uint256)] -- probability that a particular ticket wins $faceValue$ from the sender
+  \item [$randHash$ (uint256)] -- digest of $h(rand)$
+  \item [$ticketHash$ (uint256)] -- digest of $h(randHash, recipient, faceValue, winProb, nonce)$
+  \item [$(v1, r1, s1)$ (tuple)] -- ECDSA signature elements of the ticket sender
+  \item [$(v2, r2, s2)$ (tuple)] -- ECDSA signature elements of $recipient$
+\end{description}
+
+
+
+\subsection{Payment Ticket Generation}
+\label{payment-generation}
+%%      {\color{red} \texttt{TODO: describe prior setup where ticket sender locks up Orchid Tokens in the ticket smart contract. Make note that Sig(key, value) defines a signature using the private key of the sender's account that previously locked up CHI tokens in the Orchid Payment smart contract}}
+
+Let \textit{Alice} be a recipient and \textit{Bob} be a sender,
+\begin{enumerate}
+  \item \textit{Alice} picks a random 256-bit number, $rand$, calculates $randHash$, and sends the digest to \textit{Bob}
+  \item \textit{Bob} chooses values for $(nonce, faceValue, winProb, recipient)$ \footnote{Using information of this specification such as: general bandwidth market data and public capabilities signed by $recipient$}
+  \item \textit{Bob} calculates $ticketHash$
+  \item \textit{Bob} calculates Sig(PrivKey, $ticketHash$)
+  \item The resulting ticket consists of:
+    \begin{enumerate}
+      \item $randHash$
+      \item $recipient$
+      \item $faceValue$
+      \item $winProb$
+      \item $nonce$
+      \item $ticketHash$
+      \item $creator$ (address of the sender key that signed $ticketHash$)
+      \item $creatorSig$ (the sender's signature over $ticketHash$)
+     \end{enumerate}
+\end{enumerate}
+
+Note that while this ticket is valid in the sense that the recipient can fully verify it, the recipient needs to sign it (see below) in order to be able to claim it in the Orchid Payment Ethereum smart contract.
+
+\subsection{Payment Ticket Verification}
+\label{payment-ticket-verif}
+\textit{Alice} (bandwidth seller) will then perform the following operations,
+\begin{enumerate}
+  \item[] \textbf{Verify:} \begin{enumerate}
+  	\item $randHash$ $=$ $H(rand)$
+    \item $faceValue$ $\geq$ $marketValue$%\{the expected minimum value (based on what the recipient accepts in terms of the bandwidth market)\}
+    \item $winProb$ $\geq$ $acceptedValue$%\{the expected minimum value (based on what the recipient accepts)\}
+    \item $recipient$ $=$ \{the Ethereum account address published by the recipient\}
+    \item $creator$ $=$ \{the Ethereum account address published by the sender\}
+  	\end{enumerate}
+  \item[] \textbf{Validate:} \begin{enumerate}
+  	\item Validate: $creatorSig$ is a signature by the private key who's public key is the creator address
+  	\end{enumerate}
+  \item[] \textbf{Check:} \begin{enumerate}
+  	\item Validate: $creator$ has sufficient Orchid Tokens locked in the Orchid Payment smart contract
+    \end{enumerate}
+  \item[] \textbf{Assert:} \begin{enumerate}
+  	\item Ticket is now proven to be valid, and may be a winning ticket
+  	\end{enumerate}
+\end{enumerate}
+
+
+\subsection{Claiming Payment from a Ticket}
+
+While the recipient can locally fully verify whether a ticket is valid and if it's a winning ticket, the actual payout of tokens in winning tickets is done by a Orchid Payment smart contract. The \orchid{} smart contract exposes a Solidity API that takes the following as input,
+
+\begin{enumerate}%[label=(\alph*)]
+  \item $rand$
+  \item $nonce$
+  \item $faceValue$
+  \item $winProb$
+  \item $receipient$
+  \item $recipientSig$ ($recipient$ signature over $ticketHash$)
+  \item $creatorSig$ (the sender's signature over $ticketHash$)
+\end{enumerate}
+
+\subsubsection{The Smart Contract Executes}
+
+%% {\color{red} \texttt{TODO: good notation / formalism here. We want to ensure that the reader understands when this protocol/algorithm spends eth gas and when it aborts and does not. Might also want to move the description of Alice below to a previous section; maybe Sec.\ref{payment-generation}}}\\
+
+Suppose \textit{Alice} is a user who wishes to buy bandwidth. \textit{Alice} must have an Ethereum account address, $addressAlice$, and Orchid tokens. Note that this address will have an associated public key, $PubKeyAlice$. Alice must also have Orchid tokens \textit{locked up} in an Ethereum smart contract as defined in previous sections and locked with $PubKeyAlice$. In the previous section, \textit{Alice's} address would be the Ethereum account address equaling the public key recovered from $creatorSig$ over $ticketHash$.
+
+Let SLASH be a temporary boolean value which is set to FALSE and $PubKey$ be the public key recovered from $recipientSig$ over $ticketHash$,
+
+\begin{enumerate}
+  \item[] \textbf{Calculate:} \begin{enumerate}
+		\item $ticketHash$ %= Keccak-256($randHash, recipient, faceValue, winProb, nonce$)
+  \end{enumerate}
+
+  \item[] \textbf{Verify:} \begin{enumerate}
+  	\item $randHash$; If not, abort execution\footnote{Since the transaction was aborted, not Ethereum state transition occurs and no gas is spent}. %= Keccak-256($rand$); If not, abort execution; transaction is voided so no state transitions occur.
+    \item $PubKey$ = $recipient$ address; If not, abort execution.
+  \item $addressAlice$ has Orchid Tokens locked up in the penalty escrow account. If not, abort execution.
+  \item $addressAlice$ has enough Orchid Tokens locked up in it's ticket account to pay for the ticket. If not, set SLASH to TRUE and continue execution.
+  \item $H(ticketHash, rand)$\footnote{interpreted as a uint256} $\leq$ $winProb$. If not, abort execution.
+  \end{enumerate}
+
+  \item[] \textbf{Determine:} \begin{enumerate}
+  	\item If SLASH = FALSE, then the ticket is paid out: $faceValue$ is transferred from the creator's ticket funds to $recipient$.
+  	\item If SLASH = TRUE, then creator is slashed.
+  \end{enumerate}
+
+  \item[] \textbf{Settlement:} \begin{enumerate}
+  	\item Send creator's ticket funds, if any, to $recipient$ (this is from prior validations guaranteed to be less than $faceValue$).
+  	\item Set creator's penalty escrow account to zero (burns / slashes those tokens).
+  \end{enumerate}
+
+\end{enumerate}
+
+Note that while the slashing of the penalty escrow prevents double-spending by creating a disincentive for the ticket sender where they will lose more than they can gain from a potential double spend, there is still a danger of a ticket sender over-spending on a grand scale. To address this, the value of winning lottery tickets should begin to decrease exponentially at $timestamp$, thereby providing a strong incentive for winners to cash in immediately. This immediacy can be used by the recipient to calculate the ``wasting rate'' of the sender's Orchid token balance.
+
+\begin{comment}
+\begin{quote}
+	\color{red}
+    \texttt{Completely unfinished. Here for example sake currently,}
+\end{quote}
+\begin{algorithm}[H]
+  %\color{red}
+  \SetKwInOut{Input}{Let}
+
+  \Input{Alice $\gets$ PubK, \{Nodes\}}
+  \Input{Bob is a Node}
+    \textbf{Handshake}:\\
+    ~~Alice: Bob $\gets$ msg\{I would like to buy bandwidth\}\\
+    ~~Bob:~~Chris $\gets$ msg\{Verify sufficient funds from Alice at time $t$ with rate $r$\}\\
+    ~~~~~~~~~~Alice $\gets$ msg\{Agree to sell bandwidth\}\\
+    ~~~~~~~~~~Alice $\gets$ h :  h = Hash($N$), for some $N \in \{0,1\}^k$, $k \in \mathbb{Z}$\\
+    \textbf{Post-Handshake:}\\
+    ~~Alice: Determine,\\
+    ~~~~~~~~~$t$, $v$, $p$ : $t$ = time stamp, $v$ = value of ticket, $p$ = probability of win\\
+    ~~~~~~~~~$\alpha$ : $\alpha (t, v, p)$ = Sig(PubK, \{$t, v, p, n$, h\}), where $n \in \{0,1\}^k$\\
+    ~~Alice: Bob $\gets$ $\alpha$\\
+    ~~Bob: \While{Alice is using bandwidth}{
+    	Simulate the ticket winning condition with smart contract $\omega$ using $\alpha$ and $N$
+    	%\if{win condition}{
+        %	break
+        %}
+    }
+    ~~~~~~~~Chris $\gets$ $N, \alpha$
+\caption{Ticket Protocol}
+\end{algorithm}
+\end{comment}
+
+\clearpage

@@ -7,151 +7,163 @@
 % test seven
 
 \usepackage[utf8]{inputenc}
-\usepackage[]{algorithm2e}
 \usepackage{graphicx}
 \usepackage{amsmath}
-\graphicspath{ {images/} }
 \usepackage{svg}
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
 \usepackage{multicol}
-\setlength{\columnsep}{1cm}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{mfirstuc}
 \usepackage{cleveref}
 \usepackage{verbatim}
+\usepackage{titlesec}
+\usepackage[parfill]{parskip}
 
-% Added or modified by BrianV
+% Set up BibTex/biber
+\usepackage[backend=biber,style=numeric-comp,url=true]{biblatex}
+\bibliography{whitepaper}
+
+% Added by BrianV
 \usepackage{color}
 \usepackage{amsfonts}
 \usepackage{enumitem}
 \usepackage{siunitx}
 \usepackage{scrextend}
-%\usepackage[ruled]{algorithm2e}
+\usepackage[ruled]{algorithm2e}
+\usepackage{tikz}
+\usetikzlibrary{cd}
 
-\usepackage[backend=biber,style=numeric-comp,url=true]{biblatex}
-\bibliography{whitepaper}
+% Set graphics path and column separation
+\graphicspath{ {images/} }
+\setlength{\columnsep}{1cm}
 
-%% \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
-\newcommand{\orchid}{Orchid}
-\newcommand{\Orchid}{\orchid}
-\newcommand{\tOM}{the \Orchid{} Market}
-\newcommand{\TOM}{The \Orchid{} Market}
+% Add new commands
+\input{commands}
 
-\usepackage{titlesec}
-\titlelabel{\thetitle.\quad}
-
-\title{\Orchid: A Fully Distributed, Anonymous Proxy Network Incentivized Through Bandwidth Mining}
-\ifdefined\isdraft
-  \include{draft}
-\fi
-
-\author{{David L. Salamon, Brian J. Fox, Jay Freeman, and Gustav Simonsson with} \\ {{Stephen F. Bell, and Dr. Steven Waterhouse, Ph.D.}}}
-%% \author{Orchid Labs, Inc.}
-\date{\today{} \\ Version 0.9.0}
+% Add title elements
+\input{title}
 
 \raggedbottom
 
-\usepackage[parfill]{parskip}
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
-\input{content/abstract}
-\end{abstract}
+    % \begin{abstract}
+    % \input{content/abstract}
+    % \end{abstract}
 
-\newpage
-\tableofcontents
-\newpage
+    % \newpage
+    % \tableofcontents
+    % \newpage
 
-\section{Introduction}
-\label{sec:overview}
-\input{content/introduction2}
+    % \section{Introduction}
+    % \label{sec:overview}
+    % \input{content/introduction2}
 
-\section{Attacks}
-\label{sec:attacks}
-\input{content/attacks}
+    % \section{Attacks}
+    % \label{sec:attacks}
+    % \input{content/attacks}
 
-\section{Alternative Approaches}
-\label{sec:prior-work}
-\input{content/approaches}
+    % \section{Alternative Approaches}
+    % \label{sec:prior-work}
+    % \input{content/approaches}
 
-\section{External Libraries}
-\label{sec:external-libraries}
-\input{content/external-libraries}
+    % \section{External Libraries}
+    % \label{sec:external-libraries}
+    % \input{content/external-libraries}
 
-\section{Medallions}
-\label{medallions}
-\input{content/medallions}
+    \section{\TOM{}}
+    \label{sec:market}
+    \input{content/market}
 
-\section{Medallion Proof-of-Work}
-\label{medallionspow}
-\input{content/medallionspow}
+    \section{Medallions}
+    \label{medallions}
+    \input{content/medallions}
 
-\section{Payments}
-\label{sec:payments}
-\input{content/payments}
+    \section{Payments}
+    \label{sec:payments}
+    \input{content/payments}
 
-\section{Bandwidth Mining}
-\label{sec:mining}
-\input{content/bandwidth-mining}
+    % \section{Bandwidth Mining}
+    % \label{sec:mining}
+    % \input{content/bandwidth-mining}
 
-\section{Collusion Attacks on Chains}
-\label{sec:collusion-attacks}
-\input{content/collusion-attacks}
+    % \section{Collusion Attacks on Chains}
+    % \label{sec:collusion-attacks}
+    % \input{content/collusion-attacks}
 
-\section{SSL and TLS Vulnerabilities}
-\input{content/ssl-vulnerabilities}
+    % \section{SSL and TLS Vulnerabilities}
+    % \input{content/ssl-vulnerabilities}
 
-\section{\TOM{}}
-\label{sec:market}
-\input{content/market}
+    % \section{Firewall Circumvention Features}
+    % \label{sec:evasion}
+    % \input{content/firewall}
 
-\section{Firewall Circumvention Features}
-\label{sec:evasion}
-\input{content/firewall}
+    %% \section{Current State of the Software}
+    %% \label{sec:current}
+    %% \input{content/software-status}
 
-%% \section{Current State of the Software}
-%% \label{sec:current}
-%% \input{content/software-status}
+    % \section{Performance Scaling}
+    % \label{sec:performance}
+    % \input{content/performance}
 
-\section{Performance Scaling}
-\label{sec:performance}
-\input{content/performance}
+    % \section{Attack Analysis and Attacker User Stories}
+    % \label{sec:attack-stories}
+    % \input{content/attack-analysis}
 
-\section{Attack Analysis and Attacker User Stories}
-\label{sec:attack-stories}
-\input{content/attack-analysis}
-
-\section{Future Work}
-\label{sec:future}
-\input{content/future-work}
+    % \section{Future Work}
+    % \label{sec:future}
+    % \input{content/future-work}
 
 \newpage
 
-%% \nocite{*}
+% \nocite{*}
 \printbibliography
 
 \newpage
 
 \appendix
 
-% hide subsubsections from the TOC
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
-\section{Auctions}
-\label{sec:auctions}
-\input{content/auctions}
-% show subsubsections in the TOC again
-\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+    % % hide subsubsections from the TOC
+    % \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    % \section{Auctions}
+    % \label{sec:auctions}
+    % \input{content/auctions}
+    % % show subsubsections in the TOC again
+    % \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
-% hide subsubsections from the TOC
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
-\section{Related Work}
-\label{sec:related}
-\input{content/related.tex}
-% show subsubsections in the TOC again
-\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+    % hide subsubsections from the TOC
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    \section{Medallion Engineering Specification}
+    \label{medallionspow}
+    \input{content/medallionspow}
+    % show subsubsections in the TOC again
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
+    % hide subsubsections from the TOC
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    \section{Payment Protocol and Definitions}
+    \label{paymentsprotocol}
+    \input{content/paymentsprotocol}
+    % show subsubsections in the TOC again
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+    
+	% hide subsubsections from the TOC
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    \section{Additional Payment Details}
+    \label{paymentsextra}
+    \input{content/paymentsextra}
+    % show subsubsections in the TOC again
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+    
+    % % hide subsubsections from the TOC
+    % \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    % \section{Related Work}
+    % \label{sec:related}
+    % \input{content/related.tex}
+    % % show subsubsections in the TOC again
+    % \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 
 \end{document}

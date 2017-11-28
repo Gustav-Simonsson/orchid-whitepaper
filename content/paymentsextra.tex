@@ -1,0 +1,106 @@
+\subsection{How Much Will Packets Cost?}
+
+For the purposes of discussion, let us assume that an average packet is 1KB in length. We now wish to calculate a reasonable upper bound for the average total cost of a packet. We observe that one of the more expensive bandwidth providers in cloud services is Amazon Web Services's Singapore CloudFront, charging \$0.14 per \num{1e9} bytes. This yields a per-packet cost of \num{1.4e-5} cents (\$0.00000014). 
+
+Because bandwidth is a wasting good for most users--any unsold bandwidth is lost forever)--the actual price of bandwidth on for \tOM{} is likely to be significantly lower than this bound.
+
+\subsection{Ethereum Transaction Costs}
+
+Ethereum smart contracts allow for the creation of sophisticated payment mechanisms, drawing on the power and flexibility of the Ethereum Virtual Machine\cite{ETHSpec} (EVM) which offers (within economic bounds) a Turing complete execution environment. Each instruction executed by Ethereum smart contracts add to the transaction fee of the originating transaction.
+
+Each EVM instruction costs some amount of gas, and Ethereum transaction fees are defined as the total gas spent by the transaction multiplied by the gas price set by the sender. Miners select any valid transactions for inclusion in their mined blocks and can include transactions with any gas price, including zero. Selecting transactions with higher gas price may lead to more profit as each block has a limit on how many transactions can be included. Likewise, accepting a lower gas price may also lead to more profit as it can allow a miner to fill up their blocks if the network is not running at maximum capacity. This mechanism creates an ever-changing yet stable game theoretic equilibrium which is tracked by sites such as the Ethereum Gas Station\cite{ETHGas}.
+
+As of October, 2017, the cost of getting a transaction included with high probability within a few blocks is \$0.026. For confirmation within 15 minutes, \$0.006 suffices. These estimates are for the base cost of a transaction - 21,000 gas for a plain ether transfer without any smart contract code execution. If the transaction executes smart contract code, each EVM instruction adds an additional gas cost. For example, permanently storing a new 256 bit value in smart contract storage costs 20,000 gas and updating an existing value costs 5,000 gas.
+
+As an Ethereum ERC20 ledger is simply a mapping of account addresses to balances, an ERC20 token transfer should cost on the order of 21,000 + 20,000 gas for new accounts, with subsequent transfers requiring 21,000 + 5,000 gas (as the recipient account then already has an entry in the token ledger). Observing live\cite{LiveERC20} ERC20 transactions we see the gas costs are a bit higher at approximately 52,000 and 37,000 gas for transfers to new and existing accounts, respectively. The difference accounts for smart contract code executing validations of invariants such as if the sender has sufficient balance as well as other implementation details such as the logging of payment receipts. 50,000 gas would require between \$0.014 and \$0.062 in transaction fee, depending on how fast we want the transaction confirmed.
+
+\subsection{Performance}
+
+While the Orchid Payments smart contracts are immutable they can effectively be upgraded by deploying new contracts and upgrading Orchid client software to point to them (while remaining backward compatible to old contracts if needed). Ethereum smart contracts support a multitide of optimizations to reduce gas costs and we anticipate future versions of the Orchid Payments smart contract to use e.g. inline solidity assembly \cite{SolidityAssembly} to optimize gas cost similar to how regular software systems often replace expensive subroutines with inline assembly.
+
+However, the bottlenecks in verification of Orchid payment tickets are the cryptographic operations such as ECDSA recovery and the state updates of the sender and recipient entries in the Orchid token ledger. There, one improvement could be to dual use the recipient signature of the Ethereum transaction carrying the smart contrat API call payload as the signature covering the ticket data structure. Currently, the Orchid scheme defines two signatures there for reasons of flexibility in the Orchid Client and to make it easier to specify and reason about the payment scheme without relying on Ethereum specifics. More simpler optimizations include tightly packing ticket fields and encode multiple internal variables in single 256 bit words to align with the EVM stack words and permanent contract storage slots, both being 256 bit in size.
+
+On the other hand, to achieve greater anonymity, optional or even mandatory use of mixing techniques could, perhaps substantially, increase the gas cost of Orchid Payments. Using mixing services based on linkable ring signatures could easily lead to roughly an order of magnitude higher transaction fees\cite{ETHRingSigs}. However, users may find this worthwhile if it provides strong anonymity guarantees. As we can easily tune the probablistic variables of Orchid payments - ticket frequency, winning probability and winning amount - we can tune the average time between ticket claims to reduce transaction fees (especially for long-running nodes, who may only care to be paid on average once every few days).
+
+Finally, an extremely interesting property of zero-knowledge technology such as zk-SNARKs is to dramatically reduce the computational overhead of arbitrary computation, such as Ethereum smart contract execution\cite{zksnarks-blockchain}. While generation of zk-SNARK proofs is expensive, the verification is cheaper - even compared to the original code. Since only the verification needs to be executed on-chain, a zero-knowledge proof of claiming an Orchid Ticket could be made cheaper to verify than the original verification code.
+
+Going further, recursive SNARKs\cite{RecursiveSnarks} have the potential to aggregate a set of SNARK proofs into a single proof. While they may be more applicable for blockchain consensus protocols\cite{ScalingTezos}, they may also be useful for Orchid to e.g. batch multiple ticket claims into a single smart contract transaction while avoiding linear gas cost complexity.
+
+\subsection{Building Micropayments from Macropayments}
+
+With transaction costs and choice of payment token now discussed, let us now look at viable payment methods. One fundamental challenge with blockchain-based micro-payments is how to avoid transaction fees. Imagine we want to send a single cent a large number of times, if we send each cent as a plain Ethereum ERC20 transaction, we would pay 1.4 cents - 140\% in transaction fee for each payment! Effective micro-payments requires lowering transaction fees by several orders of magnitude.
+
+One potentially interesting approach, which was employed in MojoNation\cite{mojonation}, is to have a ``balance of trade'' between each pair of nodes. As bandwidth flows between them, they periodically settle up when the balance gets too far from zero. However, as we have seen, the transaction costs of settling payments using plain Ethereum transactions would result in at minimum a \$0.014 transaction fee. We can see this price equals around 140 megabytes of bandwidth, based on the previously discussed upper bound. A secondary issue with this approach, is that peers nearing the reconciliation threshold would know that fact, and be tempted to disconnect and create a new identity rather than pay the fee.
+
+\subsection{Payment Channels}
+
+A popular technique in blockchain applications first seen on the Bitcoin network is payment channels \cite{PaymentChannels}. Partially described by Satoshi Nakamoto\cite{Satoshi} and later defined and implemented by Hearn and Spilman\cite{BitcoinWikiContracts}, payment channels were later studied by Poon and Dryja\cite{PoonDryja} for the Bitcoin lightning network. Payment channels allow a sender and recipient to send an arbitrary amount of transactions between each other and only pay transaction fees for two transactions - one to setup the payment channel and one to close it. This is accomplished by first having the sender post a transaction that locks up some amount of tokens that can only ever be sent to either the recipient or back to the sender. Typically, the tokens can only be sent back to the sender at some future time $T$. Meanwhile, the tokens can be (incrementally or in full) sent to the recipient. The sender continously signs transactions spending a larger and larger amount of the tokens to the recipient, and sends them directly to the recipient without posting on the blockchain. The recipient can at any time until $T$ post their last received transaction to claim the aggregated amount sent to them.
+
+Payment channels provide an efficient way for a sender to provide a recipient with cryptographic proof of continous payments. Since the intermediate payments do not incur any transaction fee, they can pay arbitrarily small amounts and be sent arbitrarily often. In practice the bottleneck becomes the computational overhead of verifying transactions as well as the bandwidth requirement of sending them.
+
+While payment channels effectively provide constant complexity of transaction fees for arbitrary amounts of intermediate payments, they are not efficient enough for all use cases. In particular, in systems  with large amounts of senders and recipients that often change with whom they interact, the constant creation of new payment channels may prove too expensive. Likewise, for very small or short lived services provided - such as a single HTTP request or 10 seconds of video streaming - the transaction fees of the required on-chain transactions can be too costly.
+
+\subsection{Probabilistic Payments}
+
+If we cannot challenge the assumption that payment settlement must happen on a blockchain with transaction fees, the theoretical minimum cost is the cost of a single transaction - as blockchains require at least one transaction to execute a state transition. To settle some amount of (micro) payments, we thus need at least one transaction.
+
+What if we could do away with the setup transaction required by payment channels, and still be able to prove to a recipient that they are being paid?
+
+Fortunately, there is a similar, solved problem, in the blockchain industry: mining pool shares\cite{MiningPoolMethods}. As the proof-of-work difficulty increased in networks such as Bitcoin, miners began pooling their computational power to avoid high variance where it could take years for a single miner to find a block solution. Mining pools award rewards in proportion to hashing power, and individual miners prove their hashing power by continously sending solutions\cite{MiningPoolShares} for the same underlying block hash but at a lower difficulty. This technique enables mining pools to cryptographically verify the hashing power of each pool member - regardless of whether that pool member finds a solution satisfying the actual proof-of-work target.
+
+If we apply the same thinking to payment channels we can construct probablistic payment schemes where the sender continously proves to the recipient that they are being paid \emph{on average}, regardless of whether an actual payment takes place. This allows us to create probabilistic micropayments where no setup transaction is needed, and the recipient only needs to pay a transaction fee when  ``cashing in''.
+
+Before we look at how we can construct such probablistic micropayments using Ethereum smart contracts, let's take a step back and observe that the original idea of probabilistic payments predate blockchain technology and was first published by David Wheeler\cite{txnbets} in 1996. Wheeler describes the core idea of probabilistic payments and how it can be applied to electronic protocols using random number commitments in such a way that neither the sender not the recipient (buyer and seller in the paper's terminology) can manipulate the outcome of the probablistic event, while still proving to each other what the probability and the winning amount is.
+
+Several papers followed up on Wheeler's idea and in 1997 Ronald Rivest\cite{lotterytickets} published a paper describing how to apply probabilistic payments in electronic micropayments. In 2015 Pass and Shelat\cite{Micropayments} described how to apply probablistic micropayments to decentralized currencies such as Bitcoin, noting that prior schemes all relied on trusted third parties. The following year Chiesa, Green, Liu, Miao, Miers and Mishra\cite{DAM} extended this research to work with zero knowledge proofs, providing decentralized and anonymous micropayments applicable to cryptocurrency protocols.
+
+Given the interest in and prevalence of payment channels in recent Ethereum-based systems, it can be valuable to view probablistic payments from the perspective of payment channels. In exchange for omitting the first setup transaction, we lose the ability to guarantee sending of exact amounts, achieving instead only a probablistic guarantee. However, we will show that by tuning the probability, winning amount and frequency of payments we can make probablistic micropayments so granular that they can replace payment channels for several classes of blockchain-based applications with no significant drawbacks.
+
+Essentially, as we can do away with the initial setup transaction, we gain the ability to, from the same sender account, pay for arbitrarily small service sessions to an arbitrary number of recipients while still proving to each of them the exact probability of the payment amount. Assuming the service provider (a relay or proxy node in the Orchid Network) provides a sufficient amount of service, the variance of the probablistic payouts will quickly even out.
+
+\subsection{Further Orchid Token Details}
+
+\subsubsection{Incentivization}
+
+Incentivization is a way to bootstrap new protocols and networks by giving people partial ownership of the network \cite{AppCoins}. New decentralized networks such as \Orchid{} suffer from the chicken and egg problem. The more proxy and relay nodes, the more utility the network provides for users. And the more users, the more valuable it becomes to run a proxy or relay node. By deploying a new network token, the network effect can be accelerated as all potential users are incentivized to use the network early on.
+
+\subsubsection{Decoupling}
+
+In decentralized systems built on other decentralized systems, new tokens decouple the market value of the new systems from the underlying system. For example, as of October, 2017, Ether has a market cap of approximately \$30 Billion and daily, global trading volume on the order of \$500 Million \cite{onchainfx}. The price of Ether is affected by a variety of factors such as overall speculation of cryptocurrencies, hashing power of Ethereum miners and the success and failure of hundreds of projects built on Ethereum. However, the failure or success of a single project may not significantly affect the Ether price, but will have a dramatic impact on a token specific to the project in question. Decoupling market value using a new token creates a better indicator of the size and health of the project and system in question, and effectively creates a prediction market on the future of the system.
+
+\subsubsection{Liquid Market}
+
+A liquid market for a system-specific token can enable users heavily reliant on the system to hedge against the potential failure of the system by taking short positions. If this seem far fetched we should note that the original intention of financial derivatives was to allow businesses to hedge against unfortunate future events. With the advent of decentralized exchanges such as 0x\cite{ETH0x} and etherdelta\cite{EtherDelta}, and prediction markets such as Augur\cite{Augur} and Gnosis\cite{Gnosis}, derivatives on Ethereum-based tokens and systems are not too far away. In fact, such derivatives can be even more effective\cite{ETHDerivatives} than traditional financial derivatives, as the former have no trusted party, are permissionless and potentially even anonymous.
+
+\subsubsection{New Tokens}
+
+New tokens also make it easier to engineer specific incentives for stakeholders; as the tokens exclusively derive their value from the new system, they act as powerful incentives for anyone working towards the success of the system. Ethereum smart contracts can implement autonomous locking of tokens to ensure that token holders can only access their tokens according to a defined schedule. This aligns incentives over time and puts the focus of token holders on the long-term success of the \emph{system} rather than social structures such as specific teams or associated corporations. If the Orchid Network simply used Ether, and stakeholders received a lockup of Ether, they would actually be more incentivized to work towards the overall success of Ethereum rather than towards any specific system making use of Ethereum. It can be argued that such an outcome would not be an optimal incentive alignment for the \Orchid{} Network and project.
+
+\subsection{Verifiable Random Functions}
+\label{sec:vrfs}
+
+The payment tickets described in the prior section can be made less interactive by replacing the recipient's random number commitment with a verifiable random function (VRF). First published in 1999 by Micali, Rabin and Vadhan\cite{VRF}, a IETF draft for VRFs was recently proposed by Goldberg and Papadopoulos\cite{IETFVRF}. This draft specifies two VRF constructions, one using RSA and one using Elliptic Curves (EC-VRF).
+
+Using a VRF, a sender of Orchid Payment tickets would be able to create tickets without the need of a per-ticket (or per-ticket until a winning ticket is encountered) commitment from the recipient. Rather, the sender only needs to know a public key of the recipient. The sender would replace the random number hash in the previously described ticket scheme with this public key. For efficiency, this could be the recipient public key for receiving funds that is already present in the ticket, but to adhere to the cryptographic principle of key separation, a second key may be required.
+
+However, verifying an EC-VRF in the Orchid Payments smart contract would require explicit EVM acceleration of Elliptic Curve operations, as implementing them directly in solidity or EVM assembly would be prohibitively expensive in terms of gas cost.
+
+Fortunately, in the Ethereum Byzantium\cite{ETHByz} release, the Ethereum network added EVM support for Elliptic Curve scalar addition and multiplication\cite{EIP196} as well as pairing checks\cite{EIP197} for the alt\_bn128 curve\cite{ALTBN128}. The EC-VRF construction is defined for any Elliptic Curve, and the IETF draft specifically defines EC-VRF-P256-SHA256 as the EC-VRF ciphersuite (where P256 is the NIST-P256 curve\cite{P256}). However, there appear to be no reason why the alt\_bn128 curve could not be used instead while still achieving a sufficient security level. Also, SHA256 could be replaced with Keccak-256. This would allow VRF verification in an Ethereum smart contract and thus integration with the Orchid Payments smart contract.
+
+However, while the alt\_bn128 curve is used in zcash, it is a much more recent curve compared to P256, and not as well studied. Perhaps more significant is that the EC-VRF construction is an early draft pending review, and the EVM Byzantium upgrade is occuring at the time of writing this paper and have not yet been proven in live system handling significant value. Using an EC-VRF in the Orchid probablistic micropayments is thus not immediately feasible and the Orchid Project will aim to conduct further research as to the feasibility of using e.g. an EC-VRF-ALTBN128-KECCAK256 construction that can be verified by the EVM.
+
+%% TODO: zk-STARK and Fast Reed-Solomon Interactive Oracle Proofs of Proximity section 1.3
+\subsection{Non-interactive Payments Scheme}
+
+In section \ref{sec:vrfs}, we show that by replacing the random number commitment in the Orchid Payment Scheme with a VRF makes the scheme more non-interactive by removing the communication steps associated with the random number commitment. Instead of the recipient having to communicate the commitment to the sender before the sender can construct tickets, the sender would be able to immediately construct tickets from only public recipient information.
+
+Each recipient would generate a new keypair specifically for the VRF and publish the public key alongside other public recipient information detailed in section \ref{fund-market}. The sender would simply configure this public key in the ticket, and the recipient would sign received tickets with the corresponding private key. The ticket verification logic defined in section \ref{payment-ticket-verif} would interpret the recipient VRF signature as the value that it compares to the winning probability threshold.
+
+As discussed in section \ref{sec:vrfs}, while this would be a relatively simple modification to the payment scheme, the feasibility of VRF verification in the EVM requires further research.
+
+
+
+
+
+
+\clearpage
