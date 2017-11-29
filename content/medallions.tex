@@ -5,7 +5,9 @@
 %%% Author: A truckload of others
 %%% Birthdate: Tue Oct 10 12:02:20 2017.
 
-Fully decentralized, fully anonymous digital systems suffer from attacks in which a single malicious user pretends to be thousands of users (Sybil Attacks) {\color{red}[REFERENCES]}. To mitigate the generation of Sybils and other effects of this class of attack, the \Orchid{} Protocol employs a proof-of-work scheme. We call the tokens of this scheme Medallions. Each Medallion contains data that cryptographically demonstrates the generator possessed a \textit{sizable} computation resource at a given time. As
+Fully decentralized, fully anonymous digital systems suffer from attacks in which a single malicious user pretends to be thousands of users (Sybil Attacks) 
+%{\color{red}[REFERENCES]}. 
+To mitigate the generation of Sybils and other effects of this class of attack, the \Orchid{} Protocol employs a proof-of-work scheme. We call the tokens of this scheme Medallions. Each Medallion contains data that cryptographically demonstrates the generator possessed a \textit{sizable} computation resource at a given time. As
 computation is an expensive resource, the use of Medallions places budgetary limitations on a given attacker's ability to impersonate multiple users.
 
 \subsection{Medallion Proof-of-Work}
@@ -17,32 +19,41 @@ Medallions form the bridge between our core security assumptions and the network
       \item Medallions  must be \textit{easy} to verify
       \item Medallions must be \textit{difficult} to create in bulk
   \end{enumerate}
-With these conditions, we define \textit{difficulty} to mean prohibitive scalability in time and money. In short, we want a proof-of-work system where it is \textit{easy} for a normal node to obtain entry to the network but difficult for an attacker to scale entry into the network. In {\color{red}[SECTION]} we discuss our choice of proof-of-work over other methods such as proof-of-stake \cite{bentov2016snow, kiayias2017ouroboros, houy2014will} and proof-of-space \cite{dziembowski2015proofs, park2015spacecoin}.
+With these conditions, we define \textit{difficulty} to mean prohibitive scalability in time and money. In short, we want a proof-of-work system where it is \textit{easy} for a normal node to obtain entry to the network but difficult for an attacker to scale entry into the network. 
+In section~\ref{medallion-proof} we discuss our choice of proof-of-work over other methods such as proof-of-stake \cite{bentov2016snow, kiayias2017ouroboros, houy2014will} and proof-of-space \cite{dziembowski2015proofs, park2015spacecoin}.
 
 Two primary methods currently exist that satisfy the requirements above: challenge-response protocols, and crypto-puzzles. Unfortunately, challenge-response protocols may not provide sufficient security within the Orchid model as an attacker may be able to precompute challenge and responses via collusion. This leaves crypto-puzzles of which there are many in existence today \cite{nakamoto2008bitcoin, Equihash} each with their own trade-offs. Again, in order to satisfy the requirements of Orchid only a subset of those crypto-puzzles are suitable. Namely, crypto-puzzles which can not easily be parallelized, made into an ASIC, or scaled trivially. Recently, researchers have discovered algorithms that produce easy-to-verify results that have tunable creation difficulty \cite{Equihash}. These collection of algorithms exploit the trend that memory and total silicon area is expensive to scale \cite{abadi2005moderately, dwork2005pebbling}. These class of algorithms are called asymmetric memory-hard functions and we use them for medallion creation. There are several varieties of these functions \cite{tromp2014cuckoo, lorimermomentum, Equihash} but we have chosen to use Equihash. Equihash is based on the k-XOR birthday problem and provides memory hardness via a time-space trade-off\footnote{It is no coincidence that this time-space trade-off is reminiscent of time-memory trade-offs as first discovered by \cite{hellman1980cryptanalytic}}. Since Equihash is tunable, simple, is based of an NP problem, and has gained acceptance in the cryptocurrency community, we believe that using such a function as our basis for proof-of-work provides an acceptable level of security and future-proofing.
 
-To produce a medallion, a peer takes a public key $K$, and the previous Ethereum block hash $E$, then performs a series of computations in order to locate a salt $S$ such that $\mathcal{F}(K, E, S, ...) \geq N$, where $N$ is some difficulty scaling factor. When a new Ethereum block is added to the chain, a new $S$ must be calculated to keep the Medallion current. The Medallion specification will be discussed in {\color{red}[SECTION]}.
+To produce a medallion, a peer takes a public key $K$, and the previous Ethereum block hash $E$, then performs a series of computations in order to locate a salt $S$ such that $\mathcal{F}(K, E, S, ...) \geq N$, where $N$ is some difficulty scaling factor. When a new Ethereum block is added to the chain, a new $S$ must be calculated to keep the Medallion current. The Medallion specification will be further defined  in Appendix~\ref{medallionspow}.
 
 \subsection{Selection of Proof-Type}
 \label{medallion-proof}
 
 Readers familiar with other market-based distributed networks will recognize that our use of Medallions is similar in premise to other proof-of-work systems (bitcoin, etc). Further readers may be inclined to ask: why not use proof-of-stake, proof-of-idle, or other methods for earning acceptance into the \Orchid{} Protocol and specifically \tOM{}? In this section we describe why we have chosen proof-of-work over other methods.
 
-\subsubsection{Proof-of-stake}
+\subsubsection*{Proof-of-stake}
 
-{\color{red}[DEFINE proof-of-stake]}. Proof-of-stake
-rests on the assumption that no attacker will ever control the majority of tokens {\color{red}[REFERENCE]}. {\color{red}[State Attack]}. As our attack model includes governments that are well-motivated, well-resourced, and possibly oppressive, proof-of-stake assumption can not be counted as always being true. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. {\color{red} [Example attack using bitcoin]} Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a ``hostile takeover'' much more difficult. Thus, we could not base Medallions on a proof-of-stake model as sufficient stake in the system could permanently and irreversibly compromise the anonymity and security of the \Orchid{} Protocol. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
+%{\color{red}[DEFINE proof-of-stake]}. 
+Proof-of-stake rests on the assumption that no attacker will ever control the majority of tokens. 
+% TODO: Clean this up and define terms
+%{\color{red}[REFERENCE]}. {\color{red}[State Attack]}. 
+As our attack model includes governments that are well-motivated, well-resourced, and possibly oppressive, proof-of-stake assumption can not be counted as always being true. Even Bitcoin’s astonishing market capitalization is far less than the GDP of a modestly sized country. 
+% TODO: add bitcoin related attack
+%{\color{red} [Example attack using bitcoin]} 
+Making matters more complicated, in the near future we intend to extend the system to support anonymous payments, which will make detection of such a ``hostile takeover'' much more difficult. Thus, we could not base Medallions on a proof-of-stake model as sufficient stake in the system could permanently and irreversibly compromise the anonymity and security of the \Orchid{} Protocol. In short: we did not use proof-of-stake because we did not want to engineer a system in which our users’ right to privacy might be sold to the highest bidder.
 
-\subsubsection{Proof-of-space}
+\subsubsection*{Proof-of-space}
 %%%%% This section needs more work--we may have said things that might not be true %%%%%%%
 
-In a proof-of-space, computational resources like those used in proof-of-work systems are traded for storage space. In short, proof-of-space is an \textit{interactive} protocol where two participants--a prover and a verifier--interact to verify that the prover has some amount of storage space by performing verifier-guided calculations. The assumption is that these calculations would only be practical if the prover stored and recalled them\cite{dziembowski2015proofs}. Although we are not sure that a suitable method will be located, we are exploring the possibility of using proof-of-space for an upcoming version of the \Orchid{} Protocol. This would allow old smart phones 
-{\color{red}[<--I don't this this is true; P-o-S uses large cryptographic super-concentrators w/ GB->TB of space; this is referenced in the equihash paper. I think equihash would prob work just as well if the super-concentrator isn't HW accelerated. In particular, Id be worried about performance. The PoS paper doesn't mention performance at all and states that it used graph traversal in order to accomplish its goal; since no performance or security data is given we don't know how big the graphs need to be, how much CPU is required to build them, the storage IO time needed to store them, recall time, SSD/RAM/HDD differences, or security/usability implications to each of these choices.]}
-, for example, to be installed by users in their homes as Relays and Proxies. For more on this idea, see Section \ref{future:proof-of-space}. {\color{red}[That section says the same thing as the text here]}
+In a proof-of-space, computational resources like those used in proof-of-work systems are traded for storage space. In short, proof-of-space is an \textit{interactive} protocol where two participants--a prover and a verifier--interact to verify that the prover has some amount of storage space by performing verifier-guided calculations. The assumption is that these calculations would only be practical if the prover stored and recalled them\cite{dziembowski2015proofs}. Although we are not sure that a suitable method will be located, we are exploring the possibility of using proof-of-space for an upcoming version of the \Orchid{} Protocol. 
+% TODO: fix this section material
+%This would allow old smart phones {\color{red}[<--I don't this this is true; P-o-S uses large cryptographic super-concentrators w/ GB->TB of space; this is referenced in the equihash paper. I think equihash would prob work just as well if the super-concentrator isn't HW accelerated. In particular, Id be worried about performance. The PoS paper doesn't mention performance at all and states that it used graph traversal in order to accomplish its goal; since no performance or security data is given we don't know how big the graphs need to be, how much CPU is required to build them, the storage IO time needed to store them, recall time, SSD/RAM/HDD differences, or security/usability implications to each of these choices.]} , for example, to be installed by users in their homes as Relays and Proxies. For more on this idea, see Section \ref{future:proof-of-space}. {\color{red}[That section says the same thing as the text here]}
 
-\subsubsection{Proof-of-idle}
+\subsubsection*{Proof-of-idle}
 
-{\color{red}[DEFINE proof-of-idle]} Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Peddlers), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of Peddlers for this attack to cease being devastating, we are not using proof-of-idle for this release.
+% TODO: define terms: Proof of Idle
+%{\color{red}[DEFINE proof-of-idle]} 
+Proof-of-idle rests on the additional assumption that periodic, synchronized proof-of-work is sufficient to demonstrate a User’s share of the global computational power. Unfortunately, while the network is in its infancy ($\leq$ 10 million Peddlers), this leads to a situation where any company in control of a supercomputing center may, with only the sacrifice of ~1\% of their computational power, take control of the network. As we expect it to be quite a while before we have sufficient numbers of Peddlers for this attack to cease being devastating, we are not using proof-of-idle for this release.
 
 \subsection{Medallion Specification}
 \label{medallion-spec}
@@ -59,11 +70,14 @@ At a high-level, generating a Medallion involves two steps, (1) generation of a 
     \item[] $seed$ is $h(e_t|sig(sk,e_t))$
 \end{enumerate}
 
-$h(y)$ could be any cryptographic hash function but the \Orchid{} protocol uses {\color{red} [KECCACK]}. A discussion of this hash function choice can be found in {\color{red}[SECTION]}. We define a basic signature to be the exponentiation of appropriately sized some data by a secret key. 
+$h(y)$ could be any cryptographic hash function but the \Orchid{} protocol uses Keccak. A discussion of this hash function choice can be found in Appendix~\ref{payments-optimization}. We define a basic signature to be the exponentiation of appropriately sized some data by a secret key. 
 
 Using these definitions we define a Medallion to be the set,
 						$$\mathcal{M} = \{t, e_t, pk_m, sig(sk,e_t), \mathcal{F}_{n,k}(seed)\}$$
-for a globally agreed upon Equihash difficulty parameters $(n,k)$. For more information about these parameters see \cite{Equihash}.  Note that using $seed$ as input to $\mathcal{F}$ cryptographically links a peer's private key with the Medallion. Since Medallions determine a peer's Chord-address in \tOM{}, any entity possessing a Medallion can verified using the $pk_m$ associated with the specific peer. Moreover, an entity can ask for proof of ownership of a public key from a specific Chord-address. {\color{red}[<---this needs more explanation as to why it's important]}. Engineering details of Medallions are discussed in Appendix {\color{red}[SECTION]}. 
+for a globally agreed upon Equihash difficulty parameters $(n,k)$. For more information about these parameters see \cite{Equihash}.  Note that using $seed$ as input to $\mathcal{F}$ cryptographically links a peer's private key with the Medallion. Since Medallions determine a peer's Chord-address in \tOM{}, any entity possessing a Medallion can verified using the $pk_m$ associated with the specific peer. Moreover, an entity can ask for proof of ownership of a public key from a specific Chord-address. 
+% TODO: 
+%{\color{red}[<---this needs more explanation as to why it's important]}. 
+Engineering details of Medallions are discussed in Appendix~\ref{medallionspow}. 
 
 
 % If needed to explain why time-space trade-offs are important but probably a bit much:

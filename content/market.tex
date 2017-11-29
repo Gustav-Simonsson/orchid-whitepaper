@@ -22,7 +22,9 @@ At a high-level, the operations provided by \tOM{} are:
 
 Where Peddlers can thought of as nodes in Chord that keep track of information about their close neighbors via their finger table analog which we call a signed routing table. In \TOM{}, Peddlers serve as buyers and sellers of bandwidth that also may be Relays or Proxies. No User is required to be a Peddler within \TOM{} but all Relays and Proxies will be required to be Peddlers. The \emph{lookup property} is important because it allows customers to know that if a Peddler chosen at random from a set of $n$ Peddlers with $a$ attachers then the random Peddler is not an attacker with probability,
 						$$P(Attacker|random(Peddler)) = 1-\frac{a}{n}$$
-In sections {\color{red}[SECTIONS]} show that this property provides protection against {\color{red}[ATTACKS]} attacks. To implement these operations, \tOM{} takes the structure of a DHT with no keys and values. To perform the random selection, a user simply generates a random address and locates the Peddler closest to that point. Since \TOM{} can be represented as a chord-like ring with order $2^{256}$, any random address must be chosen as a random integer from $\{1,0\}^{256}$.
+In sections the Orchid whitepaper \cite{orchid} show that this property provides protection against eclipse and other attacks. To implement these 
+% TODO: Clean this language up
+operations, \tOM{} takes the structure of a DHT with no keys and values. To perform the random selection, a user simply generates a random address and locates the Peddler closest to that point. Since \TOM{} can be represented as a chord-like ring with order $2^{256}$, any random address must be chosen as a random integer from $\{1,0\}^{256}$.
 
 \subsection{Fundamental Peddler Operations}
 
@@ -35,19 +37,23 @@ The operations supported by Peddlers on \tOM{} are:
 \item \emph{Purchase Service}. Employ the Peddler as a service provider.
 \end{itemize}
 
-A Medallion is \TOM{}'s token for proof of work and \textit{license to participate} in the market; without a Medallion a Peddler is removed from the market in time on the order of TTL of the current Etherium block digest. The signed routing table will be discussed in section {\color{red}[SECTION]}. The first two of these are used by customers to navigate to a Peddler of interest, while the second two are used to negotiate the purchase of services once that Peddler is found.
+A Medallion is \TOM{}'s token for proof of work and \textit{license to participate} in the market; without a Medallion a Peddler is removed from the market in time on the order of TTL of the current Etherium block digest. The signed routing table 
+is discussed further in the Orchid whitepaper \cite{orchid}.%will be discussed in section {\color{red}[SECTION]}. 
+The first two of these are used by customers to navigate to a Peddler of interest, while the second two are used to negotiate the purchase of services once that Peddler is found.
 
-{\color{red} Navigation through \tOM{} similar to that used in Chains. A customer connects to some known Peddler (found through
+%TODO: Fix this section, {\color{red}} 
+{Navigation through \tOM{} similar to that used in Chains. A customer connects to some known Peddler (found through
 bootstrapping, see \ref{bootstrapping}), inspects its routing table, and pays to forward traffic to the Peddler closest to its chosen point. As we will see in the section on routing tables, this allows customers to keep their IP addresses secret, while still providing relatively efficient random access to Peddlers of $O(log^2 n)$ packets.}
 
-Note that all operations in \TOM{} requiring bandwidth are subject to the same bandwidth costs any other entity. These costs are minimized to each Peddler as each Peddler sells bandwidth due to market operations at least as frequently as it buys bandwidth. This bandwidth cost to Peddlers prevents attacks mentioned in {\color{red}[SECTIONS]}.
+Note that all operations in \TOM{} requiring bandwidth are subject to the same bandwidth costs any other entity. These costs are minimized to each Peddler as each Peddler sells bandwidth due to market operations at least as frequently as it buys bandwidth. This bandwidth cost to Peddlers prevents attacks mentioned in Appendix~\ref{paymentsextra}.
 
-\subsection{Joining \TOM{}}
+% TODO: Finish out this section
+% \subsection{Joining \TOM{}}
 
-{\color{red} include a high level description on how a potential peddler bootstraps into the market, presents a medallion, checks routing information, and joins the market}\\
-{\color{red} \texttt{INCLUDE PROTOCOL DIAGRAM} --Maybe in the appendix}
+% {\color{red} include a high level description on how a potential peddler bootstraps into the market, presents a medallion, checks routing information, and joins the market}\\
+% {\color{red} \texttt{INCLUDE PROTOCOL DIAGRAM} --Maybe in the appendix}
 
-\subsection{Chord-like Routing Structure}
+% \subsection{Chord-like Routing Structure}
 
 %% [need graphic]
 
@@ -56,7 +62,10 @@ Peddlers are connected in the \Orchid{} Protocol using the same scheme used in t
 The set of Peddler addresses is represented as integers in a chord-ring of size $2^{256}$, where the distance $d$ between peers' addresses $a$ and $b$ is defined such that,
 						$$a, b, d \in [0, 2^{256})$$ 
                         $$a + d \equiv b \pmod{2^{256}}$$
-Let $\mathcal{A}$ be a collection of Peddlers in an Orchid Market and $e$ be a particular Peddler. Let a forced connection be {\color{red}[DEFINITION]}. Recall that in Chord, the maximum expected number of peers for any node is log$_2$($n$). The set of forced connections for $e$ are then defined to be,
+Let $\mathcal{A}$ be a collection of Peddlers in an Orchid Market and $e$ be a particular Peddler. 
+% TODO Define a Forced Connection
+%Let a forced connection be {\color{red}[DEFINITION]}. 
+Recall that in Chord, the maximum expected number of peers for any node is log$_2$($n$). The set of forced connections for $e$ are then defined to be,
 						$$\mathcal{L} = \{f : \min_{log_2(n)} \{dist(e+t, f)\}\}$$ 
 where $t \in \{1, 2, 4,.. 2^{255}\}$ is any Peddler and min returns a set of the smallest log$_2$($n$) elements from dist(...) with the least distance to $f$.
 
@@ -70,20 +79,27 @@ following two properties are provided by this routing scheme:
 
 \subsection{Medallions on \TOM{}}
 
-Medallions are tokens of proof-of-work and are closely tied to the etherium block digest, a holder's public key, and other quantities discussed in section {\color{red}[SECTION]}. Within \TOM{}, Medallions are used in two ways in \TOM{},
+Medallions are tokens of proof-of-work and are closely tied to the etherium block digest, a holder's public key, and other quantities discussed in Appendix~\ref{paymentsprotocol}. Within \TOM{}, Medallions are used in two ways in \TOM{},
   \begin{itemize}
       \item To prevent trivial entry into the market resulting in attacks 
       \item To prevent attackers from choosing their location in the market
   \end{itemize}
-In order to prevent an attacker from running more Peddlers than is proportional to their share of \tOM{}'s total computational power, every Peddler checks the validity of all its connections' Medallions every Medallion cycle. In the event that a valid Medallion is not supplied, it is disconnected from the network. The location of Peddlers is defined to be the cryptographic hash of their Medallion {\color{red} and other quantities}. In other words, 
+In order to prevent an attacker from running more Peddlers than is proportional to their share of \tOM{}'s total computational power, every Peddler checks the validity of all its connections' Medallions every Medallion cycle. In the event that a valid Medallion is not supplied, it is disconnected from the network. The location of Peddlers is defined to be the cryptographic hash of their Medallion 
+% TODO: Fix language {\color{red} and other quantities}. 
+as defined in Appendix \ref{medallionspow}
+In other words, 
 						$$\textrm{Peddler Address} = H(Medallion, ...)$$
-This allows each member of \TOM{} to trivially evaluate and verify a Medallion holder's location in the market. Moreover, by tying the market address of a Peddler to the Medallion, performing an Eclipse attack become much more difficult. Eclipse attacks will be discussed in detail in sections {\color{red}[SECTIONS]}. Medallions are discussed further in section {\color{red}[SECTION]}.
+This allows each member of \TOM{} to trivially evaluate and verify a Medallion holder's location in the market. Moreover, by tying the market address of a Peddler to the Medallion, performing an Eclipse attack become much more difficult. 
+% TODO: Fix language and includion
+%Eclipse attacks will be discussed in detail in sections {\color{red}[SECTIONS]}. Medallions are discussed further in section {\color{red}[SECTION]}.
 
 \subsection{Signed Routing and Eclipse Attacks}
 
 One of the issues that arises in distributed networks is that since no one (except, perhaps, an attacker) has a global view of the network, it is difficult to determine if a Peddler has been \textit{eclipsed} into a malicious and wholly isolated subnetwork. For example, imagine if in the above routing scheme an attacker chose to lie about what connections it has – if the buyer has no way of detecting this, they might be led off to a fake Orchid Market in which all “participants” were owned by the attacker. To mitigate exploitation of this situation, Peddler routing tables are algorithmically chosen as well as verified by the peers contained in the routing table.
 
-{\color{red} When a node would like to establish a forced connection, that node must prove to each node on its forced connections list that each other node on that list is a member of the same Orchid Market. To do this, we first select a random Peddler $G$ by finding the Peddler with an address closest to the hash of all the connections in the routing table $H(C_i)$. Then we supply:}
+% TODO: fix language {\color{red}} 
+% When a node would like to establish a new connection, that node must prove to each other node in its signed routing table that all members of the table are participants in the same Orchid Market. To do this ...
+When a node would like to establish a forced connection, that node must prove to each node on its forced connections list that each other node on that list is a member of the same Orchid Market. To do this, we first select a random Peddler $G$ by finding the Peddler with an address closest to the hash of all the connections in the routing table $H(C_i)$. Then we supply:
 
 \begin{enumerate}
 \item Proof that all the Peddlers on the list can all route to $G$.
@@ -101,7 +117,8 @@ From these properties, we can see that the avenues left for an attacker are:
 \item If an attacker can generate a Medallion address such that all $C_i$ are controlled by them, the above system will cease to function. This will happen with probability $(\frac{a}{n})^{log(n)}$. If such a collision occurs, $(1 - \frac{n-log(n)}{n})^{log(n)}$ percent of all queries will be compromised. To put these numbers in perspective, if an attacker controls 10\% of the network, at 1 million nodes there is a \num{1e-8}\% chance of such a collision happening, and if it does occur around \num{1e3}\% of all system queries will be impacted. At 100 million nodes the chance drops to \num{1e-12}\%, causing disruption of 1e-5\% of queries. Note this damage is repaired during Regeneration (see Section \ref{market-regen}).
 \item If an attacker has now joined the network, but was forced to use a valid routing table, the only attacks it can perform are related to selling services, not routing traffic on \tOM{}. As this is the situation expected in the rest of our attack models (that an attacker will control a number of Peddlers proportional to the computational resources), we do not consider this an attack.
 \end{itemize}
-{\color{red}[Add Diagram]}
+% TODO: {\color{red}[Add Diagram]}
+% DIAGRAM GOES HERE
 
 \subsection{Eclipse Attacks and Regeneration}
 \label{market-regen}
@@ -136,15 +153,17 @@ One might be inclined to believe that density estimation is enough, however a cl
 
 Some users wishing to offer Proxy services may not be comfortable offering ``open access''. For example, allowing users to access facebook.com has a risk profile similar to acting as a relay, while allowing arbitrary connections to the Internet may result in a visit from local law enforcement. Peddlers on \tOM{} may therefore set a whitelist of websites they will allow users to contact when using them as a Proxy, and specify their whitelists in their responses to \emph{Get Offers}.
 
-\texttt{\color{red}\\NOTES:
-\begin{itemize}
-	\item Need a proper definition of "forced connection"; Required for understanding Section 1.6 - Signed Routing Tables and Eclipse Attacks
-    \item mostly avoided Section 1.6 - Signed Routing Tables and Eclipse Attacks. While I understand what we're trying to do, I'm not certain what we're trying to convey there.
-	\item I changed the peddler address to be H(Medallion, ...). Its probably sufficient to have H(Medallion) but I want to open up discussion of any other quantiles that we may want to be a part of the address that,
-    \begin{enumerate}
-    	\item are visible to all Peddlers
-        \item are not tied to the medallion. Are there any quantities that give us extra usability or security features?
-    \end{enumerate}
-    \item Medallion = eqH(SEED), SEED = H(pubkey, eth, Challenge-Response?, ...)
-\end{itemize}
-}
+% Important Notes
+% TODO:
+% \texttt{\color{red}\\NOTES:
+% \begin{itemize}
+% 	\item Need a proper definition of "forced connection"; Required for understanding Section 1.6 - Signed Routing Tables and Eclipse Attacks
+%     \item mostly avoided Section 1.6 - Signed Routing Tables and Eclipse Attacks. While I understand what we're trying to do, I'm not certain what we're trying to convey there.
+% 	\item I changed the peddler address to be H(Medallion, ...). Its probably sufficient to have H(Medallion) but I want to open up discussion of any other quantiles that we may want to be a part of the address that,
+%     \begin{enumerate}
+%     	\item are visible to all Peddlers
+%         \item are not tied to the medallion. Are there any quantities that give us extra usability or security features?
+%     \end{enumerate}
+%     \item Medallion = eqH(SEED), SEED = H(pubkey, eth, Challenge-Response?, ...)
+% \end{itemize}
+% }

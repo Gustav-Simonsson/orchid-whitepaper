@@ -18,6 +18,8 @@ Building on the high-level Medallion specification in Section \ref{medallion-spe
 	\item[$\mathcal{M}$ (struct)] -- $\{t, e_t, pk_m, sig(sk,e_t), \mathcal{F}_{n,k}(seed)\}$
 \end{description}
 
+\subsection*{Medallion Algorithms}
+
 There are two proposed methods for generating Medallions. The first is non interactive and requires that the generate of a Medallion have the current Etherium block digest as well as a public key pair. The Equihash proof-of-work given below is simplified.
 
 \begin{algorithm}[H]
@@ -44,7 +46,13 @@ There are two proposed methods for generating Medallions. The first is non inter
    \caption{Non-interactive Medallion Generation}
 \end{algorithm}
 
-The second method build on the first and adds the requirement of peddlers withing \tOM{} to participate in Medallion construction. By requiring participation from \tOM{}, a challenge-response type protocol is created and may be likened to a primitive proof-of-time {\color{red}[REFERENCE]}. In this scheme, there are $m$ actors, a Medallion generator, \textit{Alice}, and a community of peddlers on \tOM{} denoted as $p_i \in$\{\textit{Bob, Chris, Dana, ...}\}. \textit{Alice} will interact with an entry peddler \textit{Bob} who will compute $sig(sk_{Bob}, e)$ and return the signature to \textit{Alice}. If further participation is required by an \Orchid{} Market, \textit{Bob} will contact $m$ random peddlers who will return $sig(sk_{p_i}, e)$ to \textit{Alice} through  \textit{Bob}. \textit{Alice} will then compute $seed$ using \{$sig(sk_{p_i}, e)$\} as additional input and return $\mathcal{M}$ to \textit{Bob}. {\color{red}There are better and more elegant ways of doing this but they might be computationally expensive. Will look into it more.}
+
+The second method build on the first and adds the requirement of peddlers withing \tOM{} to participate in Medallion construction. By requiring participation from \tOM{}, a challenge-response type protocol is created and may be likened to a primitive proof-of-time.
+% TODO: clean up this language
+%{\color{red}[REFERENCE]}. 
+In this scheme, there are $m$ actors, a Medallion generator, \textit{Alice}, and a community of peddlers on \tOM{} denoted as $p_i \in$\{\textit{Bob, Chris, Dana, ...}\}. \textit{Alice} will interact with an entry peddler \textit{Bob} who will compute $sig(sk_{Bob}, e)$ and return the signature to \textit{Alice}. If further participation is required by an \Orchid{} Market, \textit{Bob} will contact $m$ random peddlers who will return $sig(sk_{p_i}, e)$ to \textit{Alice} through  \textit{Bob}. \textit{Alice} will then compute $seed$ using \{$sig(sk_{p_i}, e)$\} as additional input and return $\mathcal{M}$ to \textit{Bob}. 
+% TODO: Finish this thought and writeup
+%{\color{red}There are better and more elegant ways of doing this but they might be computationally expensive. Will look into it more.}
 
 \begin{algorithm}[H]
 
@@ -56,7 +64,7 @@ The second method build on the first and adds the requirement of peddlers within
     ~~$pk\gets sk*G$\\
     ~~$sig(sk,e_t)\gets$ ECDSA$(sk,e_t)$\\
    \textbf{Interactive Step:}\\
-   ~~Do stuff...\\
+    ~~perform Proof-of-Time\\%{\color{red}Do stuff}...\\
     ~~$seed\gets h(e_t, \{sig(sk_{p_i},e_t))\}$ \\
   \textbf{Equihash proof-of-work:}\\
     ~~\textit{set} difficulty $(n,k)$\\

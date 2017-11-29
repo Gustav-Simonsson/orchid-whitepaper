@@ -40,7 +40,9 @@ The increase in transaction fees in popular, public blockchain networks inhibit 
 
 \subsection{Blockchain-Based Probablistic Micropayments}
 
-{\color{red}We will summarize our [IDEA] here but details can be found in [SECTION]} To easier convey the core idea of how probablistic payments can be applied to blockchain protocols, we will here gloss over several details. A formal description of the MICROPAY1 scheme is available in the cited original paper, and the Orchid probablistic payment scheme is formalized in section \ref{sec:orchid-payments}
+% TODO: Clean up this section
+%{\color{red}We will summarize our [IDEA] here but details can be found in [SECTION]} .
+To easier convey the core idea of how probablistic payments can be applied to blockchain protocols, we will here gloss over several details. A formal description of the MICROPAY1 scheme is available in the cited original paper, and the Orchid probablistic payment scheme is formalized in section \ref{sec:orchid-payments}
 
 Pass and Shelat describes MICROPAY1\cite{Micropayments}, where digital signatures and a commitment scheme are combined to engineer release conditions including a random outcome of an exact probability. The sender first makes a ``deposit'' by transfering bitcoin to an escrow address of a newly generated key. Then, the recipient (merchant in MICROPAY1 terms) picks a random number and sends a commitment over this number to the sender. Alongside the commitment the recipient also provide a new Bitcoin address. The sender also picks a random number and signs the concatenation of this number (in plaintext), the commitment from the recipient and other payment data such as the payment destination address provided by the recipient.
 
@@ -70,9 +72,9 @@ For this reason, although it was not sufficient for use alone, we are forced to 
 
 The Orchid payment scheme is a pseudo-anonymous, probabilistic micropayment scheme inspired by MICROPAY1 and related constructs. It mitigates front-running and parallel (including double) spending attacks without the need for a trusted party by leveraging Ethereum smart contracts and slashable penalty deposits. The pseudo-anonymity of Orchid payments is equivalent to what can be achieved in regular Ethereum transactions (although Orchid clients employ additional privacy techniques such as one-time addresses and key separation between node identities and payment addresses to achieve limited anonymity).
 
-The trusted party introduced in MICROPAY2 and MICROPAY3 can effectively be replaced by Ethereum smart contract code. The EVM allows to implement arbitrary logic (within economic bounds on the computation) for validating micropayment tickets, and provides primitives\cite{ETHSpec} for the ECDSA\cite{ECDSA} recovery operation as well as cryptographic hash functions. An detailed description of the payment scheme is discussed in Appendix {\color{red}[SECTION]}
-
-{\color{red}[MENTION] Orchid payment ticket reduction in value after a set time T. Discuss why this is important for balance of trade}
+The trusted party introduced in MICROPAY2 and MICROPAY3 can effectively be replaced by Ethereum smart contract code. The EVM allows to implement arbitrary logic (within economic bounds on the computation) for validating micropayment tickets, and provides primitives\cite{ETHSpec} for the ECDSA\cite{ECDSA} recovery operation as well as cryptographic hash functions. An detailed description of the payment scheme is discussed in Appendix~\ref{paymentsprotocol}.
+% TODO: Add mention to payment ticket value reduction
+%{\color{red}[MENTION] Orchid payment ticket reduction in value after a set time T. Discuss why this is important for balance of trade}
 
 \subsection{The Orchid Token}
 \label{sec:oct}
@@ -87,7 +89,8 @@ However, Ethereum is planning future protocol upgrades to allow transaction fees
 
 However, the decision to introduce a new token instead of simply using Ether is for socioeconomical, not technical, reasons. By creating a new token and making it the only valid payment option in the Orchid Network, we engineer socioeconomic effects that we believe are significant enough to warrant the increased complexity.
 
-Further details of The Orchid Token are discussed in Appendix {\color{red}[SECTION]}.
+% TODO: add further description of the Orchid token
+%Further details of The Orchid Token are discussed in Appendix {\color{red}[SECTION]}.
 
 \subsection{Orchid Gas Costs}
 
@@ -100,7 +103,9 @@ Similar to most public blockchain networks, Ethereum transactions cannot be cens
 \subsection{Balance of Trade}
 \label{tokens-bot}
 
-The realities of symmetric encryption performance prevent us from sending payment with every packet {\color{red}[<--I think this is wrong; symm crypto could keep up but pub key would fail]}, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: imagine Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
+% TODO: clean up this language
+%The realities of symmetric encryption performance prevent us from sending payment with every packet {\color{red}[<--I think this is wrong; symm crypto could keep up but pub key would fail]}, and so we need a good understanding of the risks inherent in employing a ``balance of trade'' approach. We do so here in a general setting: 
+Imagine two Orchid participants Alice and Bob wish to transact in a fully anonymous manner. Bob is to perform some task for which he charges $x$, and Alice is to pay him once every $y$ tasks. Unfortunately, the nature of anonymity is such that without prior transactions, Alice and Bob have no mechanism to trust one another. Can they cooperate?
 
 If there is some setup cost to Alice and Bob's relationship ($S_{Alice}, S_{Bob}$ s.t. $S_{Alice} > xy, S_{Bob} > xy$), the answer is yes: running away with the money or work ceases to be economically rational, unless (1) the total amount of work Alice was seeking was $\leq xy$ or (2) the total amount of work that Bob can perform is $\leq xy$. As we will see in our discussion of \tOM{} (Section \ref{sec:market}), setup costs exist on the \Orchid{} Network which support trade imbalances in excess of \num{1e3} packets. Because sellers in \tOM{} generally pay a higher setup cost than buyers, and because Customers asymmetrically know how much work they will require, the \Orchid{} Network has Customers pre-pay.
 
@@ -115,4 +120,8 @@ To achieve full anonymity guarantees against any malicious actor, whether observ
 
 %% TODO: TumbleBit - can it be implemented in EVM?
 
-{\color{red} [MENTION HERE BUT CONSIDER MOVING TO FUTURE WORK] zk-SNARK\cite{zkSNARKs} technology as applied in the zcash network \cite{zcash-zksnarks} can provide stronger anonymity guarantees compared to ring signatures. In zcash, transactions between shielded addresses provide full anonymity of the sender, recipient and amount.}
+% TODO: Decide what to do with this information,
+%{\color{red} [MENTION HERE BUT CONSIDER MOVING TO FUTURE WORK] zk-SNARK\cite{zkSNARKs} technology as applied in the zcash network \cite{zcash-zksnarks} can provide stronger anonymity guarantees compared to ring signatures. In zcash, transactions between shielded addresses provide full anonymity of the sender, recipient and amount.}
+
+
+
