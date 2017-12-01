@@ -96,7 +96,7 @@ information leakage may be used to infer the strategy being employed,
 hence we feel it is best to simply assume it is possessed by the
 attacker for the purposes of this analysis.
 
-\subsubsection{Success Criteria}
+\subsubsection*{Success Criteria}
 
 A successful solution will be determined by performance on the
 following criteria:
@@ -156,7 +156,7 @@ probability.
 
 With that background out of the way, we now proceed to evaluate buyer strategies.
 
-\subsubsection{Lowest-Price}
+\subsubsection*{Lowest-Price}
 
 If the buyer elects to go with the lowest cost provider, a component
 attacker will set their prices to the lowest allowed (0 tokens). This
@@ -169,7 +169,7 @@ with maximum total price of 12. A competent attacker will enter the
 market at the prices \{0, 0\}, and so will be guaranteed the sale,
 putting the chance of successful attack at $1$.
 
-\subsubsection{Price-Weighted Random}
+\subsubsection*{Price-Weighted Random}
 
 If the buyer elects to make the chance of purchase some monotonic
 function of the difference in cost of bandwidth, this results in
@@ -182,7 +182,7 @@ in cost as our function, we arrive at $\frac{288}{337} \approx 85\%$
 chance of successful attack. While 85\% is much better than 100\%, it
 is still unsatisfying.
 
-\subsubsection{Random Selection From Affordable Relays}
+\subsubsection*{Random Selection From Affordable Relays}
 
 If the buyer elects to select randomly from sellers charging less than
 $\frac{1}{3}$ of their maximum price, a component attacker will set
@@ -195,7 +195,7 @@ combinations: \{(0, 2, 4), (1, 2, 4)\}, and two attack combinations:
 \{(0, 1, 2) and (0, 1, 4)\}. This yields a chance of successful attack
 of $\frac{1}{2}$.
 
-\subsubsection{Random Selection Subject to Cost}
+\subsubsection*{Random Selection Subject to Cost}
 \label{best-auction-strat}
 
 If the buyer elects to select randomly from triples of sellers $(S_i,
@@ -218,7 +218,7 @@ is remarkable that even after accounting for such behavior on the part
 of an attacker, random selection subject to cost is still better than
 discarding the seller charging 6 from consideration.
 
-\subsubsection{Random Cost Selection, Normalized by Peer}
+\subsubsection*{Random Cost Selection, Normalized by Peer}
 
 A natural question to ask is: what if we bias our random sample to
 prevent peers from being underrepresented? Unfortunately, the answer
@@ -229,7 +229,7 @@ Continuing the above example, a component attacker will select 1 and
 afford 6.1 when paired with 1, adjusting the odds results in a
 $\frac{3}{7}$ chance of a successful attack.
 
-\subsubsection{Random Cost Selection, Normalized by Pair}
+\subsubsection*{Random Cost Selection, Normalized by Pair}
 
 Another idea, similar to the one above, is to ask: what if we bias our
 random sample to normalize the probability of \emph{pairs} of sellers
@@ -252,7 +252,7 @@ To avoid analysis for analysis' sake, we have omitted sections for
 strategies which are suboptimal/unstable from both a pricing
 perspective and from a security perspective.
 
-\subsubsection{Lowest-Price}
+\subsubsection*{Lowest-Price}
 
 Lowest-price is stable against economic incentives as the price chosen
 is already the lowest possible. From a security perspective, however,
@@ -264,7 +264,7 @@ to decide how to allocate their resources between these two types of
 buyers, to the security benefit of both groups, as discussed in the
 next section.
 
-\subsubsection{Random Selection Subject to Cost}
+\subsubsection*{Random Selection Subject to Cost}
 
 As the inverse of the previous discussion, this strategy is stable
 from a security standpoint, but not stable to economic incentives --
@@ -297,12 +297,12 @@ sort of economic algorithms can be employed by sellers.
 We have omitted sections for strategies which are suboptimal/unstable
 from both a pricing perspective and from a security perspective.
 
-\subsubsection{Lowest-Price}
+\subsubsection*{Lowest-Price}
 
 As this approach is the expected case in economics, it is fully
 economically compatible.
 
-\subsubsection{Random Selection Subject to Cost}
+\subsubsection*{Random Selection Subject to Cost}
 
 Although it may not initially appear that this strategy is
 economically compatible, when a population of buyers which do not

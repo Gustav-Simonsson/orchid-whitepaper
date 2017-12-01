@@ -15,36 +15,36 @@ In this section we will describe the specification for Relay and Proxy
 behavior, and discuss the ``chaining together'' of these nodes to
 support uncensorable, anonymous web browsing.
 
-\subsection{Specification for the Sale of Bandwidth}
+\subsection*{Specification for the Sale of Bandwidth}
 
 Relay nodes implement a relatively simple behavior pattern:
 
 \begin{itemize}
-\item Maintain one or more connections, each with their own encryption key.
-\item Check any tickets received, and cash-in winners.
-\item Monitor the balance of trade, and disconnect if it exceeds a
-  predeclared amount.
-\item Receive data from any open connection, and perform decryption at
-  message boundaries.
-\item Process decrypted messages as follows:
-  \begin{itemize}
-  \item Forward any non-control segments to the connection(s)
-    specified in the message.
-  \item Process any control segments:
+  \item Maintain one or more connections, each with their own encryption key.
+  \item Check any tickets received, and cash-in winners.
+  \item Monitor the balance of trade, and disconnect if it exceeds a
+    predeclared amount.
+  \item Receive data from any open connection, and perform decryption at
+    message boundaries.
+  \item Process decrypted messages as follows:
     \begin{itemize}
-    \item \emph{Dummy Data.} Instructs the Relay to discard this segment.
-    \item \emph{Burn at Rate.} Instructs the Relay to send data over a
-      connection at a fixed rate, queueing packets and generating data
-      as necessary to maintain the rate.
-    \item \emph{Ratchet Ticket.} Instructs the Relay to pass a Ticket to
-      the peer it received this packet from.
-    \item \emph{Initiate Connection.} Instructs the Relay to establish a
-      new connection. Used during setup and to handle disconnection.
-    \item \emph{Initial Web Connection.} (Proxies Only.) Instructs the
-      proxy to open an SSL connection to the specified host. To
-      support whitelists, this cannot be a raw IP address.
+      \item Forward any non-control segments to the connection(s)
+        specified in the message.
+      \item Process any control segments:
+        \begin{itemize}
+          \item \emph{Dummy Data.} Instructs the Relay to discard this segment.
+          \item \emph{Burn at Rate.} Instructs the Relay to send data over a
+            connection at a fixed rate, queueing packets and generating data
+            as necessary to maintain the rate.
+          \item \emph{Ratchet Ticket.} Instructs the Relay to pass a Ticket to
+            the peer it received this packet from.
+          \item \emph{Initiate Connection.} Instructs the Relay to establish a
+            new connection. Used during setup and to handle disconnection.
+          \item \emph{Initial Web Connection.} (Proxies Only.) Instructs the
+            proxy to open an SSL connection to the specified host. To
+            support whitelists, this cannot be a raw IP address.
+        \end{itemize}
     \end{itemize}
-  \end{itemize}
 \end{itemize}
 
 %% [saurik: should we flesh out the above with packet specifics? I feel
@@ -61,7 +61,7 @@ running pure javascript relay code.
 For discussion of possible extensions via application specific control
 segments, see Section \ref{sec:future}.
 
-\subsection{Guard Nodes and ``Bandwidth Burning''}
+\subsection*{Guard Nodes and ``Bandwidth Burning''}
 \label{bandwidth-burning}
 
 The relay that a customer is connected to has a very important piece
@@ -86,7 +86,7 @@ To provide assistance to users seeking evasion (Section
 rates determined by the statistical properties of popular non-\Orchid{}
 WebRTC protocols.
 
-\subsection{Chaining}
+\subsection*{Chaining}
 
 Customers interested in employing Relays for anonymous Internet
 access will use the above specification to create ``chains'' of

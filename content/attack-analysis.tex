@@ -5,7 +5,7 @@
 %%% Author: A truckload of others
 %%% Birthdate: Tue Oct 10 12:08:49 2017.
 
-\subsection{Oppressive Web Applications}
+\subsubsection*{Oppressive Web Applications}
 
 Attacker Goals: Identify all \Orchid{} Relay and Proxy IP addresses.
 
@@ -29,7 +29,7 @@ challenge to unmask using the above method, blocking these IP
 addresses would result in the oppressive Web Application blocking
 their own users.
 
-\subsection{Corporate Networks and ``Great'' Firewalls}
+\subsubsection*{Corporate Networks and ``Great'' Firewalls}
 
 Attacker Goals: Prevent usage of the \Orchid{} network by users to whom
 you provide Internet access.
@@ -40,7 +40,7 @@ network usage presents as WebRTC connections relaying a fixed amount
 of data. There are no open ports to probe, and no IP addresses which
 can be relied on to ``out'' them.
 
-\subsection{Passive Monitoring and Inference, perhaps with Sybil Attacks}
+\subsubsection*{Passive Monitoring and Inference, perhaps with Sybil Attacks}
 
 Attacker Goals: Learn Customer IP Identification, and Website Identification.
 
@@ -50,18 +50,16 @@ bleak: the difficulty of positioning yourself in several positions of
 a Chain requires possessing (and dedicating to this attack) a large
 percentage of global computation power.
 
-\subsection{Small-Time Trolling and QoS Attacks}
+\subsubsection*{Small-Time Trolling and QoS Attacks}
 
-Synopsis: An attacker would like to cause mayhem on as much of the network as possible.
+Attacker Goals: An attacker would like to cause mayhem on as much of the network as possible.
 
 Security minded readers looking for a good time are encouraged to
 perform analysis in this domain. The task here is, given a limited
 budget (perhaps on the order of \$10,000 USD), to disrupt the network
 as much as possible.
 
-\subsubsection{Attacking Chains}
-
-Attackers may try a variety of attacks here: randomly dropping
+\textit{Attacking Chains} - Attackers may try a variety of attacks here: randomly dropping
 packets, providing only very slow service, providing intermittently
 slow service, or simply disconnecting. In all cases, the customer
 simply replaces the node in question, leading to a minor inconvenience
@@ -71,20 +69,24 @@ way of determining if A did not forward the packet of if B is lying
 about not having received it. In this case the customer replaces both
 Relays.
 
-\subsubsection{Attacking \tOM{}}
+\textit{Attacking \tOM{}} - Attackers have similarly many options for this situation.
+\begin{itemize}
+  \item Improperly implement the joining protocol. We do not
+  view this as an attack, as in this case our ``attacker'' is simply
+  paying other Peddlers for packet forwarding.
 
-Attackers have similarly many options for this situation.
+  \item Join \tOM{} and refuse to provide routing table
+  information to users, or refuse to forward packets. This will result
+  in some additional routing burden on $\frac{log(n)}{n}$ of \tOM{}
+  queries until the Peddler in question is disconnected from the
+  network.
 
-One option is to improperly implement the joining protocol. We do not
-view this as an attack, as in this case our ``attacker'' is simply
-paying other Peddlers for packet forwarding.
+  \item Sit on \tOM{} while offering no services. In this
+  case auctions performed by customers become less efficient (suffering
+  from the loss of one participant $\frac{log(n)}{n}$ of the time).
+\end{itemize}
 
-Another option is to join \tOM{} and refuse to provide routing table
-information to users, or refuse to forward packets. This will result
-in some additional routing burden on $\frac{log(n)}{n}$ of \tOM{}
-queries until the Peddler in question is disconnected from the
-network.
 
-A third option is to sit on \tOM{} while offering no services. In this
-case auctions performed by customers become less efficient (suffering
-from the loss of one participant $\frac{log(n)}{n}$ of the time).
+
+
+

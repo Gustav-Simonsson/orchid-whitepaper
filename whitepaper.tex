@@ -70,10 +70,6 @@
     \label{sec:attacks}
     \input{content/attacks}
 
-    % \section{External Libraries}
-    % \label{sec:external-libraries}
-    % \input{content/external-libraries}
-
     \section{\TOM{}}
     \label{sec:market}
     \input{content/market}
@@ -86,36 +82,25 @@
     \label{sec:payments}
     \input{content/payments}
 
-    % \section{Bandwidth Mining}
-    % \label{sec:mining}
-    % \input{content/bandwidth-mining}
-
-    % \section{Collusion Attacks on Chains}
-    % \label{sec:collusion-attacks}
-    % \input{content/collusion-attacks}
-
-    % \section{SSL and TLS Vulnerabilities}
-    % \input{content/ssl-vulnerabilities}
-
-    % \section{Firewall Circumvention Features}
-    % \label{sec:evasion}
-    % \input{content/firewall}
-
-    %% \section{Current State of the Software}
-    %% \label{sec:current}
-    %% \input{content/software-status}
-
+    \section{Bandwidth Mining}
+    \label{sec:mining}
+    \input{content/bandwidth-mining}
+      
     \section{Performance Scaling}
     \label{sec:performance}
     \input{content/performance}
 
-    % \section{Attack Analysis and Attacker User Stories}
-    % \label{sec:attack-stories}
-    % \input{content/attack-analysis}
+    \section{External Libraries}
+    \label{sec:external-libraries}
+    \input{content/external-libraries}
 
-    % \section{Future Work}
-    % \label{sec:future}
-    % \input{content/future-work}
+	% \section{Current State of the Software}
+	% \label{sec:current}
+	% \input{content/software-status}
+    
+    \section{Future Work}
+    \label{sec:future}
+    \input{content/future-work}
 
 \newpage
 
@@ -131,6 +116,14 @@
     \section{Auctions}
     \label{sec:auctions}
     \input{content/auctions}
+    % show subsubsections in the TOC again
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+
+	% hide subsubsections from the TOC
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    \section{Attacks and Security}
+    \label{sec:attacksappendix}
+    \input{content/attacks-appendix}
     % show subsubsections in the TOC again
     \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 

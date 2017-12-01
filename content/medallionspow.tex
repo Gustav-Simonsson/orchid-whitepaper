@@ -46,10 +46,10 @@ There are two proposed methods for generating Medallions. The first is non inter
    \caption{Non-interactive Medallion Generation}
 \end{algorithm}
 
-
 The second method build on the first and adds the requirement of peddlers withing \tOM{} to participate in Medallion construction. By requiring participation from \tOM{}, a challenge-response type protocol is created and may be likened to a primitive proof-of-time.
 % TODO: clean up this language
 %{\color{red}[REFERENCE]}. 
+
 In this scheme, there are $m$ actors, a Medallion generator, \textit{Alice}, and a community of peddlers on \tOM{} denoted as $p_i \in$\{\textit{Bob, Chris, Dana, ...}\}. \textit{Alice} will interact with an entry peddler \textit{Bob} who will compute $sig(sk_{Bob}, e)$ and return the signature to \textit{Alice}. If further participation is required by an \Orchid{} Market, \textit{Bob} will contact $m$ random peddlers who will return $sig(sk_{p_i}, e)$ to \textit{Alice} through  \textit{Bob}. \textit{Alice} will then compute $seed$ using \{$sig(sk_{p_i}, e)$\} as additional input and return $\mathcal{M}$ to \textit{Bob}. 
 % TODO: Finish this thought and writeup
 %{\color{red}There are better and more elegant ways of doing this but they might be computationally expensive. Will look into it more.}

@@ -17,7 +17,7 @@ Relays and Proxies are selected randomly (and consequently so were
 ISPs), we build a probability model of the chance that a given attack
 may be performed at different chain lengths.
 
-\subsection{Information Available to Individual Relays and Proxys}
+\subsubsection*{Information Available to Individual Relays and Proxys}
 \label{relay-proxy-info-known}
 
 Due to the inherent structure of IP-based networking, and the
@@ -39,7 +39,7 @@ following information:
   SSL/TLS session negotiation.
 \end{itemize}
 
-\subsection{Potential Parties to a Collusion}
+\subsubsection*{Potential Parties to a Collusion}
 \label{sec:collusion}
 
 The following roles have access to customer information, and so might
@@ -61,7 +61,7 @@ cannot control the total amount of computation they have available for
 proof-of-work computations, they can control how that computation is
 allocated between relay and proxy nodes.
 
-\subsection{Types of Attack}
+\subsubsection*{Types of Attack}
 
 The central goal of collusion attacks is the linking of a specific
 \Orchid{} customer with a specific SSL connection. There are two ways
@@ -79,7 +79,7 @@ this can be done:
   customer.
 \end{itemize}
 
-\subsection{``Regular'' Internet Access: Zero Relays, Zero Proxies}
+\subsubsection*{``Regular'' Internet Access: Zero Relays, Zero Proxies}
 
 Although the \Orchid{} system is of course not used when a Customer
 directly connects to a website, we feel it is important to review what
@@ -102,7 +102,7 @@ happening. Lines where attacks are not possible are omitted, as are
 lines with extraneous ``X''s, and mention of more sophisticated
 attacks where simpler attacks are possible.
 
-\subsection{VPN: Zero Relays, Zero Proxies}
+\subsubsection*{VPN: Zero Relays, Zero Proxies}
 
 For the purposes of grounding our analysis, we also present the
 collusion risk inherent to VPN access.
@@ -121,7 +121,7 @@ Where $g$ is the chance the VPN provider is being monitored, or is
 colluding with an adversary. Note that $g$ may change over time in
 difficult to model ways, for example as a result of your VPN usage.
 
-\subsection{Zero Relays, One Proxy}
+\subsubsection*{Zero Relays, One Proxy}
 
 %% \begin{figure}[htbp]
 %%   \centering
@@ -145,7 +145,7 @@ equivalent to a VPN in which a new VPN provider is selected at random
 before each browsing session, and no personal information is stored by
 the VPN provider.
 
-\subsection{One Relay, One Proxy}
+\subsubsection*{One Relay, One Proxy}
 
 %% \begin{figure}[htbp]
 %%   \centering
@@ -171,7 +171,7 @@ If bandwidth burning is employed in this configuration, all timing
 attacks are mitigated. Observe that adding Relay$_1$ or the Proxy to
 the Timing case allows for a Relation.
 
-\subsection{Two Relays, One Proxy}
+\subsubsection*{Two Relays, One Proxy}
 
 %% \begin{figure}[htbp]
 %%   \centering
@@ -203,7 +203,7 @@ Relay$_1$ and the Website, adding Relay$_2$ or the Proxy to the
 collusion results in a relation. In the case of the customer's ISP
 colluding with the Website, adding Relay$_2$ results in a relation.
 
-\subsection{Three Relays, One Proxy}
+\subsubsection*{Three Relays, One Proxy}
 
 %% \begin{figure}[htbp]
 %%   \centering
