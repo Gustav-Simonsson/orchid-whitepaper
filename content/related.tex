@@ -21,15 +21,15 @@ Those weaknesses in VPNs led to the development of decentralized overlay network
 \subsection{Peer-to-Peer Protocols}
 Peer-to-peer protocols date back to the Napster file sharing network.\cite{42}. Napster used incentives to encourage subscribers to host music files in return for being able to download files from other peers.
 
-\subsubsection{The Napster Network}
+\subsubsection*{The Napster Network}
 Napster used a centralized directory service that indexed files and the locations of peers. The centralization of knowledge that resulted from Napster's approach rendered them susceptible to legal action by the MPAA (Motion Picture Association of America). That in turn eventually forced Napster out of business.
 
 The vulnerability of Napster's centralized directory inspired the designers of Napster's successor, Gnutella, to  distribute the index of files and node addresses across each peer in the network\cite{43}.
 
-\subsubsection{The Gnutella Network's Distributed-Index Response}
+\subsubsection*{The Gnutella Network's Distributed-Index Response}
 The Gnutella network's designers remedied the shortcomings of Napster centralized directory by implementing a distributed-index approach. This approach delivered improved resilience and scalability over Napster. Those improvements also inspired the development of additional frameworks for distributing indexes across P2P networks. One notable example is the adoption of Distributed Hash Tables (DHTs) to enable efficient discovery of nodes and resources in P2P networks.
 
-\subsubsection{The Tor Network}
+\subsubsection*{The Tor Network}
 \label{subsec: tornetwork}
 
 Tor was developed in the mid-1990’s by the United States Navy. Since then, development by the open-source community and the use of Tor has remained flat. There are today roughly 7,000 nodes, 3,000 exit nodes, and approximately 2 million users worldwide.
@@ -53,7 +53,7 @@ Another non-technical reason for Tor’s limited growth is that it is often perc
 
 In contrast, the \orchid{} Network will not enable hidden services and focus only on open, secure, anonymous access to the Internet.
 
-\subsubsection{Onion Routing}
+\subsubsection*{Onion Routing}
 \label{subsec-onionrouting}
 The techniques of Onion Routing described here (and Garlic Routing described in Section~\ref{subsec-garlicrouting}), combined with encryption, deliver a greater level of anonymous routing across P2P networks.
 
@@ -61,7 +61,7 @@ Onion Routing is a ``layered'' approach to data encryption that creates paths th
 
 One frequently cited example of Onion Routing is the Tor network (Section~\ref{subsec: tornetwork}).
 
-\subsubsection{Garlic Routing}
+\subsubsection*{Garlic Routing}
 \label{subsec-garlicrouting}
 The Invisible Internet Project (\textit{I2P}) is a decentralized anonymizing network based on principles similar to Tor (\ref{subsec: tornetwork}) but designed from the ground up to be a self-contained darknet. A key design feature of I2P is its use of Garlic Routing\cite{26}.
 
@@ -85,7 +85,7 @@ Blockchain protocols enable permissionless, decentralized consensus on global st
 
 Blockchain designs such as those of Bitcoin, Ethereum, Zcash, and others are examples of blockchain protocols that use state transition functions to add or change entries in their global state. These protocols also reward nodes for validating transactions and forming consensus on their ordering using techniques such as Proof-Of-Work\cite{44}.
 
-\subsubsection{Ethereum}
+\subsubsection*{Ethereum}
 Ethereum\cite{ethereum}, along with Bitcoin\cite{nakamoto2008bitcoin}, have pioneered new forms of application-specific cryptographic tokens\cite{AppCoins}. By supporting smart contracts based on arbitrarily selected methods of computation, blockchain systems can be used to create custom ledgers that provide application-specific capabilities such as voting, administrative functionality, and fee payments.
 
 Ethereum is a decentralized blockchain platform that has the capability to execute and deploy \textit{smart contracts}. Ethereum's smart contract code is immutable and fully deterministic in its execution (unless non-deterministic behaviour is explicitly added). This allows any node to verify the execution of a smart contract and audit the resulting changes to application state. This enables Ethereum's smart contracts to run exactly as programmed.
@@ -94,7 +94,7 @@ Ethereum applications run atop a powerful shared global infrastructure. Applicat
 
 Ethereum's capabilities are useful in general, nowhere more than in emerging markets that must contend with server downtime, corruption, and fraudulent behavior.
 
-\subsubsection{Ethereum and \tOM{} ERC20 Tokens}
+\subsubsection*{Ethereum and \tOM{} ERC20 Tokens}
 Most tokens deployed on the Ethereum network conform to the ERC20 standard\cite{ERC20}. This standard specifies a compact and simple API for the transfer of tokens and metadata that can easily and quickly integrate tokens into hardware or software user wallets.
 
 For example, the Augur\cite{Augur} and Gnosis\cite{Gnosis} platforms use ERC20 tokens to create prediction markets from token data. ERC20 enables arbitrary smart contracts to easily interface with the \orchid{} protocol. This can be valuable to IoT devices seeking to securely access Internet endpoints.
