@@ -4,7 +4,7 @@ This is the whitepaper describing the Orchid secure network protocol.
 
 ## Prerequisites for Mac
 ```bash
-brew case install mactex
+brew cask install mactex
 ```
 
 ## Prerequisites for Linux
