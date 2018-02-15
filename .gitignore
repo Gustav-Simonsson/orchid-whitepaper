@@ -16,3 +16,4 @@ tramp
 *-blx.bib
 *.bbl
 *.blg
+.DS_Store
