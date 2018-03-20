@@ -63,7 +63,7 @@ At a high-level, generating a Medallion involves two steps, (1) generation of a 
 \begin{enumerate}
 	\item[] $pk_m$ is a unique public key belonging to a peer$_m$
     \item[] $sk_m$ is a unique secret key associated with $pk_m$
-    \item[] $e_t$ is the Etherium block digest at time $t$ 
+    \item[] $e_t$ is the Ethereum block digest at time $t$ 
     \item[] $h(y)$ is the digest of a cryptographic hash function with input $y$
     \item[] $sig(sk, r)$ is the basic signature of $r$ using secret key $sk$
     \item[] $\mathcal{F}_{n,k}(x_j)$ is Equihash output\footnote{Note that the output of $\mathcal{F}(x_j)$ is a set of counters $j$ such that for XOR$_j=h(j)$, $\sum$XOR$_j$=0 for all j in the output.} with starting counter $x_j$ and difficulty $(n,k)$

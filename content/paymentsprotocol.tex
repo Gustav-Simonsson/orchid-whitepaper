@@ -3,7 +3,7 @@
 \label{payments-optimization}
 In order to reduce the cost of Orchid micropayments, we have chosen certain cryptographic functions over others due to their reduced Ethereum gas costs compared to other arbitrary functions.
 \begin{description}%[align=right, labelwidth=0cm]
-    \item[$h$ (Keccak-256)] -- Any secure cryptographic hash function could be used in the \Orchid{} protocol. However, Keccack was specifically chosen over other hashes in our system because it has the lowest gas cost  of all hash functions available in the EVM\footnote{Etherium cost of 36 gas\cite{ETHSpec} for hashing 32 bytes}. This was chosen to further minimize \Orchid{} transaction cost.
+    \item[$h$ (Keccak-256)] -- Any secure cryptographic hash function could be used in the \Orchid{} protocol. However, Keccack was specifically chosen over other hashes in our system because it has the lowest gas cost of all hash functions available in the EVM\footnote{Ethereum cost of 36 gas\cite{ETHSpec} for hashing 32 bytes}. This was chosen to further minimize \Orchid{} transaction cost.
     \item[$sig(sk, r)$ (ECDSA)] -- Using the secp256k1 curve with Keccak-256 as the internal cryptographic hash function. Again, this choice was made because the EVM has built in support for ECDSA thus reducing the \Orchid{} gas cost. Furthermore, the curve choice is compatible with existing blockchain software libraries and tools.
 \end{description}
 

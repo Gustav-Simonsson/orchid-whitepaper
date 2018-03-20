@@ -9,7 +9,7 @@ Building on the high-level Medallion specification in Section \ref{medallion-spe
 \begin{description}[align=right, labelwidth=2.7cm]
 	\item[$t$ (uint)] -- unix time with precision $p$; precision must be at least on the order of 100ms
 	\item[$sk_m$ (uint)]  -- a secret key $x$ chosen at random
-    \item[$e_t$ (uint)]  -- the Etherium block digest (aka block hash) at time $t$ 
+    \item[$e_t$ (uint)]  -- the Ethereum block digest (aka block hash) at time $t$ 
     \item[$h(y)$ (uint)]  -- the digest of Keccak with input $y$
     \item[$seed$ (uint)]  -- $h(e_t|sig(sk,e_t))$
     \item[$pk_m$ (tuple)]  -- a public key $x*G$ on the elliptic curve $\mathcal{C}$ with basepoint $G$ and order $N$
@@ -20,7 +20,7 @@ Building on the high-level Medallion specification in Section \ref{medallion-spe
 
 \subsection*{Medallion Algorithms}
 
-There are two proposed methods for generating Medallions. The first is non interactive and requires that the generate of a Medallion have the current Etherium block digest as well as a public key pair. The Equihash proof-of-work given below is simplified.
+There are two proposed methods for generating Medallions. The first is non interactive and requires that the generate of a Medallion have the current Ethereum block digest as well as a public key pair. The Equihash proof-of-work given below is simplified.
 
 \begin{algorithm}[H]
 
