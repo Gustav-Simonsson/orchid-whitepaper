@@ -1,6 +1,6 @@
 The \Orchid{} Protocol organizes bandwidth sellers into a %rigidly
 structured peer-to-peer (P2P) network termed \tOM{}. Customers connect to
-\tOM{} and pay bandwidth sellers in order to form a proxy chain to
+\tOM{} and pay bandwidth sellers in order to form a \emph{proxy chain} to a
 specific resource on the Internet. 
 %Proxy chains allow customers to send and receive data from the global Internet.
 
@@ -12,6 +12,14 @@ identity of someone who does. The structure of \tOM{} further
 supports this separation of information by providing strong resistance
 against \emph{collusion attacks} -- the ability of a group of
 bandwidth sellers to overcome this separation of knowledge.
+
+ The roles of the participants of a proxy chain are:
+\begin{itemize}
+\item \textbf{\emph{source} node or \emph{customer}} --- the participant initiating a transaction.
+\item \textbf{\emph{relay} node} --- intermediary participants that forward network traffic.
+\item \textbf{\emph{proxy} or \emph{exit} node} --- participant that connects to a requested global Internet site.
+\item \textbf{emph{bandwidth seller}} --- a \emph{relay} or \emph{proxy}.
+\end{itemize}
 
 Unlike less common methods for sending and receiving data from the
 global Internet, which do compartmentalize source and destination
@@ -93,18 +101,21 @@ or removing a user only requires notifying $O(log(n))$ peers.
 The \Orchid{} Protocol is, at its core, a combination of the above
 solutions. In our approach, peers are required to
 produce \emph{Medallions} to demonstrate their ``realness'', and are
-then organized into a distributed P2P network termed the \emph{\Orchid{} Market}. To
-keep \tOM{} participants honest, every peer checks the correctness of
-its neighbor's behavior. Customers then use \tOM{} to select random
-peers for Chaumian message forwarding. To incentivize participation,
-we have Customers pay Relays on a per-forwarded-byte basis.
+then organized into a distributed P2P network termed
+the \emph{\Orchid{} Market}. To keep \tOM{} participants honest, every
+peer checks the correctness of its neighbor's behavior. Customers then
+use \tOM{} to select random peers for Chaumian message forwarding. To
+incentivize participation, \tOM{} has Customers pay Relays and Proxies
+on a per-forwarded-byte basis.
 
 This is a simple idea, but of course the devil is in the details. The
 system is to be fully decentralized, fully autonomous, fully
 anonymous, and is to handle payments. Much of this design document is
-therefore centered on preventing attacks on customer security, the system's performance, and the system's economic soundness. Although attack analysis is important, and will take up
-much of our time, it is ultimately no more than a necessary conceit to
-the context in which the market is to operate; if you find yourself
-``lost in the woods'' we hope you will use the preceding exposition as
-your north star -- the system's design details are all toward
-realizing a real-world solution to the above trio of problems.
+therefore centered on preventing attacks on customer security, the
+system's performance, and the system's economic soundness. Although
+attack analysis is important, and will take up much of our time, it is
+ultimately no more than a necessary conceit to the context in which
+the market is to operate; if you find yourself ``lost in the woods''
+we hope you will use the preceding exposition as your north star --
+the system's design details are all toward realizing a real-world
+solution to the above trio of problems.
